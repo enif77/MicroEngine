@@ -1,4 +1,6 @@
-﻿namespace MicroEngine;
+﻿/* Copyright (C) Premysl Fara and Contributors */
+
+namespace MicroEngine;
 
 public static class App
 {

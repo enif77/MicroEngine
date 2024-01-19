@@ -7,4 +7,18 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="OpenTK" Version="4.8.2" />
+        <PackageReference Include="StbImageSharp" Version="2.27.11" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="Resources/**" CopyToOutputDirectory="PreserveNewest" />
+        <None Include="Shaders/**" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Folder Include="Resources\Shaders\" />
+    </ItemGroup>
+
 </Project>

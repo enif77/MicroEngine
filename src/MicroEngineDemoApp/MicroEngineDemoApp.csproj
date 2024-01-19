@@ -8,7 +8,25 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MicroEngine\MicroEngine.csproj" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+        <PackageReference Include="OpenTK" Version="4.8.2" />
+        <PackageReference Include="StbImageSharp" Version="2.27.11" />
     </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\MicroEngine\MicroEngine.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <None Include="Resources/**" CopyToOutputDirectory="PreserveNewest" />
+        <None Include="Shaders/**" CopyToOutputDirectory="PreserveNewest" />
+        <None Include="Textures/**" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+    
+<!--    <ItemGroup>-->
+<!--      <Folder Include="Resources\Textures\" />-->
+<!--    </ItemGroup>-->
 
 </Project>
