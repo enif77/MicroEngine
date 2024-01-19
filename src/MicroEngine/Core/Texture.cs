@@ -6,7 +6,7 @@ using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
 
 // A helper class, much like Shader, meant to simplify loading textures.
-public class Texture
+public class Texture : ITexture
 {
     public readonly int Handle;
 
