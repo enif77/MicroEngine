@@ -1,3 +1,5 @@
+/* Copyright (C) Premysl Fara and Contributors */
+
 namespace MicroEngine.Shaders;
 
 public class NullShader : IShader

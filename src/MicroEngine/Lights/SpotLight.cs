@@ -1,3 +1,5 @@
+/* Copyright (C) Premysl Fara and Contributors */
+
 namespace MicroEngine.Lights;
 
 using OpenTK.Mathematics;
