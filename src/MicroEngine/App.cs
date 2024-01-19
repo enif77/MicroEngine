@@ -1,8 +1,8 @@
 ﻿namespace MicroEngine;
 
-class Program
+public static class App
 {
-    static void Main(string[] args)
+    public static void Run()
     {
         Console.WriteLine("Hello, World!");
     }
