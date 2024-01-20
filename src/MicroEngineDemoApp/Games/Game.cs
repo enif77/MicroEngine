@@ -1,9 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngineDemoApp;
-
-using OpenTK.Mathematics;
-using OpenTK.Windowing.GraphicsLibraryFramework;
+namespace MicroEngineDemoApp.Games;
 
 using MicroEngine;
 using MicroEngine.Core;
@@ -12,6 +9,8 @@ using MicroEngine.Lights;
 using MicroEngine.Materials;
 using MicroEngine.SceneObjects;
 using MicroEngine.Shaders;
+using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
 
 public class Game : IGame
 {

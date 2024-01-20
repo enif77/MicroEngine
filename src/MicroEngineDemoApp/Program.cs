@@ -10,6 +10,8 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
+using MicroEngineDemoApp.Games;
+
 internal static class Program
 {
     /// <summary>
