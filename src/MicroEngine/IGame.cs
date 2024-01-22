@@ -26,13 +26,7 @@ public interface IGame
     /// Renders the current game state.
     /// </summary>
     void Render();
-
-
-    /// <summary>
-    /// Updates the camera field of view.
-    /// </summary>
-    /// <param name="fovChange">How much is the camera FOV changed. Negative values makes the camera FOV more narrow, positive more wide.</param>
-    void UpdateCameraFov(float fovChange);
+    
 
     /// <summary>
     /// Sets the camera aspect ratio.

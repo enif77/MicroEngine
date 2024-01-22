@@ -42,8 +42,8 @@ internal static class Program
                    GameWindowSettings.Default,
                    nativeWindowSettings,
                    //new Game()
-                   //new RotatingCubeDemo()
-                   new MinimalRotatingCubeDemo()
+                   new RotatingCubeDemo()
+                   //new MinimalRotatingCubeDemo()
                    ))
         {
             gameWindow.Run();

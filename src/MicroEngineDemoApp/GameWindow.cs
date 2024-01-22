@@ -99,7 +99,7 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
     {
         base.OnMouseWheel(e);
 
-        _game.UpdateCameraFov(-e.OffsetY);
+        InputManager.Instance.OnMouseWheel(e);
     }
 
     

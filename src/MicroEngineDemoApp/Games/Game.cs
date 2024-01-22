@@ -86,6 +86,8 @@ public class Game : IGame
         
         _scene = scene;
         
+        InputManager.Instance.MouseWheel += e => _scene.Camera.Fov -= e.OffsetY;
+        
         return true;
     }
 
@@ -170,15 +172,15 @@ public class Game : IGame
     }
 
     
-    public void UpdateCameraFov(float fovChange)
-    {
-        if (_scene == null)
-        {
-            throw new InvalidOperationException("The scene is not initialized.");
-        }
-        
-        _scene.Camera.Fov += fovChange;
-    }
+    // public void UpdateCameraFov(float fovChange)
+    // {
+    //     if (_scene == null)
+    //     {
+    //         throw new InvalidOperationException("The scene is not initialized.");
+    //     }
+    //     
+    //     _scene.Camera.Fov += fovChange;
+    // }
 
     public void SetCameraAspectRatio(float aspectRatio)
     {

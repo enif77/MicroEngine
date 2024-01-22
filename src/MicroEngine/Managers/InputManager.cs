@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using OpenTK.Windowing.Common;
+
 namespace MicroEngine.Managers;
 
 using OpenTK.Windowing.GraphicsLibraryFramework;
@@ -59,6 +61,9 @@ public class InputManager : IInputManager
     public MouseState MouseState => _mouseState ?? throw MouseStateNotInitializedException;
     
     /// <inheritdoc/>
+    public event Action<MouseWheelEventArgs>? MouseWheel;
+    
+    /// <inheritdoc/>
     public bool IsMouseButtonPressed(MouseButton mouseButton)
     {
         return _mouseState?.IsButtonDown(mouseButton) ?? throw MouseStateNotInitializedException;
@@ -68,6 +73,12 @@ public class InputManager : IInputManager
     public void InitializeMouse(MouseState mouseState)
     {
         _mouseState = mouseState ?? throw new ArgumentNullException(nameof(mouseState));
+    }
+    
+    /// <inheritdoc/>
+    public void OnMouseWheel(MouseWheelEventArgs e)
+    {
+        MouseWheel?.Invoke(e);
     }
     
     
