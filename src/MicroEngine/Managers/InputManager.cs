@@ -1,9 +1,8 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using OpenTK.Windowing.Common;
-
 namespace MicroEngine.Managers;
 
+using OpenTK.Windowing.Common;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 /// <summary>
