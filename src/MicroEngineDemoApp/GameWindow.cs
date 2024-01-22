@@ -138,10 +138,10 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
 
         // Potentially, you may want to throw from the function for certain severity
         // messages.
-        if (type == DebugType.DebugTypeError)
-        {
-            throw new Exception(message);
-        }
+        // if (type == DebugType.DebugTypeError)
+        // {
+        //     throw new Exception(message);
+        // }
     }
     
     #endif
