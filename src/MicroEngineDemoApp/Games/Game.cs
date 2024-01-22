@@ -2,15 +2,17 @@
 
 namespace MicroEngineDemoApp.Games;
 
+using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+
 using MicroEngine;
 using MicroEngine.Core;
 using MicroEngine.Extensions;
 using MicroEngine.Lights;
+using MicroEngine.Managers;
 using MicroEngine.Materials;
 using MicroEngine.SceneObjects;
 using MicroEngine.Shaders;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 
 public class Game : IGame
 {
@@ -91,18 +93,19 @@ public class Game : IGame
     private bool _firstMove = true;
     private Vector2 _lastPos;
     
-    public bool Update(float deltaTime, KeyboardState keyboardState, MouseState mouseState)
+    public bool Update(float deltaTime)
     {
         if (_scene == null)
         {
             throw new InvalidOperationException("The scene is not initialized.");
         }
-     
+        
+        var keyboardState = InputManager.Instance.KeyboardState;
+        
         if (keyboardState.IsKeyDown(Keys.Escape))
         {
             return false;
         }
-        
         
         const float cameraSpeed = 1.5f;
         const float sensitivity = 0.2f;
@@ -131,19 +134,19 @@ public class Game : IGame
         {
             _scene.Camera.Position -= _scene.Camera.Up * cameraSpeed * deltaTime; // Down
         }
-
-        var mouse = mouseState;
-
+        
+        var mouseState = InputManager.Instance.MouseState;
+        
         if (_firstMove)
         {
-            _lastPos = new Vector2(mouse.X, mouse.Y);
+            _lastPos = new Vector2(mouseState.X, mouseState.Y);
             _firstMove = false;
         }
         else
         {
-            var deltaX = mouse.X - _lastPos.X;
-            var deltaY = mouse.Y - _lastPos.Y;
-            _lastPos = new Vector2(mouse.X, mouse.Y);
+            var deltaX = mouseState.X - _lastPos.X;
+            var deltaY = mouseState.Y - _lastPos.Y;
+            _lastPos = new Vector2(mouseState.X, mouseState.Y);
 
             _scene.Camera.Yaw += deltaX * sensitivity;
             _scene.Camera.Pitch -= deltaY * sensitivity;

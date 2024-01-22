@@ -2,15 +2,17 @@
 
 namespace MicroEngineDemoApp.Games;
 
+using OpenTK.Mathematics;
+using OpenTK.Windowing.GraphicsLibraryFramework;
+
 using MicroEngine;
 using MicroEngine.Core;
 using MicroEngine.Extensions;
 using MicroEngine.Lights;
+using MicroEngine.Managers;
 using MicroEngine.Materials;
 using MicroEngine.SceneObjects;
 using MicroEngine.Shaders;
-using OpenTK.Mathematics;
-using OpenTK.Windowing.GraphicsLibraryFramework;
 
 public class RotatingCubeDemo : IGame
 {
@@ -51,8 +53,11 @@ public class RotatingCubeDemo : IGame
     private float _angleX = 0.0f;
     private float _angleY = 0.0f;
     
-    public bool Update(float deltaTime, KeyboardState keyboardState, MouseState mouseState)
+    public bool Update(float deltaTime)
     {
+        var keyboardState = InputManager.Instance.KeyboardState;
+        var mouseState = InputManager.Instance.MouseState;
+        
         if (_scene == null)
         {
             throw new InvalidOperationException("The scene is not initialized.");
@@ -66,8 +71,6 @@ public class RotatingCubeDemo : IGame
         
         const float cameraSpeed = 1.5f;
         const float sensitivity = 0.2f;
-
-        
         
         if (keyboardState.IsKeyDown(Keys.W))
         {

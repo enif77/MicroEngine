@@ -2,8 +2,6 @@
 
 namespace MicroEngine;
 
-using OpenTK.Windowing.GraphicsLibraryFramework;
-
 /// <summary>
 /// Defines a game.
 /// </summary>
@@ -21,10 +19,8 @@ public interface IGame
     /// Updates the game state.
     /// </summary>
     /// <param name="deltaTime">A delta time in seconds.</param>
-    /// <param name="keyboardState">An actual keyboard state.</param>
-    /// <param name="mouseState">An actual mouse state.</param>
-    /// <returns></returns>
-    bool Update(float deltaTime, KeyboardState keyboardState, MouseState mouseState);
+    /// <returns>true if a next Update() call is requested.</returns>
+    bool Update(float deltaTime);
 
     /// <summary>
     /// Renders the current game state.

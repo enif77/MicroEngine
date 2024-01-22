@@ -9,6 +9,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
 using MicroEngine;
+using MicroEngine.Managers;
 
 public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
 {
@@ -29,6 +30,9 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
     protected override void OnLoad()
     {
         base.OnLoad();
+        
+        InputManager.Instance.InitializeKeyboard(KeyboardState);
+        InputManager.Instance.InitializeMouse(MouseState);
         
         if (_game.Initialize(ClientSize.X, ClientSize.Y) == false)
         {
@@ -84,7 +88,7 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
             return;
         }
         
-        if (_game.Update((float)e.Time, KeyboardState, MouseState) == false)
+        if (_game.Update((float)e.Time) == false)
         {
             Close();
         }

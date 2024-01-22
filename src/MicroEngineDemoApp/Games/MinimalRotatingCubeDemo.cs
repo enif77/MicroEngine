@@ -8,6 +8,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using MicroEngine;
 using MicroEngine.Core;
 using MicroEngine.Extensions;
+using MicroEngine.Managers;
 using MicroEngine.Materials;
 using MicroEngine.SceneObjects;
 using MicroEngine.Shaders;
@@ -41,8 +42,10 @@ public class MinimalRotatingCubeDemo : IGame
     private float _angleY = 0.0f;
     private float _angleZ = 0.0f;
     
-    public bool Update(float deltaTime, KeyboardState keyboardState, MouseState mouseState)
+    public bool Update(float deltaTime)
     {
+        var keyboardState = InputManager.Instance.KeyboardState;
+        
         if (_scene == null)
         {
             throw new InvalidOperationException("The scene is not initialized.");
