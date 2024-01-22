@@ -23,12 +23,14 @@ internal static class Program
     public static void Main(string[] args)
     {
         Configure();
+
+        // An example of how to get the primary monitor.
+        //var primaryMonitor = Monitors.GetPrimaryMonitor();
         
         var nativeWindowSettings = new NativeWindowSettings()
         {
             ClientSize = new Vector2i(Settings.WindowWidth, Settings.WindowHeight),
-            //ClientSize = new Vector2i(1280, 800),
-            //ClientSize = new Vector2i(3440, 1440),
+            //ClientSize = new Vector2i(primaryMonitor.HorizontalResolution, primaryMonitor.VerticalResolution),
             
             Title = Defaults.AppVersionInfo,
             
