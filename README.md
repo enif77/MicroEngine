@@ -13,11 +13,13 @@ A miniature game engine written in C#, using OpenTk.
 - [x] Cameras.
 - [x] Skybox. 
 - [ ] Shadows.
-- [ ] Post-processing.
 - [ ] Physics.
 - [ ] Audio.
 - [ ] Scripting.
-- [ ] Editor.
-- [ ] UI.
-- [ ] Networking.
-- [ ] Multi-threading.
+
+## Todo
+
+- Replace IGame.SetCameraAspectRatio().
+- Resources manager.
+- Logging using ILogger.
+- Write documentation. :-)
