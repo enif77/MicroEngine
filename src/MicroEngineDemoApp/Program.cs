@@ -46,6 +46,9 @@ internal static class Program
                    //new MinimalRotatingCubeDemo()
                    ))
         {
+            // An example of how to set the update frequency.
+            gameWindow.UpdateFrequency = 60.0;
+            
             gameWindow.Run();
         }
         
