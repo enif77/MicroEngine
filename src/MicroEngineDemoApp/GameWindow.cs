@@ -30,7 +30,7 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
     {
         base.OnLoad();
         
-        if (_game.Initialize(Size.X, Size.Y) == false)
+        if (_game.Initialize(ClientSize.X, ClientSize.Y) == false)
         {
             Close();
         }
@@ -103,8 +103,8 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
     {
         base.OnResize(e);
 
-        GL.Viewport(0, 0, Size.X, Size.Y);
-        _game.SetCameraAspectRatio(Size.X / (float)Size.Y);
+        GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+        _game.SetCameraAspectRatio(ClientSize.X / (float)ClientSize.Y);
     }
     
     
