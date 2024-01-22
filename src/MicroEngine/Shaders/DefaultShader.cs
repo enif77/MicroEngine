@@ -39,7 +39,6 @@ public class DefaultShader : IShader
         
         _shader.SetInt("material.diffuse", 0);
         _shader.SetInt("material.specular", 1);
-        _shader.SetVector3("material.specular", material.Specular);
         _shader.SetFloat("material.shininess", material.Shininess);
         
         _shader.SetMatrix4("view", camera.GetViewMatrix());
