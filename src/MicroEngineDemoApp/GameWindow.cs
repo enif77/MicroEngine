@@ -52,8 +52,8 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
 
         #endif
         
-        GL.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        GL.Enable(EnableCap.DepthTest);
+        Renderer.SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        Renderer.EnableDepthTest();
         
         CursorState = CursorState.Grabbed;
     }
@@ -67,11 +67,10 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
         // FramebufferSize returns correct values, only Cocoa visual render size is halved.
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _viewportSizeScaleFactor > 1)
         {
-            var cs = ClientSize;
-            GL.Viewport(0, 0, cs.X * _viewportSizeScaleFactor, cs.Y * _viewportSizeScaleFactor);
+            Renderer.SetViewport(0, 0, ClientSize.X * _viewportSizeScaleFactor, ClientSize.Y * _viewportSizeScaleFactor);
         }
         
-        GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+        Renderer.ClearScreen();
         
         _game.Render();
 
@@ -106,8 +105,8 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
     protected override void OnResize(ResizeEventArgs e)
     {
         base.OnResize(e);
-
-        GL.Viewport(0, 0, ClientSize.X, ClientSize.Y);
+        
+        Renderer.SetViewport(0, 0, ClientSize.X, ClientSize.Y);
         _game.SetCameraAspectRatio(ClientSize.X / (float)ClientSize.Y);
     }
     
