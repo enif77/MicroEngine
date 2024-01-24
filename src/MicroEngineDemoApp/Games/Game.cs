@@ -79,7 +79,8 @@ public class Game : IGame
         
         #region sub-cubes
        
-        CreateSubCubes(_cubes[1]);
+        //CreateSubCubes(_cubes[1]);
+        CreateSubCubes2(_cubes[1]);
         
         #endregion
         
@@ -211,7 +212,7 @@ public class Game : IGame
                 Texture.LoadFromFile("Resources/Textures/SKYBOX.jpg"),
                 new SkyboxShader()));
         
-        skybox.GenerateVertexObjectBuffer();
+        skybox.GenerateVertexBufferObject();
         skybox.GenerateVertexArrayObjectForPosTexVbo();
         
         return skybox;
@@ -299,7 +300,7 @@ public class Game : IGame
             Scale = 0.5f
         };
         
-        subCube.GenerateVertexObjectBuffer();
+        subCube.GenerateVertexBufferObject();
         subCube.GenerateVertexArrayObjectForPosNormTexVbo();
             
         _cubes.Add(subCube);
@@ -320,13 +321,59 @@ public class Game : IGame
         subCube2.SetRotationX(MathHelper.DegreesToRadians(45));
         subCube2.SetRotationZ(MathHelper.DegreesToRadians(45));
         
-        subCube2.GenerateVertexObjectBuffer();
+        subCube2.GenerateVertexBufferObject();
         subCube2.GenerateVertexArrayObjectForPosNormTexVbo();
             
         _cubes.Add(subCube2);
         
         subCube2.Parent = _cubes[1];
         _cubes[1].AddChild(subCube2);
+    }
+    
+    
+    private void CreateSubCubes2(ISceneObject parentCube)
+    {
+        var shader = new LampShader();
+        
+        var subCube = new SimpleCube()
+        {
+            Material = new SimpleColorMaterial(
+                new Vector3(1.0f, 1.0f, 0.0f),
+                shader),
+            Position = new Vector3(2, 0, 0),
+            Scale = 0.5f
+        };
+        
+        subCube.GenerateVertexBufferObject();
+        subCube.GenerateElementBufferObject();
+        subCube.GenerateVertexArrayObjectForPosVbo();
+            
+        //_cubes.Add(subCube);
+        
+        subCube.Parent = parentCube;
+        parentCube.AddChild(subCube);
+        
+        
+        var subCube2 = new SimpleCube()
+        {
+            Material = new SimpleColorMaterial(
+                new Vector3(1.0f, 0.0f, 1.0f),
+                shader),
+            Position = new Vector3(-2, 0, 0),
+            Scale = 0.5f
+        };
+        
+        subCube2.SetRotationX(MathHelper.DegreesToRadians(45));
+        subCube2.SetRotationZ(MathHelper.DegreesToRadians(45));
+        
+        subCube2.GenerateVertexBufferObject();
+        subCube2.GenerateElementBufferObject();
+        subCube2.GenerateVertexArrayObjectForPosVbo();
+            
+        //_cubes.Add(subCube2);
+        
+        subCube2.Parent = parentCube;
+        parentCube.AddChild(subCube2);
     }
     
     
@@ -341,7 +388,7 @@ public class Game : IGame
             Rotation = new Vector3(1.0f * angle, 0.3f * angle, 0.5f * angle)
         };
         
-        cube.GenerateVertexObjectBuffer();
+        cube.GenerateVertexBufferObject();
         cube.GenerateVertexArrayObjectForPosNormTexVbo();
         
         _cubes.Add(cube);
@@ -359,7 +406,7 @@ public class Game : IGame
             Scale = 0.2f
         };
         
-        lamp.GenerateVertexObjectBuffer();
+        lamp.GenerateVertexBufferObject();
         lamp.GenerateVertexArrayObjectForPosNormTexVbo();
             
         _cubes.Add(lamp);

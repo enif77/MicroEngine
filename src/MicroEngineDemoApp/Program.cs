@@ -43,8 +43,8 @@ internal static class Program
         using (var gameWindow = new GameWindow(
                    GameWindowSettings.Default,
                    nativeWindowSettings,
-                   //new Game()
-                   new RotatingCubeDemo()
+                   new Game()
+                   //new RotatingCubeDemo()
                    //new MinimalRotatingCubeDemo()
                    ))
         {

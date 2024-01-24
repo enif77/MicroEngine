@@ -81,11 +81,53 @@ public static class SceneObjectExtensions
     /// Generates a VBO for a scene object.
     /// </summary>
     /// <param name="sceneObject">A scene object instance.</param>
-    public static void GenerateVertexObjectBuffer(this ISceneObject sceneObject)
+    public static void GenerateVertexBufferObject(this ISceneObject sceneObject)
     {
         sceneObject.VertexBufferObject = GL.GenBuffer();
         GL.BindBuffer(BufferTarget.ArrayBuffer, sceneObject.VertexBufferObject);
         GL.BufferData(BufferTarget.ArrayBuffer, sceneObject.Vertices.Length * sizeof(float), sceneObject.Vertices, BufferUsageHint.StaticDraw);
+    }
+    
+    /// <summary>
+    /// Generates a EBO for a scene object.
+    /// </summary>
+    /// <param name="sceneObject">A scene object instance.</param>
+    public static void GenerateElementBufferObject(this ISceneObject sceneObject)
+    {
+        sceneObject.ElementBufferObject = GL.GenBuffer();
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, sceneObject.ElementBufferObject);
+        GL.BufferData(BufferTarget.ElementArrayBuffer, sceneObject.Indices.Length * sizeof(uint), sceneObject.Indices, BufferUsageHint.StaticDraw);
+    }
+    
+    /// <summary>
+    /// Generates a VAO for a scene object with position VBO with EBO format.
+    /// </summary>
+    /// <param name="sceneObject">A scene object instance.</param>
+    /// <exception cref="InvalidOperationException">When vertex buffer object is not initialized yet.</exception>
+    /// <exception cref="InvalidOperationException">When vertex array object is already initialized.</exception>
+    public static void GenerateVertexArrayObjectForPosVbo(this ISceneObject sceneObject)
+    {
+        if (sceneObject.VertexBufferObject <= 0)
+        {
+            throw new InvalidOperationException("Vertex buffer object is not initialized.");
+        }
+        
+        if (sceneObject.VertexArrayObject > 0)
+        {
+            throw new InvalidOperationException("Vertex array object is already initialized.");
+        }
+        
+        GL.BindBuffer(BufferTarget.ArrayBuffer, sceneObject.VertexBufferObject);
+
+        sceneObject.VertexArrayObject = GL.GenVertexArray();
+        
+        GL.BindVertexArray(sceneObject.VertexArrayObject);
+
+        var shader = sceneObject.Material.Shader;
+        
+        var positionLocation = shader.GetAttributeLocation("aPos");
+        GL.EnableVertexAttribArray(positionLocation);
+        GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
     }
     
     /// <summary>

@@ -77,7 +77,9 @@ public abstract class SceneObjectBase : ISceneObject
     #region Geometry
     
     public float[] Vertices { get; protected set; } = Array.Empty<float>();
+    public uint[] Indices { get; protected set; } = Array.Empty<uint>();
     public int VertexBufferObject { get; set; } = -1;
+    public int ElementBufferObject { get; set; } = -1;
     public int VertexArrayObject { get; set; } = -1;
     
     #endregion

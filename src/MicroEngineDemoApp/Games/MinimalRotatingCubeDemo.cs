@@ -122,7 +122,7 @@ public class MinimalRotatingCubeDemo : IGame
             Position = position
         };
         
-        cube.GenerateVertexObjectBuffer();
+        cube.GenerateVertexBufferObject();
         cube.GenerateVertexArrayObjectForPosNormTexVbo();
         
         _cube = cube;

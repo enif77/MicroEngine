@@ -54,7 +54,9 @@ public interface ISceneObject : IUpdatable, IRenderable
     #region Geometry
     
     float[] Vertices { get; }
+    uint[] Indices { get; }
     int VertexBufferObject { get; set; }
+    int ElementBufferObject { get; set; }
     int VertexArrayObject { get; set; }
     
     #endregion
