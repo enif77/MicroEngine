@@ -4,18 +4,18 @@ namespace MicroEngine.Shaders;
 
 using MicroEngine.Core;
 
-public class LampShader : IShader
+public class SimpleColorShader : IShader
 {
     private readonly Shader _shader;
 
-    public string Name => "lamp";
+    public string Name => "simple-color";
     
     
-    public LampShader()
+    public SimpleColorShader()
     {
         _shader = new Shader(
             File.ReadAllText("Resources/Shaders/shader.vert"),
-            File.ReadAllText("Resources/Shaders/lamp.frag"));
+            File.ReadAllText("Resources/Shaders/simple-color.frag"));
     }
 
     

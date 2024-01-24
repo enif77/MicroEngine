@@ -249,7 +249,7 @@ public class Game : IGame
     
     private void CreateLamps(Scene scene)
     {
-        var lampShader = new LampShader();
+        var lampShader = new SimpleColorShader();
         
         var lampMaterial = new SimpleColorMaterial(
             new Vector3(1.0f, 1.0f, 1.0f),
@@ -333,7 +333,7 @@ public class Game : IGame
     
     private void CreateSubCubes2(ISceneObject parentCube)
     {
-        var shader = new LampShader();
+        var shader = new SimpleColorShader();
         
         var subCube = new SimpleCube()
         {
