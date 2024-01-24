@@ -11,18 +11,10 @@ using MicroEngine.Extensions;
 /// </summary>
 public class SimpleCube : SceneObjectBase
 {
-    /// <summary>
-    /// Indices count = number of triangles * number of vertices per triangle.
-    /// </summary>
-    public int IndicesCount { get; }
-
-    
     public SimpleCube()
     {
         Vertices =
         [
-            // Each side has 2 triangles, each triangle has 3 vertices.
-            
             -0.5f,  0.5f,  0.5f,
              0.5f,  0.5f,  0.5f,
              0.5f, -0.5f,  0.5f,
@@ -36,6 +28,7 @@ public class SimpleCube : SceneObjectBase
 
         Indices =
         [
+            // Each side has 2 triangles, each triangle has 3 vertices.
             0, 3, 2,  2, 1, 0, // Front
             1, 2, 6,  6, 5, 1, // Right
             5, 6, 7,  7, 4, 5, // Back
@@ -43,8 +36,37 @@ public class SimpleCube : SceneObjectBase
             0, 1, 5,  5, 4, 0, // Top
             6, 2, 3,  3, 7, 6  // Bottom
         ];
+    }
+    
+    
+    public void Initialize()
+    {
+        // Vertex array object.
+        VertexArrayObject = GL.GenVertexArray();
+        GL.BindVertexArray(VertexArrayObject);
         
-        IndicesCount = Indices.Length;
+        // Vertex buffer object.
+        this.GenerateVertexBufferObject();
+        // VertexBufferObject = GL.GenBuffer();
+        // GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
+        // GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.StaticDraw);
+        
+        // Element buffer object.
+        this.GenerateElementBufferObject();
+        // ElementBufferObject = GL.GenBuffer();
+        // GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
+        // GL.BufferData(BufferTarget.ElementArrayBuffer, Indices.Length * sizeof(uint), Indices, BufferUsageHint.StaticDraw);
+        
+        // Vertex attributes.
+        var positionLocation = Material.Shader.GetAttributeLocation("aPos");
+        GL.EnableVertexAttribArray(positionLocation);
+        GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+        // GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+        // GL.EnableVertexAttribArray(0);
+        
+        // Unbind.
+        GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        GL.BindVertexArray(0);
     }
     
     
@@ -56,10 +78,8 @@ public class SimpleCube : SceneObjectBase
         
         Material.Shader.Use(_scene, this);
         
-        //GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
         GL.BindVertexArray(VertexArrayObject);
-        GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
-        GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);
+        GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
         
         base.Render();
     }
