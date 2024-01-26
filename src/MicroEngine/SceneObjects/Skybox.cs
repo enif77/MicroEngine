@@ -76,6 +76,25 @@ public class Skybox : SceneObjectBase
         IndicesCount = 36;
     }
     
+    
+    public override void GenerateGeometry()
+    {
+        // Vertex array object.
+        VertexArrayObject = GL.GenVertexArray();
+        GL.BindVertexArray(VertexArrayObject);
+        
+        // Vertex buffer object.
+        this.GenerateVertexBufferObject();
+        
+        // Vertex attributes.
+        this.GenerateVertexAttribPointerForPosition(5);
+        this.GenerateVertexAttribPointerForTextureCoords(5, 3);
+        
+        // Unbind.
+        GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        GL.BindVertexArray(0);
+    }
+    
 
     private Scene? _scene;
 
@@ -93,7 +112,6 @@ public class Skybox : SceneObjectBase
         Material.Shader.Use(_scene, this);
         
         // Bind skybox data.
-        //GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject); // Bound by VAO below.
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
         

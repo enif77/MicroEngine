@@ -212,8 +212,7 @@ public class Game : IGame
                 Texture.LoadFromFile("Resources/Textures/SKYBOX.jpg"),
                 new SkyboxShader()));
         
-        skybox.GenerateVertexBufferObject();
-        skybox.GenerateVertexArrayObjectForPosTexVbo();
+        skybox.GenerateGeometry();
         
         return skybox;
     }
@@ -344,7 +343,7 @@ public class Game : IGame
             Scale = 0.5f
         };
         
-        subCube.Initialize();
+        subCube.GenerateGeometry();
             
         //_cubes.Add(subCube);
         
@@ -361,7 +360,7 @@ public class Game : IGame
             Scale = 0.5f
         };
         
-        subCube2.Initialize();
+        subCube2.GenerateGeometry();
         
         subCube2.SetRotationX(MathHelper.DegreesToRadians(45));
         subCube2.SetRotationZ(MathHelper.DegreesToRadians(45));
@@ -384,8 +383,7 @@ public class Game : IGame
             Rotation = new Vector3(1.0f * angle, 0.3f * angle, 0.5f * angle)
         };
         
-        cube.GenerateVertexBufferObject();
-        cube.GenerateVertexArrayObjectForPosNormTexVbo();
+        cube.GenerateGeometry();
         
         _cubes.Add(cube);
         
@@ -402,8 +400,7 @@ public class Game : IGame
             Scale = 0.2f
         };
         
-        lamp.GenerateVertexBufferObject();
-        lamp.GenerateVertexArrayObjectForPosNormTexVbo();
+        lamp.GenerateGeometry();
             
         _cubes.Add(lamp);
 

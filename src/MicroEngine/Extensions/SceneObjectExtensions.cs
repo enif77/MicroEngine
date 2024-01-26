@@ -100,76 +100,41 @@ public static class SceneObjectExtensions
     }
     
     /// <summary>
-    /// Generates a VAO for a scene object with position-texture VBO format.
+    /// Generates a vertex attribute pointer for a vertex position.
     /// </summary>
     /// <param name="sceneObject">A scene object instance.</param>
-    /// <exception cref="InvalidOperationException">When vertex object buffer is not initialized yet.</exception>
-    /// <exception cref="InvalidOperationException">When vertex array object is already initialized.</exception>
-    public static void GenerateVertexArrayObjectForPosTexVbo(this ISceneObject sceneObject)
+    /// <param name="stride">How many values we have per vertex.</param>
+    /// <param name="offset">How many values to skip to reach the first value defining the vertex position.</param>
+    public static void GenerateVertexAttribPointerForPosition(this ISceneObject sceneObject, int stride, int offset = 0)
     {
-        if (sceneObject.VertexBufferObject <= 0)
-        {
-            throw new InvalidOperationException("Vertex buffer object is not initialized.");
-        }
-        
-        if (sceneObject.VertexArrayObject > 0)
-        {
-            throw new InvalidOperationException("Vertex array object is already initialized.");
-        }
-        
-        GL.BindBuffer(BufferTarget.ArrayBuffer, sceneObject.VertexBufferObject);
-
-        sceneObject.VertexArrayObject = GL.GenVertexArray();
-        
-        GL.BindVertexArray(sceneObject.VertexArrayObject);
-
-        var shader = sceneObject.Material.Shader;
-        
-        var positionLocation = shader.GetAttributeLocation("aPos");
+        var positionLocation = sceneObject.Material.Shader.GetAttributeLocation("aPos");
         GL.EnableVertexAttribArray(positionLocation);
-        GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
-            
-        var texCoordLocation = shader.GetAttributeLocation("aTexCoords");
-        GL.EnableVertexAttribArray(texCoordLocation);
-        GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+        GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, stride * sizeof(float), offset);
     }
     
     /// <summary>
-    /// Generates a VAO for a scene object with position-normal-texture VBO format.
+    /// Generates a vertex attribute pointer for a vertex normal.
     /// </summary>
     /// <param name="sceneObject">A scene object instance.</param>
-    /// <exception cref="InvalidOperationException">When vertex object buffer is not initialized yet.</exception>
-    /// <exception cref="InvalidOperationException">When vertex array object is already initialized.</exception>
-    public static void GenerateVertexArrayObjectForPosNormTexVbo(this ISceneObject sceneObject)
+    /// <param name="stride">How many values we have per vertex.</param>
+    /// <param name="offset">How many values to skip to reach the first value defining the vertex normal.</param>
+    public static void GenerateVertexAttribPointerForNormals(this ISceneObject sceneObject, int stride, int offset = 0)
     {
-        if (sceneObject.VertexBufferObject <= 0)
-        {
-            throw new InvalidOperationException("Vertex buffer object is not initialized.");
-        }
-        
-        if (sceneObject.VertexArrayObject > 0)
-        {
-            throw new InvalidOperationException("Vertex array object is already initialized.");
-        }
-        
-        GL.BindBuffer(BufferTarget.ArrayBuffer, sceneObject.VertexBufferObject);
-
-        sceneObject.VertexArrayObject = GL.GenVertexArray();
-        
-        GL.BindVertexArray(sceneObject.VertexArrayObject);
-
-        var shader = sceneObject.Material.Shader;
-        
-        var positionLocation = shader.GetAttributeLocation("aPos");
-        GL.EnableVertexAttribArray(positionLocation);
-        GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 0);
-
-        var normalLocation = shader.GetAttributeLocation("aNormal");
+        var normalLocation = sceneObject.Material.Shader.GetAttributeLocation("aNormal");
         GL.EnableVertexAttribArray(normalLocation);
-        GL.VertexAttribPointer(normalLocation, 3, VertexAttribPointerType.Float, false, 8 * sizeof(float), 3 * sizeof(float));
-
-        var texCoordLocation = shader.GetAttributeLocation("aTexCoords");
+        GL.VertexAttribPointer(normalLocation, 3, VertexAttribPointerType.Float, false, stride * sizeof(float), offset * sizeof(float));
+    }
+    
+    /// <summary>
+    /// Generates a vertex attribute pointer for a vertex texture position.
+    /// </summary>
+    /// <param name="sceneObject">A scene object instance.</param>
+    /// <param name="stride">How many values we have per vertex.</param>
+    /// <param name="offset">How many values to skip to reach the first value defining the vertex texture position.</param>
+    public static void GenerateVertexAttribPointerForTextureCoords(this ISceneObject sceneObject, int stride, int offset = 0)
+    {
+        var texCoordLocation = sceneObject.Material.Shader.GetAttributeLocation("aTexCoords");
         GL.EnableVertexAttribArray(texCoordLocation);
-        GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, 8 * sizeof(float), 6 * sizeof(float));
+        GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, stride * sizeof(float), offset * sizeof(float));
     }
 }

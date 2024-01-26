@@ -39,7 +39,7 @@ public class SimpleCube : SceneObjectBase
     }
     
     
-    public void Initialize()
+    public override void GenerateGeometry()
     {
         // Vertex array object.
         VertexArrayObject = GL.GenVertexArray();
@@ -47,22 +47,12 @@ public class SimpleCube : SceneObjectBase
         
         // Vertex buffer object.
         this.GenerateVertexBufferObject();
-        // VertexBufferObject = GL.GenBuffer();
-        // GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
-        // GL.BufferData(BufferTarget.ArrayBuffer, Vertices.Length * sizeof(float), Vertices, BufferUsageHint.StaticDraw);
         
         // Element buffer object.
         this.GenerateElementBufferObject();
-        // ElementBufferObject = GL.GenBuffer();
-        // GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
-        // GL.BufferData(BufferTarget.ElementArrayBuffer, Indices.Length * sizeof(uint), Indices, BufferUsageHint.StaticDraw);
         
         // Vertex attributes.
-        var positionLocation = Material.Shader.GetAttributeLocation("aPos");
-        GL.EnableVertexAttribArray(positionLocation);
-        GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-        // GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-        // GL.EnableVertexAttribArray(0);
+        this.GenerateVertexAttribPointerForPosition(3);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

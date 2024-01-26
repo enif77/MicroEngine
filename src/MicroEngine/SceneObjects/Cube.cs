@@ -72,6 +72,26 @@ public class Cube : SceneObjectBase
     }
     
     
+    public override void GenerateGeometry()
+    {
+        // Vertex array object.
+        VertexArrayObject = GL.GenVertexArray();
+        GL.BindVertexArray(VertexArrayObject);
+        
+        // Vertex buffer object.
+        this.GenerateVertexBufferObject();
+        
+        // Vertex attributes.
+        this.GenerateVertexAttribPointerForPosition(8);
+        this.GenerateVertexAttribPointerForNormals(8, 3);
+        this.GenerateVertexAttribPointerForTextureCoords(8, 6);
+        
+        // Unbind.
+        GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+        GL.BindVertexArray(0);
+    }
+    
+    
     private Scene? _scene;
 
     public override void Render()
@@ -80,7 +100,6 @@ public class Cube : SceneObjectBase
         
         Material.Shader.Use(_scene, this);
         
-        //GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
         

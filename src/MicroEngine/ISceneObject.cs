@@ -59,5 +59,11 @@ public interface ISceneObject : IUpdatable, IRenderable
     int ElementBufferObject { get; set; }
     int VertexArrayObject { get; set; }
     
+    
+    /// <summary>
+    /// Generates OpenGL geometry for this scene object.
+    /// </summary>
+    void GenerateGeometry();
+    
     #endregion
 }

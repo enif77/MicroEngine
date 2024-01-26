@@ -185,8 +185,7 @@ public class RotatingCubeDemo : IGame
                 Texture.LoadFromFile("Resources/Textures/SKYBOX.jpg"),
                 new SkyboxShader()));
         
-        skybox.GenerateVertexBufferObject();
-        skybox.GenerateVertexArrayObjectForPosTexVbo();
+        skybox.GenerateGeometry();
         
         return skybox;
     }
@@ -200,8 +199,7 @@ public class RotatingCubeDemo : IGame
             Position = position
         };
         
-        cube.GenerateVertexBufferObject();
-        cube.GenerateVertexArrayObjectForPosNormTexVbo();
+        cube.GenerateGeometry();
         
         _cube = cube;
         
