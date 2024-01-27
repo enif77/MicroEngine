@@ -18,7 +18,9 @@ public class Game : IGame
 {
     private Scene? _scene;
     private readonly List<Cube> _cubes = new();
-    
+
+    public string Name => "game-with-cubes";
+
     public Camera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
     
     

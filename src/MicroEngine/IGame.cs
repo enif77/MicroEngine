@@ -8,6 +8,11 @@ namespace MicroEngine;
 public interface IGame
 {
     /// <summary>
+    /// A name of the game.
+    /// </summary>
+    string Name { get; }
+    
+    /// <summary>
     /// Initializes the game.
     /// </summary>
     /// <param name="width">A width of the game window.</param>

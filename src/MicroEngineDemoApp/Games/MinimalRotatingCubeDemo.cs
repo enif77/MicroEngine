@@ -18,6 +18,8 @@ public class MinimalRotatingCubeDemo : IGame
     private Scene? _scene;
     private Cube? _cube;
     
+    public string Name => "minimal-rotating-cube-demo";
+    
     public Camera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
     
     

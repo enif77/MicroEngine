@@ -17,4 +17,6 @@ public static class Defaults
     public const bool DefaultEnableFullscreen = false;
     
     public const int DefaultMaxLights = 16;
+    
+    public const string DefaultGame = "game";
 }

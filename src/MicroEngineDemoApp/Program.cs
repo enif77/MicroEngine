@@ -1,5 +1,7 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
+using MicroEngine;
+
 namespace MicroEngineDemoApp;
 
 using Microsoft.Extensions.Configuration;
@@ -26,6 +28,13 @@ internal static class Program
 
         // An example of how to get the primary monitor.
         //var primaryMonitor = Monitors.GetPrimaryMonitor();
+
+        var games = new Dictionary<string, IGame>()
+        {
+            { "game-with-cubes", new Game() },
+            { "rotating-cube-demo", new RotatingCubeDemo() },
+            { "minimal-rotating-cube-demo", new MinimalRotatingCubeDemo() },
+        };
         
         var nativeWindowSettings = new NativeWindowSettings()
         {
@@ -43,9 +52,7 @@ internal static class Program
         using (var gameWindow = new GameWindow(
                    GameWindowSettings.Default,
                    nativeWindowSettings,
-                   new Game()
-                   //new RotatingCubeDemo()
-                   //new MinimalRotatingCubeDemo()
+                   games[Settings.Game]
                    ))
         {
             // An example of how to set the update frequency.

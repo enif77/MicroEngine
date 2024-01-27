@@ -38,6 +38,16 @@ public class Settings
     public bool EnableFullscreen { get; init; } = Defaults.DefaultEnableFullscreen;
     
     #endregion
+
+    
+    #region game
+
+    /// <summary>
+    /// A name of a game to run.
+    /// </summary>
+    public string Game { get; init; } = Defaults.DefaultGame;
+    
+    #endregion
     
     /// <summary>
     /// Returns default settings.
