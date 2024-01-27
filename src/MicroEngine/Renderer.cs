@@ -48,12 +48,13 @@ public static class Renderer
     }
     
     /// <summary>
-    /// Enables the face culling. Sets the cull face mode to back.
+    /// Enables the face culling. Sets the cull face mode to back and front face direction to counter-clockwise.
     /// </summary>
     public static void EnableFaceCulling()
     {
         GL.Enable(EnableCap.CullFace);
         GL.CullFace(CullFaceMode.Back);
+        GL.FrontFace(FrontFaceDirection.Ccw);
     }
     
     /// <summary>
