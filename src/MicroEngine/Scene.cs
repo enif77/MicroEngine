@@ -69,7 +69,10 @@ public class Scene : SceneObjectBase
 
     public override void Render()
     {
-        Skybox?.Render();
         base.Render();
+        
+        // We render the skybox as the last thing.
+        // See: https://learnopengl.com/Advanced-OpenGL/Cubemaps
+        Skybox?.Render();
     }
 }

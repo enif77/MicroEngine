@@ -105,19 +105,17 @@ public class Skybox : SceneObjectBase
         // Skybox should be rendered at the camera position.
         ModelMatrix = Matrix4.CreateTranslation(_scene.Camera.Position);
         
-        // Skybox should be rendered without depth test.
-        Renderer.DisableDepthTest();
-        
         // Sets shader and its properties.
         Material.Shader.Use(_scene, this);
         
         // Bind skybox data.
         GL.BindVertexArray(VertexArrayObject);
+        
+        // Render.
+        GL.DepthFunc(DepthFunction.Lequal);
         GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
-        
-        // Restore depth test.
-        Renderer.EnableDepthTest();
-        
+        GL.DepthFunc(DepthFunction.Less);
+       
         base.Render();
     }
 }
