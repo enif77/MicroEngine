@@ -46,6 +46,23 @@ public static class Renderer
     {
         GL.Disable(EnableCap.DepthTest);
     }
+    
+    /// <summary>
+    /// Enables the face culling. Sets the cull face mode to front.
+    /// </summary>
+    public static void EnableFaceCulling()
+    {
+        GL.Enable(EnableCap.CullFace);
+        GL.CullFace(CullFaceMode.Front);
+    }
+    
+    /// <summary>
+    /// Disables the face culling.
+    /// </summary>
+    public static void DisableFaceCulling()
+    {
+        GL.Disable(EnableCap.CullFace);
+    }
 
     /// <summary>
     /// Clears the color buffer and the depth buffer of the screen.
