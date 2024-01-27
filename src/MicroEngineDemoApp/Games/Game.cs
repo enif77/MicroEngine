@@ -91,6 +91,8 @@ public class Game : IGame
         
         InputManager.Instance.MouseWheel += e => _scene.Camera.Fov -= e.OffsetY;
         
+        Renderer.EnableFaceCulling();
+        
         return true;
     }
 

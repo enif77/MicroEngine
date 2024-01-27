@@ -45,6 +45,8 @@ public class RotatingCubeDemo : IGame
        
         _scene = scene;
         
+        Renderer.EnableFaceCulling();
+        
         return true;
     }
 
