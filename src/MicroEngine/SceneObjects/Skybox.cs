@@ -106,7 +106,7 @@ public class Skybox : SceneObjectBase
         ModelMatrix = Matrix4.CreateTranslation(_scene.Camera.Position);
         
         // Skybox should be rendered without depth test.
-        GL.Disable(EnableCap.DepthTest);
+        Renderer.DisableDepthTest();
         
         // Sets shader and its properties.
         Material.Shader.Use(_scene, this);
@@ -116,7 +116,7 @@ public class Skybox : SceneObjectBase
         GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
         
         // Restore depth test.
-        GL.Enable(EnableCap.DepthTest);
+        Renderer.EnableDepthTest();
         
         base.Render();
     }
