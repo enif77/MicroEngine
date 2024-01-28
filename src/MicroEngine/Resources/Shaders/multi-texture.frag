@@ -15,15 +15,5 @@ out vec4 FragColor;
 
 void main()
 {
-    for (int i = 0; i < NR_SAMPLERS; i++)
-    {
-        if (TexId == i)
-        {
-            FragColor = texture(samplers[i].tex, TexCoords);
-
-            break;
-        }
-    }
-    
-    //FragColor = texture(samplers[0].tex, TexCoords);
+    FragColor = texture(samplers[TexId].tex, TexCoords);
 }
