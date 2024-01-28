@@ -118,7 +118,7 @@ public sealed class Shader : IDisposable
         if (code != (int)All.True)
         {
             // We can use `GL.GetProgramInfoLog(program)` to get information about the error.
-            throw new Exception($"Error occurred whilst linking Program({program})");
+            throw new Exception($"Error occurred whilst linking Program({program}), error({GL.GetProgramInfoLog(program)})");
         }
     }
     
