@@ -173,15 +173,18 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
     
     private ISceneObject CreateSkybox()
     {
+        var skyboxName = "TestSkybox";
+        //var skyboxName = "Pond";
+        //var skyboxName = "Rocky";
         var material = new MultiTextureMaterial(
             new ITexture[]
             {
-                Texture.LoadFromFile("Resources/Textures/Skyboxes/TestSkybox/nx.jpg"),
-                Texture.LoadFromFile("Resources/Textures/Skyboxes/TestSkybox/ny.jpg"),
-                Texture.LoadFromFile("Resources/Textures/Skyboxes/TestSkybox/nz.jpg"),
-                Texture.LoadFromFile("Resources/Textures/Skyboxes/TestSkybox/px.jpg"),
-                Texture.LoadFromFile("Resources/Textures/Skyboxes/TestSkybox/py.jpg"),
-                Texture.LoadFromFile("Resources/Textures/Skyboxes/TestSkybox/pz.jpg")
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/pz.jpg"),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/px.jpg"),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/nz.jpg"),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/nx.jpg"),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/py.jpg"),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/ny.jpg")
             },
             new MultiTextureShader());
         
