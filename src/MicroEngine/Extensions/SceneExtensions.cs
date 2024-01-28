@@ -2,8 +2,6 @@
 
 namespace MicroEngine.Extensions;
 
-using MicroEngine.SceneObjects;
-
 /// <summary>
 /// Scene related extensions.
 /// </summary>
@@ -15,7 +13,7 @@ public static class SceneExtensions
     /// <param name="scene">A scene.</param>
     /// <param name="skybox">A skybox to be added to a scene.</param>
     /// <exception cref="InvalidOperationException">Thrown, when such child already exists in game object children.</exception>
-    public static void AddSkybox(this Scene scene, Skybox skybox)
+    public static void AddSkybox(this Scene scene, ISceneObject skybox)
     {
         if (skybox == null) throw new ArgumentNullException(nameof(skybox));
         

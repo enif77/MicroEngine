@@ -30,7 +30,7 @@ public class Scene : SceneObjectBase
     /// <summary>
     /// An optional skybox used by this scene.
     /// </summary>
-    public Skybox? Skybox { get; set; }
+    public ISceneObject? Skybox { get; set; }
     
     /// <summary>
     /// The maximum number of lights supported by this scene.
