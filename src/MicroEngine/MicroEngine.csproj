@@ -15,10 +15,12 @@
     <ItemGroup>
         <None Include="Resources/**" CopyToOutputDirectory="PreserveNewest" />
         <None Include="Shaders/**" CopyToOutputDirectory="PreserveNewest" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Folder Include="Resources\Shaders\" />
+        <None Update="Resources\Shaders\multi-texture.frag">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Resources\Shaders\multi-texture.vert">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
 </Project>

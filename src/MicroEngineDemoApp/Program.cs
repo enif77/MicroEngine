@@ -34,6 +34,7 @@ internal static class Program
             { "game-with-cubes", new Game() },
             { "rotating-cube-demo", new RotatingCubeDemo() },
             { "minimal-rotating-cube-demo", new MinimalRotatingCubeDemo() },
+            { "rotating-cube-demo-multitex-skybox", new RotatingCubeWithMultiTextureSkyboxDemo() },
         };
         
         var nativeWindowSettings = new NativeWindowSettings()

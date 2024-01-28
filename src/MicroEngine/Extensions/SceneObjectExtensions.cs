@@ -126,6 +126,19 @@ public static class SceneObjectExtensions
     }
     
     /// <summary>
+    /// Generates a vertex attribute pointer for a vertex texture ID.
+    /// </summary>
+    /// <param name="sceneObject">A scene object instance.</param>
+    /// <param name="stride">How many values we have per vertex.</param>
+    /// <param name="offset">How many values to skip to reach the first value defining the vertex texture position.</param>
+    public static void GenerateVertexAttribPointerForTextureId(this ISceneObject sceneObject, int stride, int offset = 0)
+    {
+        var texId = sceneObject.Material.Shader.GetAttributeLocation("aTexId");
+        GL.EnableVertexAttribArray(texId);
+        GL.VertexAttribPointer(texId, 1, VertexAttribPointerType.Float, false, stride * sizeof(float), offset * sizeof(float));
+    }
+    
+    /// <summary>
     /// Generates a vertex attribute pointer for a vertex texture position.
     /// </summary>
     /// <param name="sceneObject">A scene object instance.</param>
