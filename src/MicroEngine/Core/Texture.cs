@@ -74,8 +74,8 @@ public class Texture : ITexture
         return new Texture(handle);
     }
 
-    
-    public Texture(int glHandle)
+
+    private Texture(int glHandle)
     {
         Handle = glHandle;
     }
