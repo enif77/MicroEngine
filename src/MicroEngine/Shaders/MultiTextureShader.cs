@@ -45,7 +45,7 @@ public class MultiTextureShader : IShader
             for (var i = 0; i < m.Textures.Length; i++)
             {
                 m.Textures[i].Use(TextureUnit.Texture0 + i);
-                _shader.SetInt("samplers[" + i + "].tex", i);
+                _shader.SetInt(SamplersUniformNames[i], i);
             }
         }
         
@@ -53,4 +53,25 @@ public class MultiTextureShader : IShader
         _shader.SetMatrix4("projection", camera.GetProjectionMatrix());
         _shader.SetMatrix4("model", sceneObject.ModelMatrix);
     }
+    
+    
+    private static readonly string[] SamplersUniformNames =
+    [
+        "samplers[0].tex",
+        "samplers[1].tex",
+        "samplers[2].tex",
+        "samplers[3].tex",
+        "samplers[4].tex",
+        "samplers[5].tex",
+        "samplers[6].tex",
+        "samplers[7].tex",
+        "samplers[8].tex",
+        "samplers[9].tex",
+        "samplers[10].tex",
+        "samplers[11].tex",
+        "samplers[12].tex",
+        "samplers[13].tex",
+        "samplers[14].tex",
+        "samplers[15].tex"
+    ]; 
 }
