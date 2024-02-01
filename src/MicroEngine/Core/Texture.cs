@@ -13,10 +13,10 @@ public class Texture : ITexture
     public readonly int Handle;
 
     
-    public static Texture LoadFromFile(string path)
+    public static Texture LoadFromFile(string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
     {
         // Generate handle
-        int handle = GL.GenTexture();
+        var handle = GL.GenTexture();
 
         // Bind the handle
         GL.ActiveTexture(TextureUnit.Texture0);
@@ -31,7 +31,7 @@ public class Texture : ITexture
         // Here we open a stream to the file and pass it to StbImageSharp to load.
         using (Stream stream = File.OpenRead(path))
         {
-            ImageResult image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
+            var image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
 
             // Now that our pixels are prepared, it's time to generate a texture. We do this with GL.TexImage2D.
             // Arguments:
@@ -59,10 +59,8 @@ public class Texture : ITexture
 
         // Now, set the wrapping mode. S is for the X axis, and T is for the Y axis.
         // We set this to Repeat so that textures will repeat when wrapped. Not demonstrated here since the texture coordinates exactly match
-        // GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-        // GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)wrapMode);
+        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)wrapMode);
 
         // Next, generate mipmaps.
         // Mipmaps are smaller copies of the texture, scaled down. Each mipmap level is half the size of the previous one

@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using OpenTK.Graphics.OpenGL4;
+
 namespace MicroEngineDemoApp.Games;
 
 using OpenTK.Mathematics;
@@ -173,19 +175,18 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
     
     private ISceneObject CreateSkybox()
     {
-        var skyboxName = "TestSkybox";
+        //var skyboxName = "TestSkybox";
         //var skyboxName = "Pond";
-        //var skyboxName = "Rocky";
+        var skyboxName = "Rocky";
         var material = new MultiTextureMaterial(
-            new ITexture[]
-            {
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/pz.jpg"),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/px.jpg"),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/nz.jpg"),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/nx.jpg"),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/py.jpg"),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/ny.jpg")
-            },
+            [
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/pz.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/px.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/nz.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/nx.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/py.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/ny.jpg", TextureWrapMode.ClampToEdge)
+            ],
             new MultiTextureShader());
         
         var skybox = new MultiTextureSkybox(material);
