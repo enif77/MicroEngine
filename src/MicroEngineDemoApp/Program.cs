@@ -35,6 +35,7 @@ internal static class Program
             { "rotating-cube-demo", new RotatingCubeDemo() },
             { "minimal-rotating-cube-demo", new MinimalRotatingCubeDemo() },
             { "rotating-cube-demo-multitex-skybox", new RotatingCubeWithMultiTextureSkyboxDemo() },
+            { "many-simple-cubes-demo", new ManySimpleCubesDemo() }
         };
         
         var nativeWindowSettings = new NativeWindowSettings()
