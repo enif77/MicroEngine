@@ -1,9 +1,8 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using OpenTK.Graphics.OpenGL4;
-
 namespace MicroEngineDemoApp.Games;
 
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -189,7 +188,7 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
             ],
             new MultiTextureShader());
         
-        var skybox = new MultiTextureSkybox(material);
+        var skybox = new MultiTextureSkyboxWithIndices(material);
         
         skybox.GenerateGeometry();
         
