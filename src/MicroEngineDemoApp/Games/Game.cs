@@ -2,6 +2,7 @@
 
 namespace MicroEngineDemoApp.Games;
 
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -209,12 +210,18 @@ public class Game : IGame
     }
     
     
-    private Skybox CreateSkybox()
+    private ISceneObject CreateSkybox()
     {
-        var skybox = new Skybox(
-            new SimpleTextureMaterial(
-                Texture.LoadFromFile("Resources/Textures/SKYBOX.jpg"),
-                new SkyboxShader()));
+        var skybox = new MultiTextureSkyboxWithIndices(new MultiTextureMaterial(
+            [
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/pz.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/px.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nz.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nx.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
+            ],
+            new MultiTextureShader()));
         
         skybox.GenerateGeometry();
         
@@ -289,50 +296,6 @@ public class Game : IGame
         }
     }
 
-
-    // private void CreateSubCubes(ISceneObject parentCube)
-    // {
-    //     var shader = new LampShader();
-    //     
-    //     var subCube = new Cube()
-    //     {
-    //         Material = new SimpleColorMaterial(
-    //             new Vector3(1.0f, 1.0f, 0.0f),
-    //             shader),
-    //         Position = new Vector3(2, 0, 0),
-    //         Scale = 0.5f
-    //     };
-    //     
-    //     subCube.GenerateVertexBufferObject();
-    //     subCube.GenerateVertexArrayObjectForPosNormTexVbo();
-    //         
-    //     _cubes.Add(subCube);
-    //     
-    //     subCube.Parent = parentCube;
-    //     parentCube.AddChild(subCube);
-    //     
-    //     
-    //     var subCube2 = new Cube()
-    //     {
-    //         Material = new SimpleColorMaterial(
-    //             new Vector3(1.0f, 0.0f, 1.0f),
-    //             shader),
-    //         Position = new Vector3(-2, 0, 0),
-    //         Scale = 0.5f
-    //     };
-    //     
-    //     subCube2.SetRotationX(MathHelper.DegreesToRadians(45));
-    //     subCube2.SetRotationZ(MathHelper.DegreesToRadians(45));
-    //     
-    //     subCube2.GenerateVertexBufferObject();
-    //     subCube2.GenerateVertexArrayObjectForPosNormTexVbo();
-    //         
-    //     _cubes.Add(subCube2);
-    //     
-    //     subCube2.Parent = _cubes[1];
-    //     _cubes[1].AddChild(subCube2);
-    // }
-    
     
     private void CreateSubCubes2(ISceneObject parentCube)
     {

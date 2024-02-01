@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using OpenTK.Graphics.OpenGL4;
+
 namespace MicroEngineDemoApp.Games;
 
 using OpenTK.Mathematics;
@@ -182,12 +184,18 @@ public class RotatingCubeDemo : IGame
     }
     
     
-    private Skybox CreateSkybox()
+    private ISceneObject CreateSkybox()
     {
-        var skybox = new Skybox(
-            new SimpleTextureMaterial(
-                Texture.LoadFromFile("Resources/Textures/SKYBOX.jpg"),
-                new SkyboxShader()));
+        var skybox = new MultiTextureSkyboxWithIndices(new MultiTextureMaterial(
+            [
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/pz.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/px.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nz.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nx.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
+                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
+            ],
+            new MultiTextureShader()));
         
         skybox.GenerateGeometry();
         
