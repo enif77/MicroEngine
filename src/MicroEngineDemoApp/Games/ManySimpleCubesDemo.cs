@@ -2,13 +2,13 @@
 
 namespace MicroEngineDemoApp.Games;
 
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using MicroEngine;
 using MicroEngine.Core;
 using MicroEngine.Extensions;
+using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Lights;
 using MicroEngine.Managers;
 using MicroEngine.Materials;
@@ -27,8 +27,7 @@ public class ManySimpleCubesDemo : IGame
         var scene = new Scene(
             CreateCamera(width, height));
         
-        //scene.AddSkybox(CreateSkybox());
-        scene.AddSkybox(GenerateStarsSkybox());
+        scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate());
 
         var cubeMaterial = new Material(
             Texture.LoadFromFile("Resources/Textures/container2.png"),
@@ -161,105 +160,8 @@ public class ManySimpleCubesDemo : IGame
 
         return new Camera(Vector3.UnitZ * 5, windowWidth / (float)windowHeight);
     }
-    
-    
-    // private ISceneObject CreateSkybox()
-    // {
-    //     var skybox = new MultiTextureSkyboxWithIndices(new MultiTextureMaterial(
-    //         [
-    //             Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/pz.jpg", TextureWrapMode.ClampToEdge),
-    //             Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/px.jpg", TextureWrapMode.ClampToEdge),
-    //             Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nz.jpg", TextureWrapMode.ClampToEdge),
-    //             Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nx.jpg", TextureWrapMode.ClampToEdge),
-    //             Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
-    //             Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
-    //         ],
-    //         new MultiTextureShader()));
-    //     
-    //     skybox.GenerateGeometry();
-    //     
-    //     return skybox;
-    // }
-
-
-    private ISceneObject GenerateStarsSkybox()
-    {
-        const int textureSize = 1024;
-        const int nStars = 256;
-        // const int starSize = 5;
-        
-        // RGBA texture buffer
-        var texture = new byte[textureSize * textureSize * 4];
-
-        // Clear the texture.
-        for (var i = 0; i < texture.Length; i++)
-        {
-            texture[i] = 0;
-        }
-
-        //var rand = new Random(5728);
-        var rand = new Random();
-        var textures = new ITexture[6];
-        for (var t = 0; t < textures.Length; t++)
-        {
-            for (var s = 0; s < nStars; s++)
-            {
-                // 4 and textureSize - 5 to avoid stars on the edges.
-                var x = rand.Next(4, textureSize - 5);
-                var y = rand.Next(4, textureSize - 5);
-                var starSize = rand.Next(3, 7);
-                var c = (byte)rand.Next(64, 256);
-                // var r = (byte)rand.Next(64, 256);
-                // var g = (byte)rand.Next(64, 256);
-                // var b = (byte)rand.Next(64, 256);
-                
-                // Draw the star as a square
-                for (var dx = -starSize / 2; dx < starSize / 2 + 1; dx++)
-                {
-                    for (var dy = -starSize / 2; dy < starSize / 2 + 1; dy++)
-                    {
-                        // Check if the coordinates are within the image bounds
-                        if (0 <= x + dx && x + dx < textureSize && 0 <= y + dy && y + dy < textureSize)
-                        {
-                            var abs = (Math.Abs(dx) + Math.Abs(dy)) / 2.0f;
-                            var cc = (abs == 0) 
-                                ? c
-                                : (byte)(c * (1.0f / abs));
-                            
-                            PutPixel(texture, textureSize, x + dx, y + dy, cc, cc, cc);
-                        }
-                    }
-                }
-            }
-
-            textures[t] = Texture.LoadFromRgbaBytes(texture, textureSize, textureSize, TextureWrapMode.ClampToEdge);
-            
-            for (var i = 0; i < texture.Length; i++)
-            {
-                texture[i] = 0;
-            }
-        }
-        
-        var skybox = new MultiTextureSkyboxWithIndices(new MultiTextureMaterial(
-            textures,
-            new MultiTextureShader()));
-        
-        skybox.GenerateGeometry();
-        
-        return skybox;
-    }
 
     
-    private static void PutPixel(byte[] texture, int textureSize, int x, int y, byte r, byte g, byte b, byte a = 255)
-    {
-        var index = (x + y * textureSize) * 4;
-        texture[index] = r;
-        texture[index + 1] = g;
-        texture[index + 2] = b;
-        texture[index + 3] = a;
-    }
-    
-
     private Cube CreateCube(IMaterial material, Vector3 position)
     {
         var cube = new Cube()

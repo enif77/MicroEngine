@@ -2,13 +2,13 @@
 
 namespace MicroEngineDemoApp.Games;
 
-using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using MicroEngine;
 using MicroEngine.Core;
 using MicroEngine.Extensions;
+using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Lights;
 using MicroEngine.Managers;
 using MicroEngine.Materials;
@@ -212,20 +212,22 @@ public class Game : IGame
     
     private ISceneObject CreateSkybox()
     {
-        var skybox = new MultiTextureSkyboxWithIndices(new MultiTextureMaterial(
-            [
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/pz.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/px.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nz.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nx.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
-            ],
-            new MultiTextureShader()));
+        // var skybox = new MultiTextureSkyboxWithIndices(new MultiTextureMaterial(
+        //     [
+        //         Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/pz.jpg", TextureWrapMode.ClampToEdge),
+        //         Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/px.jpg", TextureWrapMode.ClampToEdge),
+        //         Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nz.jpg", TextureWrapMode.ClampToEdge),
+        //         Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nx.jpg", TextureWrapMode.ClampToEdge),
+        //         Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
+        //         Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
+        //     ],
+        //     new MultiTextureShader()));
+        //
+        // skybox.GenerateGeometry();
+        //
+        // return skybox;
         
-        skybox.GenerateGeometry();
-        
-        return skybox;
+        return SimpleStarsSkyboxGenerator.Generate();
     }
     
 
