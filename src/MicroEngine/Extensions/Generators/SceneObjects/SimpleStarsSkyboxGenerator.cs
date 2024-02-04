@@ -12,13 +12,54 @@ using MicroEngine.Shaders;
 
 public static class SimpleStarsSkyboxGenerator
 {
-    public static ISceneObject Generate()
+    public const int DefaultTextureSizePixels = 1024;
+    public const int DefaultNumberOfStars = 256;
+    public const int DefaultMinStartSize = 3;
+    public const int DefaultMaxStartSize = 7;
+    
+    /// <summary>
+    /// Generates a simple stars skybox.
+    /// </summary>
+    /// <param name="textureSizePixels">The side size of a texture used for this skybox. DefaultTextureSizePixels by default.</param>
+    /// <param name="numberOfStars">A number of stars per skybox side to be generated. DefaultNumberOfStars by default.</param>
+    /// <param name="minStarSize">A minimal size of a star generated. DefaultMinStartSize by default.</param>
+    /// <param name="maxStarSize">A maximal size of a star generated. DefaultMaxStartSize by default.</param>
+    /// <returns>A skybox.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">If textureSizePixels is les than 1.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">If numberOfStars is les than 1.</exception>
+    public static ISceneObject Generate(
+        int textureSizePixels = DefaultTextureSizePixels,
+        int numberOfStars = DefaultNumberOfStars,
+        int minStarSize = DefaultMinStartSize,
+        int maxStarSize = DefaultMaxStartSize)
     {
-        const int textureSize = 1024;
-        const int nStars = 256;
+        if (textureSizePixels < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(textureSizePixels), "The texture size must be at least 1.");
+        }
+        
+        if (numberOfStars < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(numberOfStars), "The number of stars must be at least 1.");
+        }
+        
+        if (minStarSize < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(numberOfStars), "The minimal size of a star must be at least 1.");
+        }
+        
+        if (maxStarSize < 1 || maxStarSize < minStarSize)
+        {
+            throw new ArgumentOutOfRangeException(nameof(numberOfStars), "The maximal size of a star must be at least 1 and greater than the minimal size.");
+        }
+        
+        if (maxStarSize > textureSizePixels / 2)
+        {
+            throw new ArgumentOutOfRangeException(nameof(numberOfStars), "The maximal size of a star must be at most half of the texture size.");
+        }
         
         // RGBA texture buffer
-        var texture = new byte[textureSize * textureSize * 4];
+        var texture = new byte[textureSizePixels * textureSizePixels * 4];
 
         // Clear the texture.
         for (var i = 0; i < texture.Length; i++)
@@ -31,37 +72,41 @@ public static class SimpleStarsSkyboxGenerator
         var textures = new ITexture[6];
         for (var t = 0; t < textures.Length; t++)
         {
-            for (var s = 0; s < nStars; s++)
+            for (var s = 0; s < numberOfStars; s++)
             {
-                // 4 and textureSize - 5 to avoid stars on the edges.
-                var x = rand.Next(4, textureSize - 5);
-                var y = rand.Next(4, textureSize - 5);
-                var starSize = rand.Next(3, 7);
-                var c = (byte)rand.Next(64, 256);
-                // var r = (byte)rand.Next(64, 256);
-                // var g = (byte)rand.Next(64, 256);
-                // var b = (byte)rand.Next(64, 256);
+                // Star size,
+                var starSize = rand.Next(minStarSize, maxStarSize);
+                
+                // A random position, but avoiding stars on the edges.
+                var x = rand.Next(starSize, textureSizePixels - starSize - 1);
+                var y = rand.Next(starSize, textureSizePixels - starSize - 1);
+
+                // A random star light intensity. Bigger stars can be brighter.
+                var c = (starSize == maxStarSize)
+                    ? (byte)rand.Next(128, 256)
+                    : (byte)rand.Next(32, 200);
                 
                 // Draw the star as a square
                 for (var dx = -starSize / 2; dx < starSize / 2 + 1; dx++)
                 {
                     for (var dy = -starSize / 2; dy < starSize / 2 + 1; dy++)
                     {
-                        // Check if the coordinates are within the image bounds
-                        if (0 <= x + dx && x + dx < textureSize && 0 <= y + dy && y + dy < textureSize)
+                        if (dx == 0 && dy == 0)
+                        {
+                            PutPixel(texture, textureSizePixels, x + dx, y + dy, c, c, c);
+                        }
+                        else
                         {
                             var abs = (Math.Abs(dx) + Math.Abs(dy)) / 2.0f;
-                            var cc = (abs == 0) 
-                                ? c
-                                : (byte)(c * (1.0f / abs));
+                            var cc = (byte)(c * (1.0f / abs));
                             
-                            PutPixel(texture, textureSize, x + dx, y + dy, cc, cc, cc);
+                            PutPixel(texture, textureSizePixels, x + dx, y + dy, cc, cc, cc);
                         }
                     }
                 }
             }
 
-            textures[t] = Texture.LoadFromRgbaBytes(texture, textureSize, textureSize, TextureWrapMode.ClampToEdge);
+            textures[t] = Texture.LoadFromRgbaBytes(texture, textureSizePixels, textureSizePixels, TextureWrapMode.ClampToEdge);
             
             for (var i = 0; i < texture.Length; i++)
             {
