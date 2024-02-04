@@ -87,8 +87,8 @@ public class Skybox : SceneObjectBase
         this.GenerateVertexBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(5);
-        this.GenerateVertexAttribPointerForTextureCoords(5, 3);
+        this.GenerateVertexAttribPointerForPosition(Material.Shader, 5);
+        this.GenerateVertexAttribPointerForTextureCoords(Material.Shader, 5, 3);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

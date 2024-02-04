@@ -85,9 +85,9 @@ public class MultiTextureSkybox : SceneObjectBase
         this.GenerateVertexBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(6);
-        this.GenerateVertexAttribPointerForTextureId(6, 3);
-        this.GenerateVertexAttribPointerForTextureCoords(6, 4);
+        this.GenerateVertexAttribPointerForPosition(Material.Shader, 6);
+        this.GenerateVertexAttribPointerForTextureId(Material.Shader, 6, 3);
+        this.GenerateVertexAttribPointerForTextureCoords(Material.Shader, 6, 4);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

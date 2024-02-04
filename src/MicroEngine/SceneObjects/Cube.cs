@@ -82,9 +82,9 @@ public class Cube : SceneObjectBase
         this.GenerateVertexBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(8);
-        this.GenerateVertexAttribPointerForNormals(8, 3);
-        this.GenerateVertexAttribPointerForTextureCoords(8, 6);
+        this.GenerateVertexAttribPointerForPosition(Material.Shader, 8);
+        this.GenerateVertexAttribPointerForNormals(Material.Shader, 8, 3);
+        this.GenerateVertexAttribPointerForTextureCoords(Material.Shader, 8, 6);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

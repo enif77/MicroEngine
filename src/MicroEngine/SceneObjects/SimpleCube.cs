@@ -52,7 +52,7 @@ public class SimpleCube : SceneObjectBase
         this.GenerateElementBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(3);
+        this.GenerateVertexAttribPointerForPosition(Material.Shader, 3);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
