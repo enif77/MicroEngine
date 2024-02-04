@@ -7,7 +7,7 @@ using OpenTK.Mathematics;
 /// <summary>
 /// Generic interface for all scene objects.
 /// </summary>
-public interface ISceneObject : IUpdatable, IRenderable
+public interface ISceneObject : IUpdatable, IRenderable, IGeometry
 {
     /// <summary>
     /// This scene object's parent.
@@ -49,21 +49,4 @@ public interface ISceneObject : IUpdatable, IRenderable
     /// Should be updated before rendering.
     /// </summary>
     Matrix4 ModelMatrix { get; set; }
-    
-    
-    #region Geometry
-    
-    float[] Vertices { get; }
-    uint[] Indices { get; }
-    int VertexBufferObject { get; set; }
-    int ElementBufferObject { get; set; }
-    int VertexArrayObject { get; set; }
-    
-    
-    /// <summary>
-    /// Generates OpenGL geometry for this scene object.
-    /// </summary>
-    void GenerateGeometry();
-    
-    #endregion
 }

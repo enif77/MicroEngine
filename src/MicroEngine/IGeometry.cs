@@ -1,0 +1,44 @@
+/* Copyright (C) Premysl Fara and Contributors */
+
+namespace MicroEngine;
+
+/// <summary>
+/// Generic interface for a scene object geometry.
+/// </summary>
+public interface IGeometry
+{
+    #region Geometry
+    
+    /// <summary>
+    /// Vertices defining the geometry.
+    /// </summary>
+    float[] Vertices { get; }
+    
+    /// <summary>
+    /// Defines the order of vertices to form triangles.
+    /// </summary>
+    uint[] Indices { get; }
+    
+    /// <summary>
+    /// An OpenGL vertex buffer object ID.
+    /// </summary>
+    int VertexBufferObject { get; set; }
+    
+    /// <summary>
+    /// An OpenGL element buffer object ID.
+    /// </summary>
+    int ElementBufferObject { get; set; }
+    
+    /// <summary>
+    /// An OpenGL vertex array object ID.
+    /// </summary>
+    int VertexArrayObject { get; set; }
+    
+    
+    /// <summary>
+    /// Generates OpenGL geometry for this geometry.
+    /// </summary>
+    void GenerateGeometry();
+    
+    #endregion
+}
