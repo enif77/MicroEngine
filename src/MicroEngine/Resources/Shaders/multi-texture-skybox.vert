@@ -13,7 +13,8 @@ out vec2 TexCoords;
 
 void main()
 {
-    gl_Position = vec4(aPos, 1.0) * model * view * projection;
+    vec4 position = vec4(aPos, 1.0) * model * view * projection;
+    gl_Position = position.xyww;  // This forces the z value to be 1.0 as it is required to have the skybox "as far as possible".
     TexId = int(aTexId);
     TexCoords = aTexCoords;
 }

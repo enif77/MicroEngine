@@ -9,14 +9,14 @@ using MicroEngine.Materials;
 
 public class MultiTextureShader : IShader
 {
-    private readonly Shader _shader;
+    protected Shader Shader;
 
-    public string Name => "multi-texture";
+    public virtual string Name => "multi-texture";
     
 
     public MultiTextureShader()
     {
-        _shader = new Shader(
+        Shader = new Shader(
             File.ReadAllText("Resources/Shaders/multi-texture.vert"),
             File.ReadAllText("Resources/Shaders/multi-texture.frag"));
     }
@@ -24,7 +24,7 @@ public class MultiTextureShader : IShader
     
     public int GetAttributeLocation(string name)
     {
-        return _shader.GetAttribLocation(name);
+        return Shader.GetAttribLocation(name);
     }
     
     
@@ -33,8 +33,9 @@ public class MultiTextureShader : IShader
         var camera = scene.Camera;
         var material = sceneObject.Material;
         
-        _shader.Use();
+        Shader.Use();
         
+        // TODO: The base material should support for multiple textures.
         var m = material as MultiTextureMaterial;
         if (m == null)
         {
@@ -45,13 +46,13 @@ public class MultiTextureShader : IShader
             for (var i = 0; i < m.Textures.Length; i++)
             {
                 m.Textures[i].Use(TextureUnit.Texture0 + i);
-                _shader.SetInt(SamplersUniformNames[i], i);
+                Shader.SetInt(SamplersUniformNames[i], i);
             }
         }
         
-        _shader.SetMatrix4("view", camera.GetViewMatrix());
-        _shader.SetMatrix4("projection", camera.GetProjectionMatrix());
-        _shader.SetMatrix4("model", sceneObject.ModelMatrix);
+        Shader.SetMatrix4("view", camera.GetViewMatrix());
+        Shader.SetMatrix4("projection", camera.GetProjectionMatrix());
+        Shader.SetMatrix4("model", sceneObject.ModelMatrix);
     }
     
     
