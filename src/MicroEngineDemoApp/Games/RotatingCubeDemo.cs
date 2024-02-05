@@ -1,9 +1,8 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using OpenTK.Graphics.OpenGL4;
-
 namespace MicroEngineDemoApp.Games;
 
+using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
@@ -44,7 +43,7 @@ public class RotatingCubeDemo : IGame
         {
             Ambient = new Vector3(0.7f, 0.7f, 0.7f),
         });
-       
+        
         _scene = scene;
         
         Renderer.EnableFaceCulling();
@@ -195,7 +194,7 @@ public class RotatingCubeDemo : IGame
                 Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
                 Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
             ],
-            new MultiTextureShader()));
+            new MultiTextureSkyboxShader()));
         
         skybox.BuildGeometry();
         
