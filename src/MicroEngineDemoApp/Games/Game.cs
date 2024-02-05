@@ -86,6 +86,24 @@ public class Game : IGame
         CreateSubCubes2(_cubes[1]);
         
         #endregion
+
+        
+        #region plane
+
+        var plane = new SingleTexturePlaneWithIndices(
+            new SimpleTextureMaterial(
+                Texture.LoadFromFile("Resources/Textures/container2.png"),
+                new SimpleTextureShader()),
+            10.0f);
+        
+        plane.BuildGeometry();
+        
+        plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
+        plane.Scale = 50.0f;
+        
+        scene.AddChild(plane);
+        
+        #endregion
         
         
         _scene = scene;
