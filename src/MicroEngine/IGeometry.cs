@@ -41,10 +41,15 @@ public interface IGeometry
     
     
     /// <summary>
-    /// Generates OpenGL geometry for this geometry.
+    /// Generates OpenGL buffer objects for this geometry.
     /// </summary>
     /// <argument name="forShader">The shader to generate the geometry for.</argument>
-    void GenerateGeometry(IShader forShader);
+    void Build(IShader forShader);
+    
+    /// <summary>
+    /// Binds the geometry for rendering.
+    /// </summary>
+    void Bind();
     
     #endregion
 }

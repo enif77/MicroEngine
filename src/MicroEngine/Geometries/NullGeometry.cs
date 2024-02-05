@@ -8,7 +8,7 @@ namespace MicroEngine.Geometries;
 public class NullGeometry()
     : GeometryBase(Array.Empty<float>(), Array.Empty<uint>())
 {
-    public override void GenerateGeometry(IShader forShader)
+    public override void Build(IShader forShader)
     {
         // Nothing to do here.
     }

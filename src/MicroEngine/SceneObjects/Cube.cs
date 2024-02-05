@@ -74,8 +74,7 @@ public class Cube : SceneObjectBase
         _scene ??= this.GetScene();
         
         Material.Shader.Use(_scene, this);
-        
-        GL.BindVertexArray(Geometry.VertexArrayObject);
+        Geometry.Bind();
         GL.DrawArrays(PrimitiveType.Triangles, 0, Geometry.IndicesCount);
         
         base.Render();

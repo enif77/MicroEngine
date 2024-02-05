@@ -1,5 +1,7 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
+using OpenTK.Graphics.OpenGL4;
+
 namespace MicroEngine;
 
 /// <summary>
@@ -15,5 +17,10 @@ public abstract class GeometryBase(float[] vertices, uint[] indices) : IGeometry
     public int VertexArrayObject { get; set; } = -1;
 
 
-    public abstract void GenerateGeometry(IShader forShader);
+    public abstract void Build(IShader forShader);
+
+    public void Bind()
+    {
+        GL.BindVertexArray(VertexArrayObject);
+    }
 }

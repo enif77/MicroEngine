@@ -45,8 +45,7 @@ public class SimpleCube : SceneObjectBase
         _scene ??= this.GetScene();
         
         Material.Shader.Use(_scene, this);
-        
-        GL.BindVertexArray(Geometry.VertexArrayObject);
+        Geometry.Bind();
         GL.DrawElements(PrimitiveType.Triangles, Geometry.IndicesCount, DrawElementsType.UnsignedInt, 0);
         
         base.Render();

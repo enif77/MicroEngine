@@ -43,7 +43,7 @@ public class MultiTextureGeometry : GeometryBase
     
     private readonly bool _genEbo;
     
-    public override void GenerateGeometry(IShader forShader)
+    public override void Build(IShader forShader)
     {
         // Vertex array object.
         VertexArrayObject = GL.GenVertexArray();

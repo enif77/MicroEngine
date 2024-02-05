@@ -12,7 +12,7 @@ using MicroEngine.Extensions;
 public class SimpleGeometry(float[] vertices, uint[] indices)
     : GeometryBase(vertices, indices)
 {
-    public override void GenerateGeometry(IShader forShader)
+    public override void Build(IShader forShader)
     {
         // Vertex array object.
         VertexArrayObject = GL.GenVertexArray();

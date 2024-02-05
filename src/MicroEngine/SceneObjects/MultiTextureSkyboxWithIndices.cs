@@ -75,7 +75,7 @@ public class MultiTextureSkyboxWithIndices : SceneObjectBase
         Material.Shader.Use(_scene, this);
         
         // Bind skybox data.
-        GL.BindVertexArray(Geometry.VertexArrayObject);
+        Geometry.Bind();
         
         // Render.
         GL.DepthFunc(DepthFunction.Lequal);
