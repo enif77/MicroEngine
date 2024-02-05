@@ -77,9 +77,26 @@ public abstract class SceneObjectBase : ISceneObject
     
     
     
-    public virtual void BuildGeometry()
+    public void BuildGeometry()
     {
         Geometry.Build(Material.Shader);
+    }
+    
+    
+    public void UpdateModelMatrix()
+    {
+        ModelMatrix = Matrix4.CreateScale(Scale);
+        
+        ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
+        ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
+        ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
+
+        ModelMatrix *= Matrix4.CreateTranslation(Position);
+        
+        if (Parent != null)
+        {
+            ModelMatrix *= Parent.ModelMatrix;
+        }
     }
     
     
@@ -87,18 +104,7 @@ public abstract class SceneObjectBase : ISceneObject
     {
         if (NeedsModelMatrixUpdate)
         {
-            ModelMatrix = Matrix4.CreateScale(Scale);
-            
-            ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
-            ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
-            ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
-
-            ModelMatrix *= Matrix4.CreateTranslation(Position);
-            
-            if (Parent != null)
-            {
-                ModelMatrix *= Parent.ModelMatrix;
-            }
+            UpdateModelMatrix();
 
             NeedsModelMatrixUpdate = false;
         }

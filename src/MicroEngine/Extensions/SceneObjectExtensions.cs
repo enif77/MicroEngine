@@ -40,6 +40,25 @@ public static class SceneObjectExtensions
     }
     
     /// <summary>
+    /// Returns the world position of the center of a scene object.
+    /// Forces the model matrix update if needed.
+    /// </summary>
+    /// <param name="sceneObject">A scene object.</param>
+    /// <returns>The world position of the center of a scene object.</returns>
+    public static Vector3 WorldPosition(this ISceneObject sceneObject)
+    {
+        if (sceneObject.NeedsModelMatrixUpdate)
+        {
+            sceneObject.UpdateModelMatrix();
+        }
+
+        // Translated vector is the vector at the center of the scene object geometry transformed by the model matrix.
+        var translatedVector = sceneObject.ModelMatrix * Vector4.Zero;
+        
+        return new Vector3(translatedVector.X, translatedVector.Y, translatedVector.Z);
+    }
+    
+    /// <summary>
     /// Try to get a scene from a scene object.
     /// </summary>
     /// <param name="sceneObject">A scene object.</param>
