@@ -5,21 +5,16 @@ namespace MicroEngine.SceneObjects;
 using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Extensions;
+using MicroEngine.Geometries;
 
 /// <summary>
 /// Cube.
 /// </summary>
 public class Cube : SceneObjectBase
 {
-    /// <summary>
-    /// Indices count = number of triangles * number of vertices per triangle.
-    /// </summary>
-    public int IndicesCount { get; }
-
-    
     public Cube()
     {
-        Vertices =
+        Geometry = new DefaultGeometry(
         [
             // Each side has 2 triangles, each triangle has 3 vertices.
             
@@ -65,32 +60,12 @@ public class Cube : SceneObjectBase
             -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
             -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
              0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f
-        ];
+        ],
         
         // 36 = 6 sides * 2 triangles per side * 3 vertices per triangle.
-        IndicesCount = 36;
+        36);
     }
-    
-    
-    public override void GenerateGeometry()
-    {
-        // Vertex array object.
-        VertexArrayObject = GL.GenVertexArray();
-        GL.BindVertexArray(VertexArrayObject);
-        
-        // Vertex buffer object.
-        this.GenerateVertexBufferObject();
-        
-        // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(Material.Shader, 8);
-        this.GenerateVertexAttribPointerForNormals(Material.Shader, 8, 3);
-        this.GenerateVertexAttribPointerForTextureCoords(Material.Shader, 8, 6);
-        
-        // Unbind.
-        GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-        GL.BindVertexArray(0);
-    }
-    
+   
     
     private Scene? _scene;
 
@@ -100,8 +75,8 @@ public class Cube : SceneObjectBase
         
         Material.Shader.Use(_scene, this);
         
-        GL.BindVertexArray(VertexArrayObject);
-        GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
+        GL.BindVertexArray(Geometry.VertexArrayObject);
+        GL.DrawArrays(PrimitiveType.Triangles, 0, Geometry.IndicesCount);
         
         base.Render();
     }

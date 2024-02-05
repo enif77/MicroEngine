@@ -7,7 +7,7 @@ using OpenTK.Mathematics;
 /// <summary>
 /// Generic interface for all scene objects.
 /// </summary>
-public interface ISceneObject : IUpdatable, IRenderable, IGeometry
+public interface ISceneObject : IUpdatable, IRenderable
 {
     /// <summary>
     /// This scene object's parent.
@@ -18,6 +18,11 @@ public interface ISceneObject : IUpdatable, IRenderable, IGeometry
     /// This scene object's children.
     /// </summary>
     IList<ISceneObject> Children { get; }
+    
+    /// <summary>
+    /// A geometry defining this scene object.
+    /// </summary>
+    IGeometry Geometry { get; }
     
     /// <summary>
     /// A material used by this scene object.

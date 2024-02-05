@@ -6,6 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
 using MicroEngine.Extensions;
+using MicroEngine.Geometries;
 
 /// <summary>
 /// Skybox.
@@ -14,7 +15,7 @@ public class MultiTextureSkyboxWithIndices : SceneObjectBase
 {
     public MultiTextureSkyboxWithIndices(IMaterial material)
     {
-        Vertices =
+        Geometry = new MultiTextureGeometry(
         [
             // Positions          Texture ID and coords
             -0.5f, -0.5f, -0.5f,  0,  0.0f, 0.0f,  // Front face.
@@ -46,9 +47,7 @@ public class MultiTextureSkyboxWithIndices : SceneObjectBase
              0.5f, -0.5f,  0.5f,  5,  1.0f, 0.0f,
              0.5f, -0.5f, -0.5f,  5,  1.0f, 1.0f,
             -0.5f, -0.5f, -0.5f,  5,  0.0f, 1.0f,
-        ];
-        
-        Indices =
+        ],
         [
             // Each side has 2 triangles, each triangle has 3 vertices.
              0,  1,  2,   2,  3,  0, // Front
@@ -57,32 +56,9 @@ public class MultiTextureSkyboxWithIndices : SceneObjectBase
             12, 13, 14,  14, 15, 12, // Left
             16, 17, 18,  18, 19, 16, // Top
             20, 21, 22,  22, 23, 20  // Bottom
-        ];
+        ]);
         
         Material = material ?? throw new ArgumentNullException(nameof(material));
-    }
-    
-    
-    public override void GenerateGeometry()
-    {
-        // Vertex array object.
-        VertexArrayObject = GL.GenVertexArray();
-        GL.BindVertexArray(VertexArrayObject);
-        
-        // Vertex buffer object.
-        this.GenerateVertexBufferObject();
-        
-        // Element buffer object.
-        this.GenerateElementBufferObject();
-        
-        // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(Material.Shader, 6);
-        this.GenerateVertexAttribPointerForTextureId(Material.Shader, 6, 3);
-        this.GenerateVertexAttribPointerForTextureCoords(Material.Shader, 6, 4);
-        
-        // Unbind.
-        GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
-        GL.BindVertexArray(0);
     }
     
 
@@ -99,11 +75,11 @@ public class MultiTextureSkyboxWithIndices : SceneObjectBase
         Material.Shader.Use(_scene, this);
         
         // Bind skybox data.
-        GL.BindVertexArray(VertexArrayObject);
+        GL.BindVertexArray(Geometry.VertexArrayObject);
         
         // Render.
         GL.DepthFunc(DepthFunction.Lequal);
-        GL.DrawElements(PrimitiveType.Triangles, Indices.Length, DrawElementsType.UnsignedInt, 0);
+        GL.DrawElements(PrimitiveType.Triangles, Geometry.IndicesCount, DrawElementsType.UnsignedInt, 0);
         GL.DepthFunc(DepthFunction.Less);
        
         base.Render();

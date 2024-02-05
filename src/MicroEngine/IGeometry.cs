@@ -18,6 +18,11 @@ public interface IGeometry
     /// Defines the order of vertices to form triangles.
     /// </summary>
     uint[] Indices { get; }
+
+    /// <summary>
+    /// Indices count = number of triangles * number of vertices per triangle.
+    /// </summary>
+    int IndicesCount { get; }
     
     /// <summary>
     /// An OpenGL vertex buffer object ID.
@@ -38,7 +43,8 @@ public interface IGeometry
     /// <summary>
     /// Generates OpenGL geometry for this geometry.
     /// </summary>
-    void GenerateGeometry();
+    /// <argument name="forShader">The shader to generate the geometry for.</argument>
+    void GenerateGeometry(IShader forShader);
     
     #endregion
 }
