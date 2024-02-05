@@ -197,7 +197,7 @@ public class RotatingCubeDemo : IGame
             ],
             new MultiTextureShader()));
         
-        skybox.GenerateGeometry();
+        skybox.BuildGeometry();
         
         return skybox;
     }
@@ -211,7 +211,7 @@ public class RotatingCubeDemo : IGame
             Position = position
         };
         
-        cube.GenerateGeometry();
+        cube.BuildGeometry();
         
         _cube = cube;
         

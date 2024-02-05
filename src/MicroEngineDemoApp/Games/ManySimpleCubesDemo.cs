@@ -171,7 +171,7 @@ public class ManySimpleCubesDemo : IGame
             Scale = 0.5f
         };
         
-        cube.GenerateGeometry();
+        cube.BuildGeometry();
         
         return cube;
     }

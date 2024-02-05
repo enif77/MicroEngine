@@ -77,7 +77,7 @@ public abstract class SceneObjectBase : ISceneObject
     
     
     
-    public virtual void GenerateGeometry()
+    public virtual void BuildGeometry()
     {
         Geometry.Build(Material.Shader);
     }

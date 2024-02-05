@@ -126,7 +126,7 @@ public class MinimalRotatingCubeDemo : IGame
             Position = position
         };
         
-        cube.GenerateGeometry();
+        cube.BuildGeometry();
         
         _cube = cube;
         
