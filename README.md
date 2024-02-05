@@ -19,8 +19,6 @@ A miniature game engine written in C#, using OpenTk.
 
 ## Todo
 
-- Fix skybox for CCW culling.
-- Skybox should use 6 textures instead of 1.
 - Skybox should use a cubemap.
 - Replace IGame.SetCameraAspectRatio().
 - Resources manager.
