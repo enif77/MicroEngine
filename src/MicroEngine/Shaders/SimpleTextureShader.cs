@@ -16,8 +16,8 @@ public class SimpleTextureShader : IShader
     public SimpleTextureShader()
     {
         _shader = new Shader(
-            File.ReadAllText("Resources/Shaders/skybox.vert"),
-            File.ReadAllText("Resources/Shaders/skybox.frag"));
+            File.ReadAllText("Resources/Shaders/simple-texture.vert"),
+            File.ReadAllText("Resources/Shaders/simple-texture.frag"));
     }
 
     
