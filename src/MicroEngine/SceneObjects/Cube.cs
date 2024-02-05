@@ -2,8 +2,6 @@
 
 namespace MicroEngine.SceneObjects;
 
-using OpenTK.Graphics.OpenGL4;
-
 using MicroEngine.Extensions;
 using MicroEngine.Geometries;
 
@@ -74,8 +72,8 @@ public class Cube : SceneObjectBase
         _scene ??= this.GetScene();
         
         Material.Shader.Use(_scene, this);
-        Geometry.Bind();
-        GL.DrawArrays(PrimitiveType.Triangles, 0, Geometry.IndicesCount);
+        
+        Renderer.DrawTriangles(Geometry);
         
         base.Render();
     }

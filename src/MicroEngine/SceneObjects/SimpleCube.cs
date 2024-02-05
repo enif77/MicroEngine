@@ -2,8 +2,6 @@
 
 namespace MicroEngine.SceneObjects;
 
-using OpenTK.Graphics.OpenGL4;
-
 using MicroEngine.Extensions;
 using MicroEngine.Geometries;
 
@@ -45,8 +43,8 @@ public class SimpleCube : SceneObjectBase
         _scene ??= this.GetScene();
         
         Material.Shader.Use(_scene, this);
-        Geometry.Bind();
-        GL.DrawElements(PrimitiveType.Triangles, Geometry.IndicesCount, DrawElementsType.UnsignedInt, 0);
+
+        Renderer.DrawTrianglesWithIndices(Geometry);
         
         base.Render();
     }

@@ -46,10 +46,5 @@ public interface IGeometry
     /// <argument name="forShader">The shader to generate the geometry for.</argument>
     void Build(IShader forShader);
     
-    /// <summary>
-    /// Binds the geometry for rendering.
-    /// </summary>
-    void Bind();
-    
     #endregion
 }

@@ -74,12 +74,9 @@ public class MultiTextureSkyboxWithIndices : SceneObjectBase
         // Sets shader and its properties.
         Material.Shader.Use(_scene, this);
         
-        // Bind skybox data.
-        Geometry.Bind();
-        
         // Render.
         GL.DepthFunc(DepthFunction.Lequal);
-        GL.DrawElements(PrimitiveType.Triangles, Geometry.IndicesCount, DrawElementsType.UnsignedInt, 0);
+        Renderer.DrawTrianglesWithIndices(Geometry);
         GL.DepthFunc(DepthFunction.Less);
        
         base.Render();
