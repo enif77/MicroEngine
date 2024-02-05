@@ -67,17 +67,17 @@ public class MinimalRotatingCubeDemo : IGame
             _angleX -= 360.0f;
         }
         
-        // _angleY += 50.0f * deltaTime;
-        // while (_angleY > 360.0f)
-        // {
-        //     _angleY -= 360.0f;
-        // }
+        _angleY += 50.0f * deltaTime;
+        while (_angleY > 360.0f)
+        {
+            _angleY -= 360.0f;
+        }
 
-        // _angleZ += 10.0f * deltaTime;
-        // while (_angleZ > 360.0f)
-        // {
-        //     _angleZ -= 360.0f;
-        // }
+        _angleZ += 10.0f * deltaTime;
+        while (_angleZ > 360.0f)
+        {
+            _angleZ -= 360.0f;
+        }
         
         _cube!.Rotation = new Vector3(MathHelper.DegreesToRadians(_angleX), MathHelper.DegreesToRadians(_angleY), MathHelper.DegreesToRadians(_angleZ));
         
