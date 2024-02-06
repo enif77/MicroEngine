@@ -15,7 +15,7 @@ public class MultiTextureSkyboxWithIndices : SceneObjectBase
 {
     public MultiTextureSkyboxWithIndices(IMaterial material)
     {
-        Geometry = new MultiTextureGeometry(
+        Geometry = new MultiTextureIndexedGeometry(
         [
             // Positions          Texture ID and coords
             -0.5f, -0.5f, -0.5f,  0,  0.0f, 0.0f,  // Front face.
