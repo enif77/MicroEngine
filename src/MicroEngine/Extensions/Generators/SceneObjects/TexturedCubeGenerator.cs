@@ -60,7 +60,7 @@ public static class TexturedCubeGenerator
         // 36 = 6 sides * 2 triangles per side * 3 vertices per triangle.
         36))
         {
-            Material = material
+            Material = material ?? throw new ArgumentNullException(nameof(material))
         };
     }
 }

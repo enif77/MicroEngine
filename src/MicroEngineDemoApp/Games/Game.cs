@@ -90,13 +90,13 @@ public class Game : IGame
         
         #region plane
 
-        var plane = new SingleTexturePlaneWithIndices(
+        var plane = TexturedPlaneGenerator.Generate(
             new SimpleTextureMaterial(
                 Texture.LoadFromFile("Resources/Textures/container2.png"),
                 new SimpleTextureShader()),
             10.0f);
         
-        plane.BuildGeometry();
+        plane.Geometry.Build(plane.Material.Shader);
         
         plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
         plane.Scale = 50.0f;
