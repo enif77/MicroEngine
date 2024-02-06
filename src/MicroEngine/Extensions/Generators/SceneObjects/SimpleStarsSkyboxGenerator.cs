@@ -114,11 +114,11 @@ public static class SimpleStarsSkyboxGenerator
             }
         }
         
-        var skybox = new MultiTextureSkyboxWithIndices(new MultiTextureMaterial(
+        var skybox = SkyboxGenerator.Generate(new MultiTextureMaterial(
             textures,
             new MultiTextureSkyboxShader()));
         
-        skybox.BuildGeometry();
+        skybox.Geometry.Build(skybox.Material.Shader);
         
         return skybox;
     }

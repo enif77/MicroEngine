@@ -189,9 +189,9 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
             ],
             new MultiTextureSkyboxShader());
         
-        var skybox = new MultiTextureSkyboxWithIndices(material);
+        var skybox = SkyboxGenerator.Generate(material);
         
-        skybox.BuildGeometry();
+        skybox.Geometry.Build(skybox.Material.Shader);
         
         return skybox;
     }
