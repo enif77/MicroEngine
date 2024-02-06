@@ -12,4 +12,10 @@ public class NullGeometry()
     {
         // Nothing to do here.
     }
+    
+    
+    public override void Render()
+    {
+        // Nothing to do here.
+    }
 }

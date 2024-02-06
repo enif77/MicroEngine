@@ -76,7 +76,7 @@ public class MultiTextureSkyboxWithIndices : SceneObjectBase
         
         // Render.
         GL.DepthFunc(DepthFunction.Lequal);
-        Renderer.DrawTrianglesWithIndices(Geometry);
+        Geometry.Render();
         GL.DepthFunc(DepthFunction.Less);
        
         base.Render();

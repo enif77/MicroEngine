@@ -16,4 +16,5 @@ public abstract class GeometryBase(float[] vertices, uint[] indices) : IGeometry
 
 
     public abstract void Build(IShader forShader);
+    public abstract void Render();
 }

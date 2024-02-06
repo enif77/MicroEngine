@@ -5,7 +5,7 @@ namespace MicroEngine;
 /// <summary>
 /// Generic interface for a scene object geometry.
 /// </summary>
-public interface IGeometry
+public interface IGeometry : IRenderable
 {
     #region Geometry
     

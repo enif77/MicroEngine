@@ -37,7 +37,7 @@ public class SingleTexturePlaneWithIndices : SceneObjectBase
 
         Material.Shader.Use(_scene, this);
         
-        Renderer.DrawTrianglesWithIndices(Geometry);
+        Geometry.Render();
        
         base.Render();
     }

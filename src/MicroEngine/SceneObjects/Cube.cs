@@ -73,7 +73,7 @@ public class Cube : SceneObjectBase
         
         Material.Shader.Use(_scene, this);
         
-        Renderer.DrawTriangles(Geometry);
+        Geometry.Render();
         
         base.Render();
     }

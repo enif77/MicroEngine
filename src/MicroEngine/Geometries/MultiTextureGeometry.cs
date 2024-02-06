@@ -37,11 +37,11 @@ public class MultiTextureGeometry : GeometryBase
         : base(vertices, indices)
     {
         IndicesCount = indices.Length;
-        _genEbo = true;
+        _hasIndicesDefined = true;
     }
 
     
-    private readonly bool _genEbo;
+    private readonly bool _hasIndicesDefined;
     
     public override void Build(IShader forShader)
     {
@@ -53,7 +53,7 @@ public class MultiTextureGeometry : GeometryBase
         this.GenerateVertexBufferObject();
         
         // Element buffer object.
-        if (_genEbo)
+        if (_hasIndicesDefined)
         {
             this.GenerateElementBufferObject();
         }
@@ -66,6 +66,21 @@ public class MultiTextureGeometry : GeometryBase
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         GL.BindVertexArray(0);
+    }
+    
+    
+    public override void Render()
+    {
+        GL.BindVertexArray(VertexArrayObject);
+
+        if (_hasIndicesDefined)
+        {
+            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);
+        }
+        else
+        {
+            GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
+        }
     }
 }
 

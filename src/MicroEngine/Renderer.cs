@@ -75,23 +75,23 @@ public static class Renderer
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
     }
 
-    /// <summary>
-    /// Renders the given geometry directly without using any indices (EBOs).
-    /// </summary>
-    /// <param name="geometry">A geometry to be rendered.</param>
-    public static void DrawTriangles(IGeometry geometry)
-    {
-        GL.BindVertexArray(geometry.VertexArrayObject);
-        GL.DrawArrays(PrimitiveType.Triangles, 0, geometry.IndicesCount);
-    }
-    
-    /// <summary>
-    /// Renders the given geometry directly using indices (EBOs).
-    /// </summary>
-    /// <param name="geometry">A geometry to be rendered.</param>
-    public static void DrawTrianglesWithIndices(IGeometry geometry)
-    {
-        GL.BindVertexArray(geometry.VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, geometry.IndicesCount, DrawElementsType.UnsignedInt, 0);
-    }
+    // /// <summary>
+    // /// Renders the given geometry directly without using any indices (EBOs).
+    // /// </summary>
+    // /// <param name="geometry">A geometry to be rendered.</param>
+    // public static void DrawTriangles(IGeometry geometry)
+    // {
+    //     GL.BindVertexArray(geometry.VertexArrayObject);
+    //     GL.DrawArrays(PrimitiveType.Triangles, 0, geometry.IndicesCount);
+    // }
+    //
+    // /// <summary>
+    // /// Renders the given geometry directly using indices (EBOs).
+    // /// </summary>
+    // /// <param name="geometry">A geometry to be rendered.</param>
+    // public static void DrawTrianglesWithIndices(IGeometry geometry)
+    // {
+    //     GL.BindVertexArray(geometry.VertexArrayObject);
+    //     GL.DrawElements(PrimitiveType.Triangles, geometry.IndicesCount, DrawElementsType.UnsignedInt, 0);
+    // }
 }

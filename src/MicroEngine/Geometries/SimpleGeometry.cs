@@ -31,6 +31,13 @@ public class SimpleGeometry(float[] vertices, uint[] indices)
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         GL.BindVertexArray(0);
     }
+    
+    
+    public override void Render()
+    {
+        GL.BindVertexArray(VertexArrayObject);
+        GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);
+    }
 }
 
 /*
