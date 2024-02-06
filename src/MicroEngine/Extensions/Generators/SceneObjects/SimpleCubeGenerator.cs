@@ -1,18 +1,15 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.SceneObjects;
+namespace MicroEngine.Extensions.Generators.SceneObjects;
 
-using MicroEngine.Extensions;
 using MicroEngine.Geometries;
+using MicroEngine.SceneObjects;
 
-/// <summary>
-/// A cube without normals and texture coords.
-/// </summary>
-public class SimpleCube : SceneObjectBase
+public static class SimpleCubeGenerator
 {
-    public SimpleCube()
+    public static ISceneObject Generate(IMaterial material)
     {
-        Geometry = new SimpleGeometry(
+        return new GenericSceneObject(new SimpleIndexedGeometry(
             [
                 -0.5f,  0.5f,  0.5f,
                  0.5f,  0.5f,  0.5f,
@@ -32,20 +29,10 @@ public class SimpleCube : SceneObjectBase
                 4, 7, 3,  3, 0, 4, // Left
                 0, 1, 5,  5, 4, 0, // Top
                 6, 2, 3,  3, 7, 6  // Bottom
-            ]);
-    }
-    
-    
-    private Scene? _scene;
-
-    public override void Render()
-    {
-        _scene ??= this.GetScene();
-        
-        Material.Shader.Use(_scene, this);
-
-        Geometry.Render();
-        
-        base.Render();
+            ]
+        ))
+        {
+            Material = material    
+        };
     }
 }

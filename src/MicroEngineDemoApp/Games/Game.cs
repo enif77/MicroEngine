@@ -321,38 +321,28 @@ public class Game : IGame
     {
         var shader = new SimpleColorShader();
         
-        var subCube = new SimpleCube()
-        {
-            Material = new SimpleColorMaterial(
-                new Vector3(1.0f, 1.0f, 0.0f),
-                shader),
-            Position = new Vector3(2, 0, 0),
-            Scale = 0.5f
-        };
+        var subCube = SimpleCubeGenerator.Generate(new SimpleColorMaterial(
+            new Vector3(1.0f, 1.0f, 0.0f),
+            shader));
+        subCube.Position = new Vector3(2, 0, 0);
+        subCube.Scale = 0.5f;
         
-        subCube.BuildGeometry();
-            
-        //_cubes.Add(subCube);
-        
+        subCube.Geometry.Build(subCube.Material.Shader);
+
         subCube.Parent = parentCube;
         parentCube.AddChild(subCube);
         
         
-        var subCube2 = new SimpleCube()
-        {
-            Material = new SimpleColorMaterial(
+        var subCube2 = SimpleCubeGenerator.Generate(new SimpleColorMaterial(
                 new Vector3(1.0f, 0.0f, 1.0f),
-                shader),
-            Position = new Vector3(-2, 0, 0),
-            Scale = 0.5f
-        };
+                shader)); 
+        subCube2.Position = new Vector3(-2, 0, 0);
+        subCube2.Scale = 0.5f;
         
-        subCube2.BuildGeometry();
+        subCube2.Geometry.Build(subCube2.Material.Shader);
         
         subCube2.SetRotationX(MathHelper.DegreesToRadians(45));
         subCube2.SetRotationZ(MathHelper.DegreesToRadians(45));
-        
-        //_cubes.Add(subCube2);
         
         subCube2.Parent = parentCube;
         parentCube.AddChild(subCube2);

@@ -9,7 +9,7 @@ using MicroEngine.Extensions;
 /// <summary>
 /// A geometry with vertexes and indices.
 /// </summary>
-public class SimpleGeometry(float[] vertices, uint[] indices)
+public class SimpleIndexedGeometry(float[] vertices, uint[] indices)
     : GeometryBase(vertices, indices)
 {
     public override void Build(IShader forShader)
