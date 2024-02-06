@@ -26,9 +26,28 @@ internal static class Program
     {
         Configure();
 
-        // An example of how to get the primary monitor.
-        //var primaryMonitor = Monitors.GetPrimaryMonitor();
+        var primaryMonitor = Monitors.GetPrimaryMonitor();
 
+        var windowWidth = Settings.WindowWidth;
+        if (windowWidth < 640)
+        {
+            windowWidth = 640;
+        }
+        else if (windowWidth > primaryMonitor.HorizontalResolution)
+        {
+            windowWidth = primaryMonitor.HorizontalResolution;
+        }
+
+        var windowHeight = Settings.WindowHeight;
+        if (windowHeight < 480)
+        {
+            windowHeight = 480;
+        }
+        else if (windowHeight > primaryMonitor.VerticalResolution)
+        {
+            windowHeight = primaryMonitor.VerticalResolution;
+        }
+        
         var games = new Dictionary<string, IGame>()
         {
             { "game-with-cubes", new Game() },
@@ -40,15 +59,24 @@ internal static class Program
         
         var nativeWindowSettings = new NativeWindowSettings()
         {
-            ClientSize = new Vector2i(Settings.WindowWidth, Settings.WindowHeight),
-            //ClientSize = new Vector2i(primaryMonitor.HorizontalResolution, primaryMonitor.VerticalResolution),
+            ClientSize = Settings.EnableFullscreen
+                ? new Vector2i(primaryMonitor.HorizontalResolution, primaryMonitor.VerticalResolution)
+                : new Vector2i(windowWidth, windowHeight),
+            
+            Location = Settings.EnableFullscreen
+                ? new Vector2i(0, 0)
+                : new Vector2i(
+                    (primaryMonitor.HorizontalResolution - windowWidth) / 2,
+                    (primaryMonitor.VerticalResolution - windowHeight) / 2),
             
             Title = Defaults.AppVersionInfo,
             
             // This is needed to run on macos
             Flags = ContextFlags.ForwardCompatible | ContextFlags.Debug,
             Vsync = Settings.EnableVSync ? VSyncMode.Adaptive : VSyncMode.Off,
-            WindowState = Settings.EnableFullscreen ? WindowState.Fullscreen : WindowState.Normal
+            WindowState = Settings.EnableFullscreen
+                ? WindowState.Fullscreen
+                : WindowState.Normal
         };
 
         using (var gameWindow = new GameWindow(
