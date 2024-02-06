@@ -7,7 +7,7 @@ using OpenTK.Graphics.OpenGL4;
 using MicroEngine.Extensions;
 
 /// <summary>
-/// A geometry with a single texture. No normals.
+/// A geometry with a single texture. No lights.
 /// </summary>
 public class SingleTextureGeometry : GeometryBase
 {
@@ -27,21 +27,7 @@ public class SingleTextureGeometry : GeometryBase
         
         IndicesCount = indicesCount;
     }
-    
-    /// <summary>
-    /// Constructor for a geometry with indices defined in a list.
-    /// </summary>
-    /// <param name="vertices">A list of vertices.</param>
-    /// <param name="indices">A list of indices.</param>
-    public SingleTextureGeometry(float[] vertices, uint[] indices) 
-        : base(vertices, indices)
-    {
-        IndicesCount = indices.Length;
-        _hasIndicesDefined = true;
-    }
 
-    
-    private readonly bool _hasIndicesDefined;
     
     public override void Build(IShader forShader)
     {
@@ -51,12 +37,6 @@ public class SingleTextureGeometry : GeometryBase
         
         // Vertex buffer object.
         this.GenerateVertexBufferObject();
-        
-        // Element buffer object.
-        if (_hasIndicesDefined)
-        {
-            this.GenerateElementBufferObject();
-        }
         
         // Vertex attributes.
         this.GenerateVertexAttribPointerForPosition(forShader, 5);
@@ -71,15 +51,7 @@ public class SingleTextureGeometry : GeometryBase
     public override void Render()
     {
         GL.BindVertexArray(VertexArrayObject);
-
-        if (_hasIndicesDefined)
-        {
-            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);
-        }
-        else
-        {
-            GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
-        }
+        GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
     }
 }
 
@@ -87,10 +59,9 @@ public class SingleTextureGeometry : GeometryBase
 
 Example of a cube geometry:
 
-vertices =
-[
-    // Each side has 2 triangles, each triangle has 3 vertices.
-    
+Each side has 2 triangles, each triangle has 3 vertices.
+
+vertices = [
     // Positions         Texture coords
     -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  // Front
      0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
@@ -136,6 +107,6 @@ vertices =
 ];
 
 // 36 = 6 sides * 2 triangles per side * 3 vertices per triangle.
-indicesCount = 36; 
+indices-count = 36; 
   
  */

@@ -12,7 +12,7 @@ public class SingleTexturePlaneWithIndices : SceneObjectBase
 {
     public SingleTexturePlaneWithIndices(IMaterial material, float textureScale = 1.0f)
     {
-        Geometry = new SingleTextureGeometry(
+        Geometry = new SingleTextureIndexedGeometry(
         [
             // Positions          Texture coords
             -0.5f, 0.0f,  0.5f,          0.0f,         0.0f,
