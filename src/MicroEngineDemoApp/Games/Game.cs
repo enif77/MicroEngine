@@ -18,7 +18,7 @@ using MicroEngine.Shaders;
 public class Game : IGame
 {
     private Scene? _scene;
-    private readonly List<Cube> _cubes = new();
+    private readonly List<ISceneObject> _cubes = new();
 
     public string Name => "game-with-cubes";
 
@@ -359,18 +359,15 @@ public class Game : IGame
     }
     
     
-    private Cube CreateCube(IMaterial material, Vector3 position)
+    private ISceneObject CreateCube(IMaterial material, Vector3 position)
     {
         var angle = 20.0f * _cubes.Count;
         
-        var cube = new Cube()
-        {
-            Material = material,
-            Position = position,
-            Rotation = new Vector3(1.0f * angle, 0.3f * angle, 0.5f * angle)
-        };
+        var cube = TexturedCubeGenerator.Generate(material);
+        cube.Position = position;
+        cube.Rotation = new Vector3(1.0f * angle, 0.3f * angle, 0.5f * angle);
         
-        cube.BuildGeometry();
+        cube.Geometry.Build(material.Shader);
         
         _cubes.Add(cube);
         
@@ -378,16 +375,13 @@ public class Game : IGame
     }
 
     
-    private Cube CreateLamp(IMaterial material, Vector3 position)
+    private ISceneObject CreateLamp(IMaterial material, Vector3 position)
     {
-        var lamp = new Cube()
-        {
-            Material = material,
-            Position = position,
-            Scale = 0.2f
-        };
+        var lamp = TexturedCubeGenerator.Generate(material);
+        lamp.Position = position;
+        lamp.Scale = 0.2f;
         
-        lamp.BuildGeometry();
+        lamp.Geometry.Build(material.Shader);
             
         _cubes.Add(lamp);
 

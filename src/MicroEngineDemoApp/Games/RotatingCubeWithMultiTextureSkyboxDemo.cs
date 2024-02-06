@@ -9,6 +9,7 @@ using OpenTK.Windowing.GraphicsLibraryFramework;
 using MicroEngine;
 using MicroEngine.Core;
 using MicroEngine.Extensions;
+using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Lights;
 using MicroEngine.Managers;
 using MicroEngine.Materials;
@@ -18,7 +19,7 @@ using MicroEngine.Shaders;
 public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
 {
     private Scene? _scene;
-    private Cube? _cube;
+    private ISceneObject? _cube;
     
     public string Name => "rotating-cube-demo-multitex-skybox";
     
@@ -186,7 +187,7 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
                 Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/py.jpg", TextureWrapMode.ClampToEdge),
                 Texture.LoadFromFile($"Resources/Textures/Skyboxes/{skyboxName}/ny.jpg", TextureWrapMode.ClampToEdge)
             ],
-            new MultiTextureShader());
+            new MultiTextureSkyboxShader());
         
         var skybox = new MultiTextureSkyboxWithIndices(material);
         
@@ -196,15 +197,12 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
     }
 
     
-    private Cube CreateCube(IMaterial material, Vector3 position)
+    private ISceneObject CreateCube(IMaterial material, Vector3 position)
     {
-        var cube = new Cube()
-        {
-            Material = material,
-            Position = position
-        };
+        var cube = TexturedCubeGenerator.Generate(material);
+        cube.Position = position;
         
-        cube.BuildGeometry();
+        cube.Geometry.Build(material.Shader);
         
         _cube = cube;
         

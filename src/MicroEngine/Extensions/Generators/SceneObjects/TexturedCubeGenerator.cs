@@ -1,18 +1,15 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.SceneObjects;
+namespace MicroEngine.Extensions.Generators.SceneObjects;
 
-using MicroEngine.Extensions;
 using MicroEngine.Geometries;
+using MicroEngine.SceneObjects;
 
-/// <summary>
-/// Cube.
-/// </summary>
-public class Cube : SceneObjectBase
+public static class TexturedCubeGenerator
 {
-    public Cube()
+    public static ISceneObject Generate(IMaterial material)
     {
-        Geometry = new DefaultGeometry(
+        return new GenericSceneObject(new DefaultGeometry(
         [
             // Each side has 2 triangles, each triangle has 3 vertices.
             
@@ -61,20 +58,9 @@ public class Cube : SceneObjectBase
         ],
         
         // 36 = 6 sides * 2 triangles per side * 3 vertices per triangle.
-        36);
-    }
-   
-    
-    private Scene? _scene;
-
-    public override void Render()
-    {
-        _scene ??= this.GetScene();
-        
-        Material.Shader.Use(_scene, this);
-        
-        Geometry.Render();
-        
-        base.Render();
+        36))
+        {
+            Material = material
+        };
     }
 }

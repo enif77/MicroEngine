@@ -162,16 +162,13 @@ public class ManySimpleCubesDemo : IGame
     }
 
     
-    private Cube CreateCube(IMaterial material, Vector3 position)
+    private ISceneObject CreateCube(IMaterial material, Vector3 position)
     {
-        var cube = new Cube()
-        {
-            Material = material,
-            Position = position,
-            Scale = 0.5f
-        };
+        var cube = TexturedCubeGenerator.Generate(material);
+        cube.Position = position;
+        cube.Scale = 0.5f;
         
-        cube.BuildGeometry();
+        cube.Geometry.Build(material.Shader);
         
         return cube;
     }
