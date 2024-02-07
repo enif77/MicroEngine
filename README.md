@@ -24,3 +24,9 @@ A miniature game engine written in C#, using OpenTk.
 - Resources manager.
 - Logging using ILogger.
 - Write documentation. :-)
+
+
+## Links
+
+- Camera: https://gamedev.stackexchange.com/questions/183748/3d-camera-rotation-unwanted-roll-space-flight-cam
+- Skybox: https://learnopengl.com/Advanced-OpenGL/Cubemaps
