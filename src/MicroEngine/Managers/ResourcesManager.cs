@@ -1,8 +1,8 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using OpenTK.Graphics.OpenGL4;
-
 namespace MicroEngine.Managers;
+
+using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Core;
 
