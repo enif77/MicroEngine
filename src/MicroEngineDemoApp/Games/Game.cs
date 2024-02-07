@@ -6,7 +6,6 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using MicroEngine;
-using MicroEngine.Core;
 using MicroEngine.Extensions;
 using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Lights;
@@ -17,12 +16,20 @@ using MicroEngine.Shaders;
 
 public class Game : IGame
 {
+    private readonly ResourcesManager _resourcesManager;
+    
     private Scene? _scene;
     private readonly List<ISceneObject> _cubes = new();
 
     public string Name => "game-with-cubes";
 
     public Camera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
+
+    
+    public Game(ResourcesManager resourcesManager)
+    {
+        _resourcesManager = resourcesManager ?? throw new ArgumentNullException(nameof(resourcesManager));
+    }
     
     
     public bool Initialize(int width, int height)
@@ -42,8 +49,8 @@ public class Game : IGame
         // TODO: Create the first cube and then clone it with setting position to cube clones.
         
         var cubeMaterial = new Material(
-            Texture.LoadFromFile("Resources/Textures/container2.png"),
-            Texture.LoadFromFile("Resources/Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
+            _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
             new DefaultShader());
         
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f)));

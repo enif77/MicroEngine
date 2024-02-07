@@ -7,7 +7,6 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using MicroEngine;
-using MicroEngine.Core;
 using MicroEngine.Extensions;
 using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Lights;
@@ -18,12 +17,19 @@ using MicroEngine.Shaders;
 
 public class RotatingCubeDemo : IGame
 {
+    private readonly ResourcesManager _resourcesManager;
     private Scene? _scene;
     private ISceneObject? _cube;
     
     public string Name => "rotating-cube-demo";
     
     public Camera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
+    
+    
+    public RotatingCubeDemo(ResourcesManager resourcesManager)
+    {
+        _resourcesManager = resourcesManager ?? throw new ArgumentNullException(nameof(resourcesManager));
+    } 
     
     
     public bool Initialize(int width, int height)
@@ -35,8 +41,8 @@ public class RotatingCubeDemo : IGame
 
         scene.AddChild(CreateCube(
             new Material(
-                Texture.LoadFromFile("Resources/Textures/container2.png"),
-                Texture.LoadFromFile("Resources/Textures/container2_specular.png"),
+                _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
+                _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
                 new DefaultShader()),
             new Vector3(0.0f, 0.0f, 0.0f)));
         
@@ -188,12 +194,12 @@ public class RotatingCubeDemo : IGame
     {
         var skybox = SkyboxGenerator.Generate(new MultiTextureMaterial(
             [
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/pz.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/px.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nz.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/nx.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
-                Texture.LoadFromFile($"Resources/Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
+                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/TestSkybox/pz.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/TestSkybox/px.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/TestSkybox/nz.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/TestSkybox/nx.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
             ],
             new MultiTextureSkyboxShader()));
         

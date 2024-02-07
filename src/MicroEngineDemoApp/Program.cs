@@ -1,7 +1,5 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine;
-
 namespace MicroEngineDemoApp;
 
 using Microsoft.Extensions.Configuration;
@@ -11,6 +9,9 @@ using Microsoft.Extensions.FileProviders.Physical;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
+
+using MicroEngine;
+using MicroEngine.Managers;
 
 using MicroEngineDemoApp.Games;
 
@@ -50,11 +51,11 @@ internal static class Program
         
         var games = new Dictionary<string, IGame>()
         {
-            { "game-with-cubes", new Game() },
-            { "rotating-cube-demo", new RotatingCubeDemo() },
-            { "minimal-rotating-cube-demo", new MinimalRotatingCubeDemo() },
-            { "rotating-cube-demo-multitex-skybox", new RotatingCubeWithMultiTextureSkyboxDemo() },
-            { "many-simple-cubes-demo", new ManySimpleCubesDemo() }
+            { "game-with-cubes", new Game(ResourcesManager.Instance) },
+            { "rotating-cube-demo", new RotatingCubeDemo(ResourcesManager.Instance) },
+            { "minimal-rotating-cube-demo", new MinimalRotatingCubeDemo(ResourcesManager.Instance) },
+            { "rotating-cube-demo-multitex-skybox", new RotatingCubeWithMultiTextureSkyboxDemo(ResourcesManager.Instance) },
+            { "many-simple-cubes-demo", new ManySimpleCubesDemo(ResourcesManager.Instance) }
         };
         
         var nativeWindowSettings = new NativeWindowSettings()

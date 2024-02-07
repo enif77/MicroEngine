@@ -6,7 +6,6 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using MicroEngine;
-using MicroEngine.Core;
 using MicroEngine.Extensions;
 using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Lights;
@@ -17,10 +16,17 @@ using MicroEngine.Shaders;
 
 public class ManySimpleCubesDemo : IGame
 {
+    private readonly ResourcesManager _resourcesManager;
     private Scene? _scene;
     
     public string Name => "many-simple-cubes-demo";
 
+    
+    public ManySimpleCubesDemo(ResourcesManager resourcesManager)
+    {
+        _resourcesManager = resourcesManager ?? throw new ArgumentNullException(nameof(resourcesManager));
+    }
+    
     
     public bool Initialize(int width, int height)
     {
@@ -30,8 +36,8 @@ public class ManySimpleCubesDemo : IGame
         scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate());
 
         var cubeMaterial = new Material(
-            Texture.LoadFromFile("Resources/Textures/container2.png"),
-            Texture.LoadFromFile("Resources/Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
+            _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
             new DefaultShader());
         
         // Generates 1000 cubes in a 10x10x10 grid.

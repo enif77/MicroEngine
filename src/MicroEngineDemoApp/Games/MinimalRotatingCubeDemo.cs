@@ -6,7 +6,6 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using MicroEngine;
-using MicroEngine.Core;
 using MicroEngine.Extensions;
 using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Managers;
@@ -16,12 +15,19 @@ using MicroEngine.Shaders;
 
 public class MinimalRotatingCubeDemo : IGame
 {
+    private readonly ResourcesManager _resourcesManager;
     private Scene? _scene;
     private ISceneObject? _cube;
     
     public string Name => "minimal-rotating-cube-demo";
     
     public Camera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
+    
+    
+    public MinimalRotatingCubeDemo(ResourcesManager resourcesManager)
+    {
+        _resourcesManager = resourcesManager ?? throw new ArgumentNullException(nameof(resourcesManager));
+    }
     
     
     public bool Initialize(int width, int height)
@@ -31,7 +37,7 @@ public class MinimalRotatingCubeDemo : IGame
         
         scene.AddChild(CreateCube(
             new SimpleTextureMaterial(
-                Texture.LoadFromFile("Resources/Textures/container2.png"),
+                _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
                 new SimpleTextureShader()),
             new Vector3(0.0f, 0.0f, 0.0f)));
         
