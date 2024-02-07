@@ -130,6 +130,10 @@ public class Game : IGame
     private bool _firstMove = true;
     private Vector2 _lastPos;
     
+    private float _cameraForwardSpeed = 0.0f;
+    private float _cameraSideSpeed = 0.0f;
+    private float _cameraVerticalSpeed = 0.0f;
+    
     public bool Update(float deltaTime)
     {
         if (_scene == null)
@@ -144,33 +148,80 @@ public class Game : IGame
             return false;
         }
         
-        const float cameraSpeed = 1.5f;
         const float sensitivity = 0.2f;
 
-        if (keyboardState.IsKeyDown(Keys.W))
-        {
-            _scene.Camera.Position += _scene.Camera.Front * cameraSpeed * deltaTime; // Forward
-        }
-        if (keyboardState.IsKeyDown(Keys.S))
-        {
-            _scene.Camera.Position -= _scene.Camera.Front * cameraSpeed * deltaTime; // Backwards
-        }
-        if (keyboardState.IsKeyDown(Keys.A))
-        {
-            _scene.Camera.Position -= _scene.Camera.Right * cameraSpeed * deltaTime; // Left
-        }
-        if (keyboardState.IsKeyDown(Keys.D))
-        {
-            _scene.Camera.Position += _scene.Camera.Right * cameraSpeed * deltaTime; // Right
-        }
         if (keyboardState.IsKeyDown(Keys.Space))
         {
-            _scene.Camera.Position += _scene.Camera.Up * cameraSpeed * deltaTime; // Up
+            _cameraForwardSpeed = 0.0f;
+            _cameraSideSpeed = 0.0f;
+            _cameraVerticalSpeed = 0.0f;
         }
+
+        // Forward/backward movement.
+        if (keyboardState.IsKeyDown(Keys.W))
+        {
+            _cameraForwardSpeed += 1 * deltaTime; // Forward
+            if (_cameraForwardSpeed > 5.0f)
+            {
+                _cameraForwardSpeed = 5.0f;
+            }
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.S))
+        {
+            _cameraForwardSpeed -= 1 * deltaTime; // Backwards
+            if (_cameraForwardSpeed < -4.0f)
+            {
+                _cameraForwardSpeed = -4.0f;
+            }
+        }
+        
+        _scene.Camera.Position += _scene.Camera.Front * _cameraForwardSpeed * deltaTime;
+        
+        
+        // Left/right movement.
+        if (keyboardState.IsKeyDown(Keys.A))
+        {
+            _cameraSideSpeed -= 0.5f * deltaTime;
+            if (_cameraSideSpeed < -3.0f)
+            {
+                _cameraSideSpeed = -3.0f;
+            }
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.D))
+        {
+            _cameraSideSpeed += 1 * deltaTime;
+            if (_cameraSideSpeed > 3.0f)
+            {
+                _cameraSideSpeed = 3.0f;
+            }
+        }
+        
+        _scene.Camera.Position += _scene.Camera.Right * _cameraSideSpeed * deltaTime;
+        
+        
+        // Up/down movement.
+        if (keyboardState.IsKeyDown(Keys.LeftControl))
+        {
+            _cameraVerticalSpeed -= 0.5f * deltaTime;
+            if (_cameraVerticalSpeed < -3.0f)
+            {
+                _cameraVerticalSpeed = -3.0f;
+            }
+        }
+        
         if (keyboardState.IsKeyDown(Keys.LeftShift))
         {
-            _scene.Camera.Position -= _scene.Camera.Up * cameraSpeed * deltaTime; // Down
+            _cameraVerticalSpeed += 0.5f * deltaTime;
+            if (_cameraVerticalSpeed > 3.0f)
+            {
+                _cameraVerticalSpeed = 3.0f;
+            }
         }
+        
+        _scene.Camera.Position += _scene.Camera.Up * _cameraVerticalSpeed * deltaTime;
+        
         
         var mouseState = InputManager.Instance.MouseState;
         
