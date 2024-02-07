@@ -45,7 +45,7 @@ public class Game2 : IGame
         
         #region Cubes
         
-        var map = ParseMap(Map);
+        var map = ParseMap(File.ReadAllText("Resources/Maps/Map10x10.txt"));
         
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
@@ -256,7 +256,7 @@ public class Game2 : IGame
 
     private int[] ParseMap(string map)
     {
-        var lines = map.Split('\n');
+        var lines = map.Replace("\r", string.Empty).Split('\n');
         var width = lines[0].Length;
         var height = lines.Length;
 
@@ -282,18 +282,6 @@ public class Game2 : IGame
 
         return result;
     }
-
-
-    private static readonly string Map = @"##########
-#...##.###
-###.##.###
-##..r....#
-##....##.#
-########.#
-#..##..l.#
-##.##.####
-#..l...l.#
-##########";
     
     #endregion
 }
