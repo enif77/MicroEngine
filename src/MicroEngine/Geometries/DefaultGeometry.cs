@@ -7,7 +7,7 @@ using OpenTK.Graphics.OpenGL4;
 using MicroEngine.Extensions;
 
 /// <summary>
-/// Cube.
+/// Default geometry with normals and texture.
 /// </summary>
 public class DefaultGeometry : GeometryBase
 {
@@ -27,21 +27,6 @@ public class DefaultGeometry : GeometryBase
         
         IndicesCount = indicesCount;
     }
-
-    /// <summary>
-    /// Constructor for a geometry with indices defined in a list.
-    /// </summary>
-    /// <param name="vertices">A list of vertices.</param>
-    /// <param name="indices">A list of indices.</param>
-    public DefaultGeometry(float[] vertices, uint[] indices) 
-        : base(vertices, indices)
-    {
-        IndicesCount = indices.Length;
-        _hasIndicesDefined = true;
-    }
-    
-    
-    private readonly bool _hasIndicesDefined;
     
     public override void Build(IShader forShader)
     {
@@ -51,12 +36,6 @@ public class DefaultGeometry : GeometryBase
         
         // Vertex buffer object.
         this.GenerateVertexBufferObject();
-        
-        // Element buffer object.
-        if (_hasIndicesDefined)
-        {
-            this.GenerateElementBufferObject();
-        }
         
         // Vertex attributes.
         this.GenerateVertexAttribPointerForPosition(forShader, 8);
@@ -72,15 +51,7 @@ public class DefaultGeometry : GeometryBase
     public override void Render()
     {
         GL.BindVertexArray(VertexArrayObject);
-
-        if (_hasIndicesDefined)
-        {
-            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);
-        }
-        else
-        {
-            GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
-        }
+        GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
     }
 }
 

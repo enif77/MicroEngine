@@ -90,10 +90,14 @@ public class Game : IGame
         
         #region plane
 
+        // var plane = TexturedPlaneGenerator.Generate(
+        //     new SimpleTextureMaterial(
+        //         Texture.LoadFromFile("Resources/Textures/container2.png"),
+        //         new SimpleTextureShader()),
+        //     10.0f);
+        
         var plane = TexturedPlaneGenerator.Generate(
-            new SimpleTextureMaterial(
-                Texture.LoadFromFile("Resources/Textures/container2.png"),
-                new SimpleTextureShader()),
+            cubeMaterial,
             10.0f);
         
         plane.Geometry.Build(plane.Material.Shader);
