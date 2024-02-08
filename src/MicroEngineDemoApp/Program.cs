@@ -57,6 +57,7 @@ internal static class Program
             { "rotating-cube-demo-multitex-skybox", new RotatingCubeWithMultiTextureSkyboxDemo(ResourcesManager.Instance) },
             { "many-simple-cubes-demo", new ManySimpleCubesDemo(ResourcesManager.Instance) },
             { "game-with-cubes2", new Game2(ResourcesManager.Instance) },
+            { "game-with-cubes3", new Game3(ResourcesManager.Instance) },
         };
         
         var nativeWindowSettings = new NativeWindowSettings()

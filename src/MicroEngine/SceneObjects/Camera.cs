@@ -13,13 +13,11 @@ using MicroEngine.Extensions;
 
 // TL;DR: This is just one of many ways in which we could have set up the camera.
 // Check out the web version if you don't know why we are doing a specific thing or want to know more about the code.
-public class Camera : SceneObjectBase
+public class Camera : SceneObjectBase, ICamera
 {
     // Those vectors are directions pointing outwards from the camera to define how it rotated.
     private Vector3 _front = -Vector3.UnitZ;
-
     private Vector3 _up = Vector3.UnitY;
-
     private Vector3 _right = Vector3.UnitX;
     
     // The field of view of the camera (radians)
@@ -68,6 +66,17 @@ public class Camera : SceneObjectBase
             UpdateVectors();
         }
     }
+    
+    // We convert from degrees to radians as soon as the property is set to improve performance.
+    public float Roll
+    {
+        get => MathHelper.RadiansToDegrees(Rotation.Z);
+        set
+        {
+            this.SetRotationZ(MathHelper.DegreesToRadians(value));
+            UpdateVectors();
+        }
+    }
 
     // The field of view (FOV) is the vertical angle of the camera view.
     // This has been discussed more in depth in a previous tutorial,
@@ -88,7 +97,7 @@ public class Camera : SceneObjectBase
     {
         return Matrix4.LookAt(Position, Position + _front, _up);
     }
-
+    
     // Get the projection matrix using the same method we have used up until this point
     public Matrix4 GetProjectionMatrix()
     {
@@ -96,33 +105,35 @@ public class Camera : SceneObjectBase
     }
 
     
-    public override void Update(float deltaTime)
-    {
-        if (NeedsModelMatrixUpdate)
-        {
-            // The view matrix gives us the rotation of the camera.
-            ModelMatrix = GetViewMatrix();
-
-            // We do not need to rotate the camera again - the view matrix is enough.
-            // ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
-            // ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
-            // ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
-
-            ModelMatrix *= Matrix4.CreateTranslation(Position);
-            
-            if (Parent != null)
-            {
-                ModelMatrix *= Parent.ModelMatrix;
-            }
-
-            NeedsModelMatrixUpdate = false;
-        }
-
-        foreach (var child in Children)
-        {
-            child.Update(deltaTime);
-        }
-    }
+    // public override void Update(float deltaTime)
+    // {
+    //     if (NeedsModelMatrixUpdate)
+    //     {
+    //         // The view matrix gives us the rotation of the camera.
+    //         ModelMatrix = GetViewMatrix();
+    //         
+    //         // ModelMatrix = Matrix4.CreateScale(Scale);
+    //         //
+    //         // // We do not need to rotate the camera again - the view matrix is enough.
+    //         // ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
+    //         // ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
+    //         // ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
+    //         
+    //         ModelMatrix *= Matrix4.CreateTranslation(Position);
+    //         
+    //         if (Parent != null)
+    //         {
+    //             ModelMatrix *= Parent.ModelMatrix;
+    //         }
+    //
+    //         NeedsModelMatrixUpdate = false;
+    //     }
+    //
+    //     foreach (var child in Children)
+    //     {
+    //         child.Update(deltaTime);
+    //     }
+    // }
     
     
     // This function is going to update the direction vertices using some of the math learned in the web tutorials.

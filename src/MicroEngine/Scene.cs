@@ -25,7 +25,7 @@ public class Scene : SceneObjectBase
     /// A primary camera for the scene.
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown, if the value is going to be set to null.</exception>
-    public Camera Camera { get; }
+    public ICamera Camera { get; }
     
     /// <summary>
     /// An optional skybox used by this scene.
@@ -48,7 +48,7 @@ public class Scene : SceneObjectBase
     /// </summary>
     /// <param name="camera">A primary scene camera.</param>
     /// <param name="maxLights">A maximum of supported lights. 16 by default.</param>
-    public Scene(Camera camera, int maxLights = 16)
+    public Scene(ICamera camera, int maxLights = 16)
     {
         Camera = camera ?? throw new ArgumentNullException(nameof(camera));
         Camera.Parent = this;

@@ -22,7 +22,7 @@ public class Game2 : IGame
 
     public string Name => "game-with-cubes-2";
 
-    public Camera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
+    public ICamera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
 
     
     public Game2(ResourcesManager resourcesManager)
@@ -160,29 +160,31 @@ public class Game2 : IGame
         const float cameraSpeed = 1.5f;
         const float sensitivity = 0.2f;
 
+        var camera = (Camera)_scene.Camera;
+        
         if (keyboardState.IsKeyDown(Keys.W))
         {
-            _scene.Camera.Position += _scene.Camera.Front * cameraSpeed * deltaTime; // Forward
+            _scene.Camera.Position += camera.Front * cameraSpeed * deltaTime; // Forward
         }
         if (keyboardState.IsKeyDown(Keys.S))
         {
-            _scene.Camera.Position -= _scene.Camera.Front * cameraSpeed * deltaTime; // Backwards
+            _scene.Camera.Position -= camera.Front * cameraSpeed * deltaTime; // Backwards
         }
         if (keyboardState.IsKeyDown(Keys.A))
         {
-            _scene.Camera.Position -= _scene.Camera.Right * cameraSpeed * deltaTime; // Left
+            _scene.Camera.Position -= camera.Right * cameraSpeed * deltaTime; // Left
         }
         if (keyboardState.IsKeyDown(Keys.D))
         {
-            _scene.Camera.Position += _scene.Camera.Right * cameraSpeed * deltaTime; // Right
+            _scene.Camera.Position += camera.Right * cameraSpeed * deltaTime; // Right
         }
         if (keyboardState.IsKeyDown(Keys.Space))
         {
-            _scene.Camera.Position += _scene.Camera.Up * cameraSpeed * deltaTime; // Up
+            _scene.Camera.Position += camera.Up * cameraSpeed * deltaTime; // Up
         }
         if (keyboardState.IsKeyDown(Keys.LeftShift))
         {
-            _scene.Camera.Position -= _scene.Camera.Up * cameraSpeed * deltaTime; // Down
+            _scene.Camera.Position -= camera.Up * cameraSpeed * deltaTime; // Down
         }
         
         var mouseState = InputManager.Instance.MouseState;
@@ -198,8 +200,8 @@ public class Game2 : IGame
             var deltaY = mouseState.Y - _lastPos.Y;
             _lastPos = new Vector2(mouseState.X, mouseState.Y);
 
-            _scene.Camera.Yaw += deltaX * sensitivity;
-            _scene.Camera.Pitch -= deltaY * sensitivity;
+            camera.Yaw += deltaX * sensitivity;
+            camera.Pitch -= deltaY * sensitivity;
         }
 
         
@@ -227,7 +229,7 @@ public class Game2 : IGame
             throw new InvalidOperationException("The scene is not initialized.");
         }
         
-        _scene.Camera.AspectRatio = aspectRatio;
+        ((Camera)_scene.Camera).AspectRatio = aspectRatio;
     }
     
     
