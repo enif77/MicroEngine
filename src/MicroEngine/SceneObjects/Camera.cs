@@ -4,6 +4,8 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.Extensions;
+
 // This is the camera class as it could be set up after the tutorials on the website.
 // It is important to note there are a few ways you could have set up this camera.
 // For example, you could have also managed the player input inside the camera class,
@@ -19,24 +21,19 @@ public class Camera : SceneObjectBase
     private Vector3 _up = Vector3.UnitY;
 
     private Vector3 _right = Vector3.UnitX;
-
-    // Rotation around the X axis (radians)
-    private float _pitch;
-
-    // Rotation around the Y axis (radians)
-    private float _yaw = -MathHelper.PiOver2; // Without this, you would be started rotated 90 degrees right.
-
+    
     // The field of view of the camera (radians)
     private float _fov = MathHelper.PiOver2;
 
+    
     public Camera(Vector3 position, float aspectRatio)
     {
         Position = position;
+        Rotation = new Vector3(0f, -MathHelper.PiOver2, 0f);
         AspectRatio = aspectRatio;
     }
-
-    // The position of the camera is inherited from the SceneObject class.
-
+    
+    
     // This is simply the aspect ratio of the viewport, used for the projection matrix.
     public float AspectRatio { private get; set; }
 
@@ -49,14 +46,14 @@ public class Camera : SceneObjectBase
     // We convert from degrees to radians as soon as the property is set to improve performance.
     public float Pitch
     {
-        get => MathHelper.RadiansToDegrees(_pitch);
+        get => MathHelper.RadiansToDegrees(Rotation.X);
         set
         {
             // We clamp the pitch value between -89 and 89 to prevent the camera from going upside down, and a bunch
             // of weird "bugs" when you are using euler angles for rotation.
             // If you want to read more about this you can try researching a topic called gimbal lock
             var angle = MathHelper.Clamp(value, -89f, 89f);
-            _pitch = MathHelper.DegreesToRadians(angle);
+            this.SetRotationX(MathHelper.DegreesToRadians(angle));
             UpdateVectors();
         }
     }
@@ -64,10 +61,10 @@ public class Camera : SceneObjectBase
     // We convert from degrees to radians as soon as the property is set to improve performance.
     public float Yaw
     {
-        get => MathHelper.RadiansToDegrees(_yaw);
+        get => MathHelper.RadiansToDegrees(Rotation.Y);
         set
         {
-            _yaw = MathHelper.DegreesToRadians(value);
+            this.SetRotationY(MathHelper.DegreesToRadians(value));
             UpdateVectors();
         }
     }
@@ -131,10 +128,13 @@ public class Camera : SceneObjectBase
     // This function is going to update the direction vertices using some of the math learned in the web tutorials.
     private void UpdateVectors()
     {
+        var pitch = Rotation.X;
+        var yaw = Rotation.Y;
+        
         // First, the front matrix is calculated using some basic trigonometry.
-        _front.X = MathF.Cos(_pitch) * MathF.Cos(_yaw);
-        _front.Y = MathF.Sin(_pitch);
-        _front.Z = MathF.Cos(_pitch) * MathF.Sin(_yaw);
+        _front.X = MathF.Cos(pitch) * MathF.Cos(yaw);
+        _front.Y = MathF.Sin(pitch);
+        _front.Z = MathF.Cos(pitch) * MathF.Sin(yaw);
 
         // We need to make sure the vectors are all normalized, as otherwise we would get some funky results.
         _front = Vector3.Normalize(_front);
@@ -144,9 +144,6 @@ public class Camera : SceneObjectBase
         // not be what you need for all cameras so keep this in mind if you do not want a FPS camera.
         _right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
         _up = Vector3.Normalize(Vector3.Cross(_right, _front));
-        
-        // Set the rotation angles based on the new direction vectors.
-        Rotation = new Vector3(_pitch, _yaw, 0f);
         
         NeedsModelMatrixUpdate = true;
     }
