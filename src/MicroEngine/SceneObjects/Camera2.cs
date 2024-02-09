@@ -13,6 +13,9 @@ public class Camera2 : SceneObjectBase, ICamera
     private Vector3 _rightVector = Vector3.UnitX;
     
     
+    public Vector3 Direction => _viewDirection;
+    
+    
     // This is simply the aspect ratio of the viewport, used for the projection matrix.
     public float AspectRatio { private get; set; }
     
@@ -143,6 +146,8 @@ public class Camera2 : SceneObjectBase, ICamera
 }
 
 /*
+ 
+https://cboard.cprogramming.com/game-programming/135390-how-properly-move-strafe-yaw-pitch-camera-opengl-glut-using-glulookat.html
  
 https://tuttlem.github.io/2013/12/30/a-camera-implementation-in-c.html 
 https://gamedev.stackexchange.com/questions/136174/im-rotating-an-object-on-two-axes-so-why-does-it-keep-twisting-around-the-thir

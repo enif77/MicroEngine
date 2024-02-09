@@ -41,6 +41,10 @@ public class Camera : SceneObjectBase, ICamera
 
     public Vector3 Right => _right;
 
+    
+    public Vector3 Direction => _front;
+    
+    
     // We convert from degrees to radians as soon as the property is set to improve performance.
     public float Pitch
     {

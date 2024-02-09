@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using MicroEngine.SceneObjects;
+
 namespace MicroEngine.Lights;
 
 using OpenTK.Mathematics;
@@ -44,16 +46,18 @@ public class SpotLight : PointLight
                 Position = Parent.Position;
                 Rotation = Parent.Rotation;
                 
-                // This uses the pitch (X) and yaw (Y) angles to calculate the front vector.
-                // We ignore the roll angle (Z), because our light is a circle..
-                var front = new Vector3
-                {
-                    X = MathF.Cos(Rotation.X) * MathF.Cos(Rotation.Y),
-                    Y = MathF.Sin(Rotation.X),
-                    Z = MathF.Cos(Rotation.X) * MathF.Sin(Rotation.Y)
-                };
+                // // This uses the pitch (X) and yaw (Y) angles to calculate the front vector.
+                // // We ignore the roll angle (Z), because our light is a circle..
+                // var front = new Vector3
+                // {
+                //     X = MathF.Cos(Rotation.X) * MathF.Cos(Rotation.Y),
+                //     Y = MathF.Sin(Rotation.X),
+                //     Z = MathF.Cos(Rotation.X) * MathF.Sin(Rotation.Y)
+                // };
                 
-                Direction = Vector3.Normalize(front);
+                //Direction = Vector3.Normalize(front);
+                
+                Direction = ((ICamera)Parent).Direction;
             }
             
             ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);

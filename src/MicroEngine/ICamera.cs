@@ -9,6 +9,11 @@ using OpenTK.Mathematics;
 /// </summary>
 public interface ICamera : ISceneObject
 {
+    /// <summary>
+    /// Where the camera is looking at.
+    /// </summary>
+    Vector3 Direction { get; }
+    
     // Get the view matrix using the amazing LookAt function described more in depth on the web tutorials
     Matrix4 GetViewMatrix();
     

@@ -160,26 +160,26 @@ public class Game3 : IGame
         }
 
         
-        var camera = (Camera2)_scene.Camera;
+        var camera = (Camera3)_scene.Camera;
         
         
         // Forward/backward movement.
         if (keyboardState.IsKeyDown(Keys.W))
         {
-            _cameraForwardSpeed += 0.01f * deltaTime; // Forward
-            if (_cameraForwardSpeed > 0.5f)
+            _cameraForwardSpeed += 0.2f * deltaTime; // Forward
+            if (_cameraForwardSpeed > 3.5f)
             {
-                _cameraForwardSpeed = 0.5f;
+                _cameraForwardSpeed = 3.5f;
             }
             
             //_cameraMovementVector += _scene.Camera.Front * (_cameraForwardSpeed * deltaTime);
-            camera.Advance(_cameraForwardSpeed * deltaTime);
+            //camera.Advance(-_cameraForwardSpeed * deltaTime);
         }
         else
         {
             if (_cameraForwardSpeed > 0.0f)
             {
-                _cameraForwardSpeed -= 0.01f * deltaTime;
+                _cameraForwardSpeed -= 0.1f * deltaTime;
                 if (_cameraForwardSpeed < 0.0f)
                 {
                     _cameraForwardSpeed = 0.0f;
@@ -189,20 +189,20 @@ public class Game3 : IGame
         
         if (keyboardState.IsKeyDown(Keys.S))
         {
-            _cameraForwardSpeed -= 0.01f * deltaTime; // Backwards
-            if (_cameraForwardSpeed < -0.5f)
+            _cameraForwardSpeed -= 0.2f * deltaTime; // Backwards
+            if (_cameraForwardSpeed < -3.5f)
             {
-                _cameraForwardSpeed = -0.5f;
+                _cameraForwardSpeed = -3.5f;
             }
             
             //_cameraMovementVector += _scene.Camera.Front * (_cameraForwardSpeed * deltaTime);
-            camera.Advance(_cameraForwardSpeed * deltaTime);
+            //camera.Advance(-_cameraForwardSpeed * deltaTime);
         }
         else
         {
             if (_cameraForwardSpeed < 0.0f)
             {
-                _cameraForwardSpeed += 0.01f * deltaTime;
+                _cameraForwardSpeed += 0.1f * deltaTime;
                 if (_cameraForwardSpeed > 0.0f)
                 {
                     _cameraForwardSpeed = 0.0f;
@@ -210,24 +210,26 @@ public class Game3 : IGame
             }
         }
         
+        camera.Advance(-_cameraForwardSpeed * deltaTime);
+        
         
         // Left/right movement.
         if (keyboardState.IsKeyDown(Keys.A))
         {
-            _cameraSideSpeed -= 0.01f * deltaTime;
-            if (_cameraSideSpeed < -0.5f)
+            _cameraSideSpeed -= 0.2f * deltaTime;
+            if (_cameraSideSpeed < -3.5f)
             {
-                _cameraSideSpeed = -0.5f;
+                _cameraSideSpeed = -3.5f;
             }
             
             //_cameraMovementVector += _scene.Camera.Right * (_cameraSideSpeed * deltaTime);
-            camera.Strafe(_cameraSideSpeed * deltaTime);
+            //camera.Strafe(_cameraSideSpeed * deltaTime);
         }
         else
         {
             if (_cameraSideSpeed < 0.0f)
             {
-                _cameraSideSpeed += 0.01f * deltaTime;
+                _cameraSideSpeed += 0.1f * deltaTime;
                 if (_cameraSideSpeed > 0.0f)
                 {
                     _cameraSideSpeed = 0.0f;
@@ -237,20 +239,20 @@ public class Game3 : IGame
         
         if (keyboardState.IsKeyDown(Keys.D))
         {
-            _cameraSideSpeed += 0.01f * deltaTime;
-            if (_cameraSideSpeed > 0.5f)
+            _cameraSideSpeed += 0.2f * deltaTime;
+            if (_cameraSideSpeed > 3.5f)
             {
-                _cameraSideSpeed = 0.5f;
+                _cameraSideSpeed = 3.5f;
             }
             
             //_cameraMovementVector += _scene.Camera.Right * (_cameraSideSpeed * deltaTime);
-            camera.Strafe(_cameraSideSpeed * deltaTime);
+            //camera.Strafe(_cameraSideSpeed * deltaTime);
         }
         else
         {
             if (_cameraSideSpeed > 0.0f)
             {
-                _cameraSideSpeed -= 0.01f * deltaTime;
+                _cameraSideSpeed -= 0.1f * deltaTime;
                 if (_cameraSideSpeed < 0.0f)
                 {
                     _cameraSideSpeed = 0.0f;
@@ -258,24 +260,26 @@ public class Game3 : IGame
             }
         }
         
+        camera.Strafe(_cameraSideSpeed * deltaTime);
+        
         
         // Up/down movement.
         if (keyboardState.IsKeyDown(Keys.LeftControl))
         {
-            _cameraVerticalSpeed -= 0.01f * deltaTime;
-            if (_cameraVerticalSpeed < -0.5f)
+            _cameraVerticalSpeed -= 0.2f * deltaTime;
+            if (_cameraVerticalSpeed < -3.5f)
             {
-                _cameraVerticalSpeed = -0.5f;
+                _cameraVerticalSpeed = -3.5f;
             }
             
             //_cameraMovementVector += _scene.Camera.Up * (_cameraVerticalSpeed * deltaTime);
-            camera.Ascend(_cameraVerticalSpeed * deltaTime);
+            //camera.Ascend(_cameraVerticalSpeed * deltaTime);
         }
         else
         {
             if (_cameraVerticalSpeed < 0.0f)
             {
-                _cameraVerticalSpeed += 0.01f * deltaTime;
+                _cameraVerticalSpeed += 0.1f * deltaTime;
                 if (_cameraVerticalSpeed > 0.0f)
                 {
                     _cameraVerticalSpeed = 0.0f;
@@ -285,27 +289,39 @@ public class Game3 : IGame
         
         if (keyboardState.IsKeyDown(Keys.LeftShift))
         {
-            _cameraVerticalSpeed += 0.01f * deltaTime;
-            if (_cameraVerticalSpeed > 0.5f)
+            _cameraVerticalSpeed += 0.2f * deltaTime;
+            if (_cameraVerticalSpeed > 3.5f)
             {
-                _cameraVerticalSpeed = 0.5f;
+                _cameraVerticalSpeed = 3.5f;
             }
             
             //_cameraMovementVector += _scene.Camera.Up * (_cameraVerticalSpeed * deltaTime);
-            camera.Ascend(_cameraVerticalSpeed * deltaTime);
+            //camera.Ascend(_cameraVerticalSpeed * deltaTime);
         }
         else
         {
             if (_cameraVerticalSpeed > 0.0f)
             {
-                _cameraVerticalSpeed -= 0.01f * deltaTime;
+                _cameraVerticalSpeed -= 0.1f * deltaTime;
                 if (_cameraVerticalSpeed < 0.0f)
                 {
                     _cameraVerticalSpeed = 0.0f;
                 }    
             }
         }
+        
+        camera.Ascend(_cameraVerticalSpeed * deltaTime);
 
+        
+        if (keyboardState.IsKeyDown(Keys.Q))
+        {
+            camera.Roll(-60f * deltaTime);
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.E))
+        {
+            camera.Roll(60f * deltaTime);
+        }
         
         //_scene.Camera.Position += _cameraMovementVector;
         
@@ -322,8 +338,9 @@ public class Game3 : IGame
             var deltaX = mouseState.X - _lastPos.X;
             var deltaY = mouseState.Y - _lastPos.Y;
             _lastPos = new Vector2(mouseState.X, mouseState.Y);
-
-            camera.Yaw(-deltaX * sensitivity);
+            
+            camera.Roll(deltaX * sensitivity);
+            //camera.Yaw(deltaX * sensitivity);
             camera.Pitch(deltaY * sensitivity);
         }
 
@@ -357,12 +374,12 @@ public class Game3 : IGame
     
     #region creators and generators
 
-    private Camera2 CreateCamera(int windowWidth, int windowHeight)
+    private ICamera CreateCamera(int windowWidth, int windowHeight)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new Camera2(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
+        return new Camera3(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
     }
     
     
