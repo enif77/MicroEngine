@@ -132,6 +132,10 @@ public class Game3 : IGame
     private float _cameraSideSpeed = 0.0f;
     private float _cameraVerticalSpeed = 0.0f;
     
+    private float _cameraYawSpeed = 0.0f;
+    private float _cameraRollSpeed = 0.0f;
+    private float _cameraPitchSpeed = 0.0f;
+    
     //private Vector3 _cameraMovementVector = Vector3.Zero;
     
     public bool Update(float deltaTime)
@@ -156,6 +160,10 @@ public class Game3 : IGame
             _cameraSideSpeed = 0.0f;
             _cameraVerticalSpeed = 0.0f;
             
+            _cameraYawSpeed = 0.0f;
+            _cameraRollSpeed = 0.0f;
+            _cameraPitchSpeed = 0.0f;
+            
             //_cameraMovementVector = Vector3.Zero;
         }
 
@@ -164,164 +172,36 @@ public class Game3 : IGame
         
         
         // Forward/backward movement.
-        if (keyboardState.IsKeyDown(Keys.W))
-        {
-            _cameraForwardSpeed += 0.2f * deltaTime; // Forward
-            if (_cameraForwardSpeed > 3.5f)
-            {
-                _cameraForwardSpeed = 3.5f;
-            }
-            
-            //_cameraMovementVector += _scene.Camera.Front * (_cameraForwardSpeed * deltaTime);
-            //camera.Advance(-_cameraForwardSpeed * deltaTime);
-        }
-        else
-        {
-            if (_cameraForwardSpeed > 0.0f)
-            {
-                _cameraForwardSpeed -= 0.1f * deltaTime;
-                if (_cameraForwardSpeed < 0.0f)
-                {
-                    _cameraForwardSpeed = 0.0f;
-                }    
-            }
-        }
-        
-        if (keyboardState.IsKeyDown(Keys.S))
-        {
-            _cameraForwardSpeed -= 0.2f * deltaTime; // Backwards
-            if (_cameraForwardSpeed < -3.5f)
-            {
-                _cameraForwardSpeed = -3.5f;
-            }
-            
-            //_cameraMovementVector += _scene.Camera.Front * (_cameraForwardSpeed * deltaTime);
-            //camera.Advance(-_cameraForwardSpeed * deltaTime);
-        }
-        else
-        {
-            if (_cameraForwardSpeed < 0.0f)
-            {
-                _cameraForwardSpeed += 0.1f * deltaTime;
-                if (_cameraForwardSpeed > 0.0f)
-                {
-                    _cameraForwardSpeed = 0.0f;
-                }    
-            }
-        }
-        
+        _cameraForwardSpeed = UpdateSpeed(_cameraForwardSpeed, keyboardState.IsKeyDown(Keys.W), 0.2f, 0.01f, 3.5f, deltaTime);
+        _cameraForwardSpeed = UpdateSpeed(_cameraForwardSpeed, keyboardState.IsKeyDown(Keys.S), -0.2f, 0.01f, 3.5f, deltaTime);
         camera.Advance(-_cameraForwardSpeed * deltaTime);
         
-        
         // Left/right movement.
-        if (keyboardState.IsKeyDown(Keys.A))
-        {
-            _cameraSideSpeed -= 0.2f * deltaTime;
-            if (_cameraSideSpeed < -3.5f)
-            {
-                _cameraSideSpeed = -3.5f;
-            }
-            
-            //_cameraMovementVector += _scene.Camera.Right * (_cameraSideSpeed * deltaTime);
-            //camera.Strafe(_cameraSideSpeed * deltaTime);
-        }
-        else
-        {
-            if (_cameraSideSpeed < 0.0f)
-            {
-                _cameraSideSpeed += 0.1f * deltaTime;
-                if (_cameraSideSpeed > 0.0f)
-                {
-                    _cameraSideSpeed = 0.0f;
-                }    
-            }
-        }
-        
-        if (keyboardState.IsKeyDown(Keys.D))
-        {
-            _cameraSideSpeed += 0.2f * deltaTime;
-            if (_cameraSideSpeed > 3.5f)
-            {
-                _cameraSideSpeed = 3.5f;
-            }
-            
-            //_cameraMovementVector += _scene.Camera.Right * (_cameraSideSpeed * deltaTime);
-            //camera.Strafe(_cameraSideSpeed * deltaTime);
-        }
-        else
-        {
-            if (_cameraSideSpeed > 0.0f)
-            {
-                _cameraSideSpeed -= 0.1f * deltaTime;
-                if (_cameraSideSpeed < 0.0f)
-                {
-                    _cameraSideSpeed = 0.0f;
-                }    
-            }
-        }
-        
-        camera.Strafe(_cameraSideSpeed * deltaTime);
-        
+        _cameraSideSpeed = UpdateSpeed(_cameraSideSpeed, keyboardState.IsKeyDown(Keys.A), 0.2f, 0.01f, 3.5f, deltaTime);
+        _cameraSideSpeed = UpdateSpeed(_cameraSideSpeed, keyboardState.IsKeyDown(Keys.D), -0.2f, 0.01f, 3.5f, deltaTime);
+        camera.Strafe(-_cameraSideSpeed * deltaTime);
         
         // Up/down movement.
-        if (keyboardState.IsKeyDown(Keys.LeftControl))
-        {
-            _cameraVerticalSpeed -= 0.2f * deltaTime;
-            if (_cameraVerticalSpeed < -3.5f)
-            {
-                _cameraVerticalSpeed = -3.5f;
-            }
-            
-            //_cameraMovementVector += _scene.Camera.Up * (_cameraVerticalSpeed * deltaTime);
-            //camera.Ascend(_cameraVerticalSpeed * deltaTime);
-        }
-        else
-        {
-            if (_cameraVerticalSpeed < 0.0f)
-            {
-                _cameraVerticalSpeed += 0.1f * deltaTime;
-                if (_cameraVerticalSpeed > 0.0f)
-                {
-                    _cameraVerticalSpeed = 0.0f;
-                }    
-            }
-        }
-        
-        if (keyboardState.IsKeyDown(Keys.LeftShift))
-        {
-            _cameraVerticalSpeed += 0.2f * deltaTime;
-            if (_cameraVerticalSpeed > 3.5f)
-            {
-                _cameraVerticalSpeed = 3.5f;
-            }
-            
-            //_cameraMovementVector += _scene.Camera.Up * (_cameraVerticalSpeed * deltaTime);
-            //camera.Ascend(_cameraVerticalSpeed * deltaTime);
-        }
-        else
-        {
-            if (_cameraVerticalSpeed > 0.0f)
-            {
-                _cameraVerticalSpeed -= 0.1f * deltaTime;
-                if (_cameraVerticalSpeed < 0.0f)
-                {
-                    _cameraVerticalSpeed = 0.0f;
-                }    
-            }
-        }
-        
-        camera.Ascend(_cameraVerticalSpeed * deltaTime);
+        _cameraVerticalSpeed = UpdateSpeed(_cameraVerticalSpeed, keyboardState.IsKeyDown(Keys.LeftControl), 0.2f, 0.01f, 3.5f, deltaTime);
+        _cameraVerticalSpeed = UpdateSpeed(_cameraVerticalSpeed, keyboardState.IsKeyDown(Keys.LeftShift), -0.2f, 0.01f, 3.5f, deltaTime);
+        camera.Ascend(-_cameraVerticalSpeed * deltaTime);
 
         
-        if (keyboardState.IsKeyDown(Keys.Q))
-        {
-            camera.Roll(-60f * deltaTime);
-        }
+        // Yaw rotation.
+        _cameraYawSpeed = UpdateSpeed(_cameraYawSpeed, keyboardState.IsKeyDown(Keys.Q), 40f, 4.0f, 120f, deltaTime);
+        _cameraYawSpeed = UpdateSpeed(_cameraYawSpeed, keyboardState.IsKeyDown(Keys.E), -40f, 4.0f, 120f, deltaTime);
+        camera.Yaw(_cameraYawSpeed * deltaTime);
         
-        if (keyboardState.IsKeyDown(Keys.E))
-        {
-            camera.Roll(60f * deltaTime);
-        }
+        // Roll rotation.
+        _cameraRollSpeed = UpdateSpeed(_cameraRollSpeed, keyboardState.IsKeyDown(Keys.Left), 40f, 4.0f, 120f, deltaTime);
+        _cameraRollSpeed = UpdateSpeed(_cameraRollSpeed, keyboardState.IsKeyDown(Keys.Right), -40f, 4.0f, 120f, deltaTime);
+        camera.Roll(-_cameraRollSpeed * deltaTime);
+        
+        // Pitch rotation.
+        _cameraPitchSpeed = UpdateSpeed(_cameraPitchSpeed, keyboardState.IsKeyDown(Keys.Up), 40f, 4.0f, 120f, deltaTime);
+        _cameraPitchSpeed = UpdateSpeed(_cameraPitchSpeed, keyboardState.IsKeyDown(Keys.Down), -40f, 4.0f, 120f, deltaTime);
+        camera.Pitch(-_cameraPitchSpeed * deltaTime);
+        
         
         //_scene.Camera.Position += _cameraMovementVector;
         
@@ -363,13 +243,56 @@ public class Game3 : IGame
 
     public void SetCameraAspectRatio(float aspectRatio)
     {
-        // if (_scene == null)
-        // {
-        //     throw new InvalidOperationException("The scene is not initialized.");
-        // }
-        //
-        // _scene.Camera.AspectRatio = aspectRatio;
+        if (_scene == null)
+        {
+            throw new InvalidOperationException("The scene is not initialized.");
+        }
+        
+        _scene.Camera.AspectRatio = aspectRatio;
     }
+    
+    
+    #region physics
+
+    private float UpdateSpeed(float currentSpeed, bool accelerate, float acceleration, float decceleration, float maxSpeed, float deltaTime)
+    {
+        var speed = currentSpeed;
+        if (accelerate)
+        {
+            speed += acceleration * deltaTime;
+            if (Math.Abs(speed) > maxSpeed)
+            {
+                speed = (acceleration < 0)
+                    ? -maxSpeed
+                    : maxSpeed;
+            }
+
+            return speed;
+        }
+        
+        // Flying forward, but not accelerating.
+        if (speed > 0.0f && acceleration > 0.0f)
+        {
+            speed -= decceleration * deltaTime;
+            if (speed < 0.0f)
+            {
+                speed = 0.0f;
+            }    
+        }
+        // Flying backward, but not accelerating.
+        else if (speed < 0.0f && acceleration < 0.0f)
+        {
+            speed += decceleration * deltaTime;
+            if (speed > 0.0f)
+            {
+                speed = 0.0f;
+            }    
+        }
+
+        return speed;
+    }
+
+    #endregion
     
     
     #region creators and generators

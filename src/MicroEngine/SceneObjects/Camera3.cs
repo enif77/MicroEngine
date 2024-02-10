@@ -14,7 +14,7 @@ public class Camera3 : SceneObjectBase, ICamera
     
     
     // This is simply the aspect ratio of the viewport, used for the projection matrix.
-    public float AspectRatio { private get; set; }
+    public float AspectRatio { get; set; }
     
     
     public Vector3 Direction => _viewDirection;

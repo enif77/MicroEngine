@@ -10,6 +10,11 @@ using OpenTK.Mathematics;
 public interface ICamera : ISceneObject
 {
     /// <summary>
+    /// Aspect ratio of the camera.
+    /// </summary>
+    float AspectRatio { get; set; }
+    
+    /// <summary>
     /// Where the camera is looking at.
     /// </summary>
     Vector3 Direction { get; }
