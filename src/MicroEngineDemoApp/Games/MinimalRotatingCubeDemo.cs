@@ -130,7 +130,7 @@ public class MinimalRotatingCubeDemo : IGame
         var cube = TexturedCubeGenerator.Generate(material);
         cube.Position = position;
         
-        cube.Geometry.Build(material.Shader);
+        cube.BuildGeometry();
         
         _cube = cube;
         

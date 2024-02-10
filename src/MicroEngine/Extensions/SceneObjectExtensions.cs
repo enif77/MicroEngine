@@ -94,4 +94,13 @@ public static class SceneObjectExtensions
         child.Parent = sceneObject;
         sceneObject.Children.Add(child);
     }
+    
+    /// <summary>
+    /// Generates OpenGL buffers for this objects geometry. 
+    /// </summary>
+    /// <param name="sceneObject"></param>
+    public static void BuildGeometry(this ISceneObject sceneObject)
+    {
+        sceneObject.Geometry.Build(sceneObject.Material.Shader);
+    }
 }

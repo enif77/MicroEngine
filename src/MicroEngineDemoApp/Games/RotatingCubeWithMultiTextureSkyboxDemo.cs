@@ -199,7 +199,7 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
         
         var skybox = SkyboxGenerator.Generate(material);
         
-        skybox.Geometry.Build(skybox.Material.Shader);
+        skybox.BuildGeometry();
         
         return skybox;
     }
@@ -210,7 +210,7 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
         var cube = TexturedCubeGenerator.Generate(material);
         cube.Position = position;
         
-        cube.Geometry.Build(material.Shader);
+        cube.BuildGeometry();
         
         _cube = cube;
         

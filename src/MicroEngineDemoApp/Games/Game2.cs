@@ -74,7 +74,8 @@ public class Game2 : IGame
                     {
                         var cube = TexturedCubeGenerator.Generate(cubeMaterial);
                         cube.Position = new Vector3(x, 0, z);
-                        cube.Geometry.Build(cubeMaterial.Shader);
+                        
+                        cube.BuildGeometry();
                         
                         scene.AddChild(cube);
                         break;
@@ -119,7 +120,7 @@ public class Game2 : IGame
             cubeMaterial,
             10.0f);
         
-        plane.Geometry.Build(plane.Material.Shader);
+        plane.BuildGeometry();
         
         plane.Position = new Vector3(4.5f, -0.5f, 4.5f);
         plane.Scale = 10.0f;
@@ -250,7 +251,7 @@ public class Game2 : IGame
         lamp.Position = position;
         lamp.Scale = 0.2f;
         
-        lamp.Geometry.Build(material.Shader);
+        lamp.BuildGeometry();
 
         return lamp;
     }

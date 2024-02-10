@@ -176,7 +176,7 @@ public class ManySimpleCubesDemo : IGame
         cube.Position = position;
         cube.Scale = 0.5f;
         
-        cube.Geometry.Build(material.Shader);
+        cube.BuildGeometry();
         
         return cube;
     }

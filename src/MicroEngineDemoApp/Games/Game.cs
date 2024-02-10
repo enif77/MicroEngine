@@ -107,7 +107,7 @@ public class Game : IGame
             cubeMaterial,
             10.0f);
         
-        plane.Geometry.Build(plane.Material.Shader);
+        plane.BuildGeometry();
         
         plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
         plane.Scale = 50.0f;
@@ -469,7 +469,7 @@ public class Game : IGame
         subCube.Position = new Vector3(2, 0, 0);
         subCube.Scale = 0.5f;
         
-        subCube.Geometry.Build(subCube.Material.Shader);
+        subCube.BuildGeometry();
 
         subCube.Parent = parentCube;
         parentCube.AddChild(subCube);
@@ -481,7 +481,7 @@ public class Game : IGame
         subCube2.Position = new Vector3(-2, 0, 0);
         subCube2.Scale = 0.5f;
         
-        subCube2.Geometry.Build(subCube2.Material.Shader);
+        subCube2.BuildGeometry();
         
         subCube2.SetRotationX(MathHelper.DegreesToRadians(45));
         subCube2.SetRotationZ(MathHelper.DegreesToRadians(45));
@@ -497,7 +497,7 @@ public class Game : IGame
         subCube3.Position = new Vector3(-2, 0, 0);
         subCube3.Scale = 0.25f;
         
-        subCube3.Geometry.Build(subCube3.Material.Shader);
+        subCube3.BuildGeometry();
         
         subCube3.Parent = parentCube.GetScene().Camera;
         parentCube.GetScene().Camera.AddChild(subCube3);
@@ -512,7 +512,7 @@ public class Game : IGame
         cube.Position = position;
         cube.Rotation = new Vector3(1.0f * angle, 0.3f * angle, 0.5f * angle);
         
-        cube.Geometry.Build(material.Shader);
+        cube.BuildGeometry();
         
         _cubes.Add(cube);
         
@@ -526,7 +526,7 @@ public class Game : IGame
         lamp.Position = position;
         lamp.Scale = 0.2f;
         
-        lamp.Geometry.Build(material.Shader);
+        lamp.BuildGeometry();
             
         _cubes.Add(lamp);
 

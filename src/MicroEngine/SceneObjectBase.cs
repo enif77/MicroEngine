@@ -16,7 +16,6 @@ public abstract class SceneObjectBase : ISceneObject
     public IMaterial Material { get; init; } = new NullMaterial();
 
     private float _scale = 1.0f;
-
     public float Scale
     {
         get => _scale;
@@ -53,7 +52,6 @@ public abstract class SceneObjectBase : ISceneObject
     }
     
     private bool _needsModelMatrixUpdate = true;
-
     public bool NeedsModelMatrixUpdate
     {
         get => _needsModelMatrixUpdate;
@@ -74,14 +72,7 @@ public abstract class SceneObjectBase : ISceneObject
     }
     
     public Matrix4 ModelMatrix { get; set; } = Matrix4.Identity;
-    
-    
-    
-    public void BuildGeometry()
-    {
-        Geometry.Build(Material.Shader);
-    }
-    
+   
     
     public void UpdateModelMatrix()
     {
