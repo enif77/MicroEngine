@@ -119,7 +119,7 @@ public class Game : IGame
         
         _scene = scene;
         
-        InputManager.Instance.MouseWheel += e => ((Camera)_scene.Camera).Fov -= e.OffsetY;
+        InputManager.Instance.MouseWheel += e => ((FpsCamera)_scene.Camera).Fov -= e.OffsetY;
         
         Renderer.EnableFaceCulling();
         
@@ -171,7 +171,7 @@ public class Game : IGame
                 _cameraForwardSpeed = 0.5f;
             }
             
-            _cameraMovementVector += ((Camera)_scene.Camera).Front * (_cameraForwardSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).Front * (_cameraForwardSpeed * deltaTime);
         }
         else
         {
@@ -193,7 +193,7 @@ public class Game : IGame
                 _cameraForwardSpeed = -0.5f;
             }
             
-            _cameraMovementVector += ((Camera)_scene.Camera).Front * (_cameraForwardSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).Front * (_cameraForwardSpeed * deltaTime);
         }
         else
         {
@@ -217,7 +217,7 @@ public class Game : IGame
                 _cameraSideSpeed = -0.5f;
             }
             
-            _cameraMovementVector += ((Camera)_scene.Camera).Right * (_cameraSideSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).Right * (_cameraSideSpeed * deltaTime);
         }
         else
         {
@@ -239,7 +239,7 @@ public class Game : IGame
                 _cameraSideSpeed = 0.5f;
             }
             
-            _cameraMovementVector += ((Camera)_scene.Camera).Right * (_cameraSideSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).Right * (_cameraSideSpeed * deltaTime);
         }
         else
         {
@@ -263,7 +263,7 @@ public class Game : IGame
                 _cameraVerticalSpeed = -0.5f;
             }
             
-            _cameraMovementVector += ((Camera)_scene.Camera).Up * (_cameraVerticalSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).Up * (_cameraVerticalSpeed * deltaTime);
         }
         else
         {
@@ -285,7 +285,7 @@ public class Game : IGame
                 _cameraVerticalSpeed = 0.5f;
             }
             
-            _cameraMovementVector += ((Camera)_scene.Camera).Up * (_cameraVerticalSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).Up * (_cameraVerticalSpeed * deltaTime);
         }
         else
         {
@@ -316,8 +316,8 @@ public class Game : IGame
             var deltaY = mouseState.Y - _lastPos.Y;
             _lastPos = new Vector2(mouseState.X, mouseState.Y);
 
-            ((Camera)_scene.Camera).Yaw += deltaX * sensitivity;
-            ((Camera)_scene.Camera).Pitch -= deltaY * sensitivity;
+            ((FpsCamera)_scene.Camera).Yaw += deltaX * sensitivity;
+            ((FpsCamera)_scene.Camera).Pitch -= deltaY * sensitivity;
         }
 
         
@@ -355,18 +355,18 @@ public class Game : IGame
             throw new InvalidOperationException("The scene is not initialized.");
         }
         
-        ((Camera)_scene.Camera).AspectRatio = aspectRatio;
+        ((FpsCamera)_scene.Camera).AspectRatio = aspectRatio;
     }
     
     
     #region creators and generators
 
-    private Camera CreateCamera(int windowWidth, int windowHeight)
+    private FpsCamera CreateCamera(int windowWidth, int windowHeight)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new Camera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
+        return new FpsCamera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
     }
     
     

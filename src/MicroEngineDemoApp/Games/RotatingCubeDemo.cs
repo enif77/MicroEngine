@@ -84,7 +84,7 @@ public class RotatingCubeDemo : IGame
         const float cameraSpeed = 1.5f;
         const float sensitivity = 0.2f;
         
-        var camera = ((Camera)_scene.Camera);
+        var camera = ((FpsCamera)_scene.Camera);
         
         if (keyboardState.IsKeyDown(Keys.W))
         {
@@ -167,7 +167,7 @@ public class RotatingCubeDemo : IGame
             throw new InvalidOperationException("The scene is not initialized.");
         }
         
-        ((Camera)_scene.Camera).Fov += fovChange;
+        ((FpsCamera)_scene.Camera).Fov += fovChange;
     }
 
     public void SetCameraAspectRatio(float aspectRatio)
@@ -177,18 +177,18 @@ public class RotatingCubeDemo : IGame
             throw new InvalidOperationException("The scene is not initialized.");
         }
         
-        ((Camera)_scene.Camera).AspectRatio = aspectRatio;
+        ((FpsCamera)_scene.Camera).AspectRatio = aspectRatio;
     }
     
     
     #region creators and generators
 
-    private Camera CreateCamera(int windowWidth, int windowHeight)
+    private FpsCamera CreateCamera(int windowWidth, int windowHeight)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new Camera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
+        return new FpsCamera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
     }
     
     

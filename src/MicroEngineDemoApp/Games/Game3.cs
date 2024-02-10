@@ -168,7 +168,7 @@ public class Game3 : IGame
         }
 
         
-        var camera = (Camera3)_scene.Camera;
+        var camera = (FlyByCamera)_scene.Camera;
         
         
         // Forward/backward movement.
@@ -302,7 +302,7 @@ public class Game3 : IGame
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new Camera3(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
+        return new FlyByCamera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
     }
     
     

@@ -13,7 +13,7 @@ using MicroEngine.Extensions;
 
 // TL;DR: This is just one of many ways in which we could have set up the camera.
 // Check out the web version if you don't know why we are doing a specific thing or want to know more about the code.
-public class Camera : SceneObjectBase, ICamera
+public class FpsCamera : SceneObjectBase, ICamera
 {
     // Those vectors are directions pointing outwards from the camera to define how it rotated.
     private Vector3 _front = -Vector3.UnitZ;
@@ -24,7 +24,7 @@ public class Camera : SceneObjectBase, ICamera
     private float _fov = MathHelper.PiOver2;
 
     
-    public Camera(Vector3 position, float aspectRatio)
+    public FpsCamera(Vector3 position, float aspectRatio)
     {
         Position = position;
         Rotation = new Vector3(0f, -MathHelper.PiOver2, 0f);

@@ -161,7 +161,7 @@ public class Game2 : IGame
         const float cameraSpeed = 1.5f;
         const float sensitivity = 0.2f;
 
-        var camera = (Camera)_scene.Camera;
+        var camera = (FpsCamera)_scene.Camera;
         
         if (keyboardState.IsKeyDown(Keys.W))
         {
@@ -230,18 +230,18 @@ public class Game2 : IGame
             throw new InvalidOperationException("The scene is not initialized.");
         }
         
-        ((Camera)_scene.Camera).AspectRatio = aspectRatio;
+        ((FpsCamera)_scene.Camera).AspectRatio = aspectRatio;
     }
     
     
     #region creators and generators
 
-    private Camera CreateCamera(int windowWidth, int windowHeight)
+    private FpsCamera CreateCamera(int windowWidth, int windowHeight)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new Camera(new Vector3(1, 0, 1), windowWidth / (float)windowHeight);
+        return new FpsCamera(new Vector3(1, 0, 1), windowWidth / (float)windowHeight);
     }
     
     

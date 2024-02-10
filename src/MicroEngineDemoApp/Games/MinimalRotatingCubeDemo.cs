@@ -116,12 +116,12 @@ public class MinimalRotatingCubeDemo : IGame
     
     #region creators and generators
 
-    private Camera CreateCamera(int windowWidth, int windowHeight)
+    private FpsCamera CreateCamera(int windowWidth, int windowHeight)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new Camera(Vector3.UnitZ * 1.5f, windowWidth / (float)windowHeight);
+        return new FpsCamera(Vector3.UnitZ * 1.5f, windowWidth / (float)windowHeight);
     }
     
     
