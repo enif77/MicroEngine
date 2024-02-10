@@ -21,12 +21,6 @@
     
     <ItemGroup>
         <None Include="Resources/**" CopyToOutputDirectory="PreserveNewest" />
-        <None Include="Shaders/**" CopyToOutputDirectory="PreserveNewest" />
-        <None Include="Textures/**" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
     
-<!--    <ItemGroup>-->
-<!--      <Folder Include="Resources\Textures\" />-->
-<!--    </ItemGroup>-->
-
 </Project>
