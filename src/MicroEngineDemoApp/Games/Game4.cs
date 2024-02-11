@@ -19,7 +19,7 @@ public class Game4 : IGame
     private readonly ResourcesManager _resourcesManager;
     
     private Scene? _scene;
-    private readonly List<ISceneObject> _cubes = new();
+    private readonly SceneObjectController _cubeController = new();
 
     public string Name => "game-with-cubes4";
 
@@ -46,28 +46,29 @@ public class Game4 : IGame
         
         #region Cubes
         
-        // TODO: Create the first cube and then clone it with setting position to cube clones.
+        scene.AddChild(_cubeController);
+        
+        _cubeController.AddChild(scene.Camera);
         
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
             _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
             new DefaultShader());
+
+        var cube1 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
         
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f)));
+        _cubeController.AddChild(cube1);
+
+        var cube2 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, -2.0f));
+        cube2.Scale = 0.5f;
+        
+        cube1.AddChild(cube2);
         
         #endregion
         
         
         scene.AddLight(new DirectionalLight(scene.Lights.Count));
         
-        
-        #region spot light
-        
-        var spotLight = CreateSpotLight(scene, new Vector3(0.7f, 0.2f, 2.0f));
-        scene.AddLight(spotLight, scene.Camera);
-        
-        #endregion
-
         
         #region plane
        
@@ -96,13 +97,13 @@ public class Game4 : IGame
     private bool _firstMove = true;
     private Vector2 _lastPos;
     
-    private float _cameraForwardSpeed = 0.0f;
-    private float _cameraSideSpeed = 0.0f;
-    private float _cameraVerticalSpeed = 0.0f;
+    private float _forwardSpeed;
+    private float _sideSpeed;
+    private float _verticalSpeed;
     
-    private float _cameraYawSpeed = 0.0f;
-    private float _cameraRollSpeed = 0.0f;
-    private float _cameraPitchSpeed = 0.0f;
+    private float _yawSpeed;
+    private float _rollSpeed;
+    private float _pitchSpeed;
     
    
     public bool Update(float deltaTime)
@@ -123,69 +124,66 @@ public class Game4 : IGame
 
         if (keyboardState.IsKeyDown(Keys.Space))
         {
-            _cameraForwardSpeed = 0.0f;
-            _cameraSideSpeed = 0.0f;
-            _cameraVerticalSpeed = 0.0f;
+            _forwardSpeed = 0.0f;
+            _sideSpeed = 0.0f;
+            _verticalSpeed = 0.0f;
             
-            _cameraYawSpeed = 0.0f;
-            _cameraRollSpeed = 0.0f;
-            _cameraPitchSpeed = 0.0f;
+            _yawSpeed = 0.0f;
+            _rollSpeed = 0.0f;
+            _pitchSpeed = 0.0f;
         }
-
-        
-        var camera = (FlyByCamera)_scene.Camera;
-        
         
         // Forward/backward movement.
-        _cameraForwardSpeed = UpdateSpeed(_cameraForwardSpeed, keyboardState.IsKeyDown(Keys.W), 0.2f, 0.01f, 3.5f, deltaTime);
-        _cameraForwardSpeed = UpdateSpeed(_cameraForwardSpeed, keyboardState.IsKeyDown(Keys.S), -0.2f, 0.01f, 3.5f, deltaTime);
-        camera.Advance(-_cameraForwardSpeed * deltaTime);
+        _forwardSpeed = UpdateSpeed(_forwardSpeed, keyboardState.IsKeyDown(Keys.W), 0.2f, 0.01f, 3.5f, deltaTime);
+        _forwardSpeed = UpdateSpeed(_forwardSpeed, keyboardState.IsKeyDown(Keys.S), -0.2f, 0.01f, 3.5f, deltaTime);
+        _cubeController.Advance(-_forwardSpeed * deltaTime);
         
         // Left/right movement.
-        _cameraSideSpeed = UpdateSpeed(_cameraSideSpeed, keyboardState.IsKeyDown(Keys.A), 0.2f, 0.01f, 3.5f, deltaTime);
-        _cameraSideSpeed = UpdateSpeed(_cameraSideSpeed, keyboardState.IsKeyDown(Keys.D), -0.2f, 0.01f, 3.5f, deltaTime);
-        camera.Strafe(-_cameraSideSpeed * deltaTime);
+        _sideSpeed = UpdateSpeed(_sideSpeed, keyboardState.IsKeyDown(Keys.A), 0.2f, 0.01f, 3.5f, deltaTime);
+        _sideSpeed = UpdateSpeed(_sideSpeed, keyboardState.IsKeyDown(Keys.D), -0.2f, 0.01f, 3.5f, deltaTime);
+        _cubeController.Strafe(-_sideSpeed * deltaTime);
         
         // Up/down movement.
-        _cameraVerticalSpeed = UpdateSpeed(_cameraVerticalSpeed, keyboardState.IsKeyDown(Keys.LeftControl), 0.2f, 0.01f, 3.5f, deltaTime);
-        _cameraVerticalSpeed = UpdateSpeed(_cameraVerticalSpeed, keyboardState.IsKeyDown(Keys.LeftShift), -0.2f, 0.01f, 3.5f, deltaTime);
-        camera.Ascend(-_cameraVerticalSpeed * deltaTime);
+        _verticalSpeed = UpdateSpeed(_verticalSpeed, keyboardState.IsKeyDown(Keys.LeftControl), 0.2f, 0.01f, 3.5f, deltaTime);
+        _verticalSpeed = UpdateSpeed(_verticalSpeed, keyboardState.IsKeyDown(Keys.LeftShift), -0.2f, 0.01f, 3.5f, deltaTime);
+        _cubeController.Ascend(-_verticalSpeed * deltaTime);
 
         
         // Yaw rotation.
-        _cameraYawSpeed = UpdateSpeed(_cameraYawSpeed, keyboardState.IsKeyDown(Keys.Q), 40f, 4.0f, 120f, deltaTime);
-        _cameraYawSpeed = UpdateSpeed(_cameraYawSpeed, keyboardState.IsKeyDown(Keys.E), -40f, 4.0f, 120f, deltaTime);
-        camera.Yaw(_cameraYawSpeed * deltaTime);
+        _yawSpeed = UpdateSpeed(_yawSpeed, keyboardState.IsKeyDown(Keys.Q), 40f, 4.0f, 120f, deltaTime);
+        _yawSpeed = UpdateSpeed(_yawSpeed, keyboardState.IsKeyDown(Keys.E), -40f, 4.0f, 120f, deltaTime);
+        _cubeController.Yaw(_yawSpeed * deltaTime);
         
         // Roll rotation.
-        _cameraRollSpeed = UpdateSpeed(_cameraRollSpeed, keyboardState.IsKeyDown(Keys.Left), 40f, 4.0f, 120f, deltaTime);
-        _cameraRollSpeed = UpdateSpeed(_cameraRollSpeed, keyboardState.IsKeyDown(Keys.Right), -40f, 4.0f, 120f, deltaTime);
-        camera.Roll(-_cameraRollSpeed * deltaTime);
+        _rollSpeed = UpdateSpeed(_rollSpeed, keyboardState.IsKeyDown(Keys.Left), 40f, 4.0f, 120f, deltaTime);
+        _rollSpeed = UpdateSpeed(_rollSpeed, keyboardState.IsKeyDown(Keys.Right), -40f, 4.0f, 120f, deltaTime);
+        _cubeController.Roll(-_rollSpeed * deltaTime);
         
         // Pitch rotation.
-        _cameraPitchSpeed = UpdateSpeed(_cameraPitchSpeed, keyboardState.IsKeyDown(Keys.Up), 40f, 4.0f, 120f, deltaTime);
-        _cameraPitchSpeed = UpdateSpeed(_cameraPitchSpeed, keyboardState.IsKeyDown(Keys.Down), -40f, 4.0f, 120f, deltaTime);
-        camera.Pitch(-_cameraPitchSpeed * deltaTime);
+        _pitchSpeed = UpdateSpeed(_pitchSpeed, keyboardState.IsKeyDown(Keys.Up), 40f, 4.0f, 120f, deltaTime);
+        _pitchSpeed = UpdateSpeed(_pitchSpeed, keyboardState.IsKeyDown(Keys.Down), -40f, 4.0f, 120f, deltaTime);
+        _cubeController.Pitch(-_pitchSpeed * deltaTime);
         
         
-        var mouseState = InputManager.Instance.MouseState;
+        // var mouseState = InputManager.Instance.MouseState;
+        //
+        // if (_firstMove)
+        // {
+        //     _lastPos = new Vector2(mouseState.X, mouseState.Y);
+        //     _firstMove = false;
+        // }
+        // else
+        // {
+        //     var deltaX = mouseState.X - _lastPos.X;
+        //     var deltaY = mouseState.Y - _lastPos.Y;
+        //     _lastPos = new Vector2(mouseState.X, mouseState.Y);
+        //
+        //     ((FpsCamera)_scene.Camera).Yaw += deltaX * sensitivity;
+        //     ((FpsCamera)_scene.Camera).Pitch -= deltaY * sensitivity;
+        // }
         
-        if (_firstMove)
-        {
-            _lastPos = new Vector2(mouseState.X, mouseState.Y);
-            _firstMove = false;
-        }
-        else
-        {
-            var deltaX = mouseState.X - _lastPos.X;
-            var deltaY = mouseState.Y - _lastPos.Y;
-            _lastPos = new Vector2(mouseState.X, mouseState.Y);
-            
-            camera.Roll(deltaX * sensitivity);
-            //camera.Yaw(deltaX * sensitivity);
-            camera.Pitch(deltaY * sensitivity);
-        }
-
+        // _scene.Camera.Position = _cubeController.Position;
+        // _scene.Camera.Rotation = -_cubeController.Rotation;
         
         _scene.Update(deltaTime);
         
@@ -272,40 +270,16 @@ public class Game4 : IGame
     {
         return SimpleStarsSkyboxGenerator.Generate();
     }
-    
-
-    private SpotLight CreateSpotLight(Scene scene, Vector3 position)
-    {
-        return new SpotLight(scene.Lights.Count)
-        {
-            Parent = scene.Camera,
-            
-            Position = position,
-            Ambient = new Vector3(0.0f, 0.0f, 0.0f),
-            //Diffuse = new Vector3(1.0f, 1.0f, 1.0f),
-            Diffuse = new Vector3(0.0f, 1.0f, 0.0f),
-            Specular = new Vector3(1.0f, 1.0f, 1.0f),
-            Constant = 1.0f,
-            Linear = 0.09f,
-            Quadratic = 0.032f,
-            CutOff = MathF.Cos(MathHelper.DegreesToRadians(12.5f)),
-            OuterCutOff = MathF.Cos(MathHelper.DegreesToRadians(17.5f))
-        };
-    }
 
     
     private ISceneObject CreateCube(IMaterial material, Vector3 position)
     {
-        var angle = 20.0f * _cubes.Count;
-        
         var cube = TexturedCubeGenerator.Generate(material);
+
         cube.Position = position;
-        cube.Rotation = new Vector3(1.0f * angle, 0.3f * angle, 0.5f * angle);
-        
+       
         cube.BuildGeometry();
-        
-        _cubes.Add(cube);
-        
+       
         return cube;
     }
 

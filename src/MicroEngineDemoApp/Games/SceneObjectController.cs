@@ -36,6 +36,19 @@ public class SceneObjectController : SceneObjectBase
         NeedsModelMatrixUpdate = true;
     }
     
+    
+    public void YawAbs(float angle)
+    {
+        this.SetRotationY(MathHelper.DegreesToRadians(angle));
+        
+        var m = Matrix4.CreateFromAxisAngle(Vector3.UnitY, MathHelper.DegreesToRadians(angle));
+        
+        _rightVector = Vector3.TransformVector(Vector3.UnitX, m);
+        _frontVector = Vector3.TransformVector(-Vector3.UnitZ, m);
+        
+        NeedsModelMatrixUpdate = true;
+    }
+    
     /// <summary>
     /// Turns this camera up or down.
     /// </summary>
@@ -51,6 +64,20 @@ public class SceneObjectController : SceneObjectBase
         
         NeedsModelMatrixUpdate = true;
     }
+    
+    
+    public void PitchAbs(float angle)
+    {
+        this.SetRotationX(MathHelper.DegreesToRadians(angle));
+        
+        var m = Matrix4.CreateFromAxisAngle(Vector3.UnitX, MathHelper.DegreesToRadians(angle));
+        
+        _upVector = Vector3.TransformVector(Vector3.UnitY, m);
+        _frontVector = Vector3.TransformVector(-Vector3.UnitZ, m);
+        
+        NeedsModelMatrixUpdate = true;
+    }
+    
 
     /// <summary>
     /// Rolls this camera to the left or right.
@@ -58,12 +85,25 @@ public class SceneObjectController : SceneObjectBase
     /// <param name="angle">The amount of degrees this camera should roll left or right.</param>
     public void Roll(float angle)
     {
-        this.SetRotationZ(MathHelper.DegreesToRadians(angle));
+        this.SetRotationZ(Rotation.Z + MathHelper.DegreesToRadians(angle));
         
         var m = Matrix4.CreateFromAxisAngle(_frontVector, MathHelper.DegreesToRadians(angle)); 
         
         _rightVector = Vector3.TransformVector(_rightVector, m);
         _upVector = Vector3.TransformVector(_upVector, m);
+        
+        NeedsModelMatrixUpdate = true;
+    }
+    
+    
+    public void RollAbs(float angle)
+    {
+        this.SetRotationZ(MathHelper.DegreesToRadians(angle));
+        
+        var m = Matrix4.CreateFromAxisAngle(-Vector3.UnitZ, MathHelper.DegreesToRadians(angle)); 
+        
+        _rightVector = Vector3.TransformVector(Vector3.UnitX, m);
+        _upVector = Vector3.TransformVector(Vector3.UnitY, m);
         
         NeedsModelMatrixUpdate = true;
     }
@@ -75,6 +115,7 @@ public class SceneObjectController : SceneObjectBase
     public void Advance(float distance)
     {
         Position += _frontVector * -distance;
+        NeedsModelMatrixUpdate = true;
     }
 
     /// <summary>
@@ -84,6 +125,7 @@ public class SceneObjectController : SceneObjectBase
     public void Ascend(float distance)
     {
         Position += _upVector * distance;
+        NeedsModelMatrixUpdate = true;
     }
 
     /// <summary>
@@ -93,5 +135,6 @@ public class SceneObjectController : SceneObjectBase
     public void Strafe(float distance)
     {
         Position += _rightVector * distance;
+        NeedsModelMatrixUpdate = true;
     }
 }
