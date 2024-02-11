@@ -58,6 +58,7 @@ internal static class Program
             { "many-simple-cubes-demo", new ManySimpleCubesDemo(ResourcesManager.Instance) },
             { "game-with-cubes2", new Game2(ResourcesManager.Instance) },
             { "game-with-cubes3", new Game3(ResourcesManager.Instance) },
+            { "game-with-cubes4", new Game4(ResourcesManager.Instance) },
         };
         
         var nativeWindowSettings = new NativeWindowSettings()
