@@ -16,10 +16,8 @@ public class SceneObjectController : SceneObjectBase
     private Vector3 _frontVector = -Vector3.UnitZ;
     private Vector3 _upVector = Vector3.UnitY;
     private Vector3 _rightVector = Vector3.UnitX;
-   
-    public Vector3 Direction => _frontVector;
+
     
-  
     /// <summary>
     /// Turns this camera to the left or right.
     /// </summary>
@@ -30,6 +28,7 @@ public class SceneObjectController : SceneObjectBase
         
         var m = Matrix4.CreateFromAxisAngle(_upVector, MathHelper.DegreesToRadians(angle));
         
+        //_upVector = Vector3.TransformVector(_upVector, m);
         _rightVector = Vector3.TransformVector(_rightVector, m);
         _frontVector = Vector3.TransformVector(_frontVector, m);
         
@@ -59,6 +58,7 @@ public class SceneObjectController : SceneObjectBase
         
         var m = Matrix4.CreateFromAxisAngle(_rightVector, MathHelper.DegreesToRadians(angle));
         
+        //_rightVector = Vector3.TransformVector(_rightVector, m);
         _upVector = Vector3.TransformVector(_upVector, m);
         _frontVector = Vector3.TransformVector(_frontVector, m);
         
@@ -89,6 +89,7 @@ public class SceneObjectController : SceneObjectBase
         
         var m = Matrix4.CreateFromAxisAngle(_frontVector, MathHelper.DegreesToRadians(angle)); 
         
+        //_frontVector = Vector3.TransformVector(_frontVector, m);
         _rightVector = Vector3.TransformVector(_rightVector, m);
         _upVector = Vector3.TransformVector(_upVector, m);
         
