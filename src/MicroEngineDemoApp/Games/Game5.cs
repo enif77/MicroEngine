@@ -138,34 +138,34 @@ public class Game5 : IGame
         // Forward/backward movement.
         if (keyboardState.IsKeyDown(Keys.W))
         {
-            _cubeController.Advance(-MovementSpeed * deltaTime);    
+            _cubeController.Advance(MovementSpeed * deltaTime);    
         }
         
         if (keyboardState.IsKeyDown(Keys.S))
         {
-            _cubeController.Advance(MovementSpeed * deltaTime);    
+            _cubeController.Advance(-MovementSpeed * deltaTime);    
         }
        
         // Left/right movement.
         if (keyboardState.IsKeyDown(Keys.A))
         {
-            _cubeController.Strafe(-MovementSpeed * deltaTime);    
+            _cubeController.Strafe(MovementSpeed * deltaTime);    
         }
         
         if (keyboardState.IsKeyDown(Keys.D))
         {
-            _cubeController.Strafe(MovementSpeed * deltaTime);    
+            _cubeController.Strafe(-MovementSpeed * deltaTime);    
         }
        
         // Up/down movement.
         if (keyboardState.IsKeyDown(Keys.LeftControl))
         {
-            _cubeController.Ascend(-MovementSpeed * deltaTime);    
+            _cubeController.Ascend(MovementSpeed * deltaTime);    
         }
         
         if (keyboardState.IsKeyDown(Keys.LeftShift))
         {
-            _cubeController.Ascend(MovementSpeed * deltaTime);    
+            _cubeController.Ascend(-MovementSpeed * deltaTime);    
         }
 
         

@@ -18,6 +18,49 @@ public class SceneObjectController : SceneObjectBase
     private Vector3 _rightVector = Vector3.UnitX;
 
     
+    
+    // https://www.songho.ca/opengl/gl_anglestoaxes.html
+    void AnglesToAxes()
+    {
+        var angles = Rotation;
+        
+        //const float DEG2RAD = acos(-1) / 180.0f;  // PI/180
+        float sx, sy, sz, cx, cy, cz, theta;
+
+        // rotation angle about X-axis (pitch)
+        theta = angles.X;
+        sx = (float)Math.Sin(theta);
+        cx = (float)Math.Cos(theta);
+
+        // rotation angle about Y-axis (yaw)
+        theta = angles.Y;
+        sy = (float)Math.Sin(theta);
+        cy = (float)Math.Cos(theta);
+
+        // rotation angle about Z-axis (roll)
+        theta = angles.Z;
+        sz = (float)Math.Sin(theta);
+        cz = (float)Math.Cos(theta);
+
+        // determine left (right) axis (Pozn.: přidal jsem počáteční mínus)
+        _rightVector.X = -(cy * cz);
+        _rightVector.Y = -(sx * sy * cz + cx * sz);
+        _rightVector.Z = -(-cx * sy * cz + sx * sz);
+
+        // determine up axis
+        _upVector.X = -cy * sz;
+        _upVector.Y = -sx * sy * sz + cx * cz;
+        _upVector.Z = cx * sy * sz + sx * cz;
+
+        // determine forward axis
+        _frontVector.X = sy;
+        _frontVector.Y = -sx * cy;
+        _frontVector.Z = cx * cy;
+    }
+    
+    
+    
+    
     /// <summary>
     /// Turns this camera to the left or right.
     /// </summary>
@@ -33,6 +76,8 @@ public class SceneObjectController : SceneObjectBase
         _frontVector = Vector3.TransformVector(_frontVector, m);
         
         NeedsModelMatrixUpdate = true;
+        
+        //AnglesToAxes();
     }
     
     
@@ -63,6 +108,8 @@ public class SceneObjectController : SceneObjectBase
         _frontVector = Vector3.TransformVector(_frontVector, m);
         
         NeedsModelMatrixUpdate = true;
+        
+        //AnglesToAxes();
     }
     
     
@@ -94,6 +141,8 @@ public class SceneObjectController : SceneObjectBase
         _upVector = Vector3.TransformVector(_upVector, m);
         
         NeedsModelMatrixUpdate = true;
+        
+        //AnglesToAxes();
     }
     
     
@@ -115,7 +164,7 @@ public class SceneObjectController : SceneObjectBase
     /// <param name="distance">How far this camera should move from its current position.</param>
     public void Advance(float distance)
     {
-        Position += _frontVector * -distance;
+        Position += _frontVector * distance;
         NeedsModelMatrixUpdate = true;
     }
 
@@ -125,7 +174,7 @@ public class SceneObjectController : SceneObjectBase
     /// <param name="distance">How far this camera should move from its current position.</param>
     public void Ascend(float distance)
     {
-        Position += _upVector * distance;
+        Position += _upVector * -distance;
         NeedsModelMatrixUpdate = true;
     }
 
@@ -135,7 +184,7 @@ public class SceneObjectController : SceneObjectBase
     /// <param name="distance">How far this camera should move from its current position.</param>
     public void Strafe(float distance)
     {
-        Position += _rightVector * distance;
+        Position += _rightVector * -distance;
         NeedsModelMatrixUpdate = true;
     }
 }
