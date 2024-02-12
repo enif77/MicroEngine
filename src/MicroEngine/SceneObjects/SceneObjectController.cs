@@ -1,6 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngineDemoApp.Games;
+namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
