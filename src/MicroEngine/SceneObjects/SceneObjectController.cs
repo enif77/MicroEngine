@@ -193,15 +193,26 @@ public class SceneObjectController : SceneObjectBase
     {
         if (NeedsModelMatrixUpdate)
         {
-            ModelMatrix = Matrix4.CreateScale(Scale);
-        
-            // TODO: Get rotations from vectors.
-            
-            ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
-            ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
-            ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
+            var modelMatrix = Matrix4.CreateScale(Scale);
+           
+            // right   = glm::vec3(matrix[0][0], matrix[0][1], matrix[0][2]);
+            modelMatrix.M11 = -_rightVector.X;
+            modelMatrix.M12 = -_rightVector.Y;
+            modelMatrix.M13 = -_rightVector.Z;
 
-            ModelMatrix *= Matrix4.CreateTranslation(Position);
+            // up      = glm::vec3(matrix[1][0], matrix[1][1], matrix[1][2]);
+            modelMatrix.M21 = -_upVector.X;
+            modelMatrix.M22 = -_upVector.Y;
+            modelMatrix.M23 = -_upVector.Z;
+
+            // forward = glm::vec3(matrix[2][0], matrix[2][1], matrix[2][2]);
+            modelMatrix.M31 = -_frontVector.X;
+            modelMatrix.M32 = -_frontVector.Y;
+            modelMatrix.M33 = -_frontVector.Z;
+
+            modelMatrix *= Matrix4.CreateTranslation(Position);
+        
+            ModelMatrix = modelMatrix;
         
             if (Parent != null)
             {
