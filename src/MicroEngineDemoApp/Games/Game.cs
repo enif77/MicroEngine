@@ -171,7 +171,7 @@ public class Game : IGame
                 _cameraForwardSpeed = 0.5f;
             }
             
-            _cameraMovementVector += ((FpsCamera)_scene.Camera).Front * (_cameraForwardSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).FrontVector * (_cameraForwardSpeed * deltaTime);
         }
         else
         {
@@ -193,7 +193,7 @@ public class Game : IGame
                 _cameraForwardSpeed = -0.5f;
             }
             
-            _cameraMovementVector += ((FpsCamera)_scene.Camera).Front * (_cameraForwardSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).FrontVector * (_cameraForwardSpeed * deltaTime);
         }
         else
         {
@@ -217,7 +217,7 @@ public class Game : IGame
                 _cameraSideSpeed = -0.5f;
             }
             
-            _cameraMovementVector += ((FpsCamera)_scene.Camera).Right * (_cameraSideSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).RightVector * (_cameraSideSpeed * deltaTime);
         }
         else
         {
@@ -239,7 +239,7 @@ public class Game : IGame
                 _cameraSideSpeed = 0.5f;
             }
             
-            _cameraMovementVector += ((FpsCamera)_scene.Camera).Right * (_cameraSideSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).RightVector * (_cameraSideSpeed * deltaTime);
         }
         else
         {
@@ -263,7 +263,7 @@ public class Game : IGame
                 _cameraVerticalSpeed = -0.5f;
             }
             
-            _cameraMovementVector += ((FpsCamera)_scene.Camera).Up * (_cameraVerticalSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).UpVector * (_cameraVerticalSpeed * deltaTime);
         }
         else
         {
@@ -285,7 +285,7 @@ public class Game : IGame
                 _cameraVerticalSpeed = 0.5f;
             }
             
-            _cameraMovementVector += ((FpsCamera)_scene.Camera).Up * (_cameraVerticalSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).UpVector * (_cameraVerticalSpeed * deltaTime);
         }
         else
         {
@@ -494,7 +494,8 @@ public class Game : IGame
         var subCube3 = SimpleCubeGenerator.Generate(new SimpleColorMaterial(
             new Vector3(0.75f, 0.25f, 0.50f),
             shader)); 
-        subCube3.Position = new Vector3(-2, 0, 0);
+        subCube3.Position = new Vector3(0, 1, -2);
+        subCube3.Rotation = new Vector3(45, 45, 0);
         subCube3.Scale = 0.25f;
         
         subCube3.BuildGeometry();

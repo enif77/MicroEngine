@@ -16,9 +16,9 @@ using MicroEngine.Extensions;
 public class FpsCamera : SceneObjectBase, ICamera
 {
     // Those vectors are directions pointing outwards from the camera to define how it rotated.
-    private Vector3 _front = -Vector3.UnitZ;
-    private Vector3 _up = Vector3.UnitY;
-    private Vector3 _right = Vector3.UnitX;
+    private Vector3 _frontVector = -Vector3.UnitZ;
+    private Vector3 _upVector = Vector3.UnitY;
+    private Vector3 _rightVector = Vector3.UnitX;
     
     // The field of view of the camera (radians)
     private float _fov = MathHelper.PiOver2;
@@ -35,14 +35,14 @@ public class FpsCamera : SceneObjectBase, ICamera
     // This is simply the aspect ratio of the viewport, used for the projection matrix.
     public float AspectRatio { get; set; }
 
-    public Vector3 Front => _front;
+    public Vector3 FrontVector => _frontVector;
 
-    public Vector3 Up => _up;
+    public Vector3 UpVector => _upVector;
 
-    public Vector3 Right => _right;
+    public Vector3 RightVector => _rightVector;
 
     
-    public Vector3 Direction => _front;
+    public Vector3 Direction => _frontVector;
     
     
     // We convert from degrees to radians as soon as the property is set to improve performance.
@@ -99,7 +99,7 @@ public class FpsCamera : SceneObjectBase, ICamera
     // Get the view matrix using the amazing LookAt function described more in depth on the web tutorials
     public Matrix4 GetViewMatrix()
     {
-        return Matrix4.LookAt(Position, Position + _front, _up);
+        return Matrix4.LookAt(Position, Position + _frontVector, _upVector);
     }
     
     // Get the projection matrix using the same method we have used up until this point
@@ -109,35 +109,44 @@ public class FpsCamera : SceneObjectBase, ICamera
     }
 
     
-    // public override void Update(float deltaTime)
-    // {
-    //     if (NeedsModelMatrixUpdate)
-    //     {
-    //         // The view matrix gives us the rotation of the camera.
-    //         ModelMatrix = GetViewMatrix();
-    //         
-    //         // ModelMatrix = Matrix4.CreateScale(Scale);
-    //         //
-    //         // // We do not need to rotate the camera again - the view matrix is enough.
-    //         // ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
-    //         // ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
-    //         // ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
-    //         
-    //         ModelMatrix *= Matrix4.CreateTranslation(Position);
-    //         
-    //         if (Parent != null)
-    //         {
-    //             ModelMatrix *= Parent.ModelMatrix;
-    //         }
-    //
-    //         NeedsModelMatrixUpdate = false;
-    //     }
-    //
-    //     foreach (var child in Children)
-    //     {
-    //         child.Update(deltaTime);
-    //     }
-    // }
+    public override void Update(float deltaTime)
+    {
+        if (NeedsModelMatrixUpdate)
+        {
+            var modelMatrix = Matrix4.CreateScale(Scale);
+           
+            // right   = glm::vec3(matrix[0][0], matrix[0][1], matrix[0][2]);
+            modelMatrix.M11 = -_rightVector.X;
+            modelMatrix.M12 = -_rightVector.Y;
+            modelMatrix.M13 = -_rightVector.Z;
+
+            // up      = glm::vec3(matrix[1][0], matrix[1][1], matrix[1][2]);
+            modelMatrix.M21 = -_upVector.X;
+            modelMatrix.M22 = -_upVector.Y;
+            modelMatrix.M23 = -_upVector.Z;
+
+            // forward = glm::vec3(matrix[2][0], matrix[2][1], matrix[2][2]);
+            modelMatrix.M31 = -_frontVector.X;
+            modelMatrix.M32 = -_frontVector.Y;
+            modelMatrix.M33 = -_frontVector.Z;
+
+            modelMatrix *= Matrix4.CreateTranslation(Position);
+        
+            ModelMatrix = modelMatrix;
+        
+            if (Parent != null)
+            {
+                ModelMatrix *= Parent.ModelMatrix;
+            }
+
+            NeedsModelMatrixUpdate = false;
+        }
+
+        foreach (var child in Children)
+        {
+            child.Update(deltaTime);
+        }
+    }
     
     
     // This function is going to update the direction vertices using some of the math learned in the web tutorials.
@@ -147,18 +156,18 @@ public class FpsCamera : SceneObjectBase, ICamera
         var yaw = Rotation.Y;
         
         // First, the front matrix is calculated using some basic trigonometry.
-        _front.X = MathF.Cos(pitch) * MathF.Cos(yaw);
-        _front.Y = MathF.Sin(pitch);
-        _front.Z = MathF.Cos(pitch) * MathF.Sin(yaw);
+        _frontVector.X = MathF.Cos(pitch) * MathF.Cos(yaw);
+        _frontVector.Y = MathF.Sin(pitch);
+        _frontVector.Z = MathF.Cos(pitch) * MathF.Sin(yaw);
 
         // We need to make sure the vectors are all normalized, as otherwise we would get some funky results.
-        _front = Vector3.Normalize(_front);
+        _frontVector = Vector3.Normalize(_frontVector);
 
         // Calculate both the right and the up vector using cross product.
         // Note that we are calculating the right from the global up; this behaviour might
         // not be what you need for all cameras so keep this in mind if you do not want a FPS camera.
-        _right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
-        _up = Vector3.Normalize(Vector3.Cross(_right, _front));
+        _rightVector = Vector3.Normalize(Vector3.Cross(_frontVector, Vector3.UnitY));
+        _upVector = Vector3.Normalize(Vector3.Cross(_rightVector, _frontVector));
         
         NeedsModelMatrixUpdate = true;
     }

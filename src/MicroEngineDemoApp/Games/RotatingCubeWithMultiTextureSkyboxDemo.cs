@@ -88,27 +88,27 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
         
         if (keyboardState.IsKeyDown(Keys.W))
         {
-            _scene.Camera.Position += camera.Front * cameraSpeed * deltaTime; // Forward
+            _scene.Camera.Position += camera.FrontVector * cameraSpeed * deltaTime; // Forward
         }
         if (keyboardState.IsKeyDown(Keys.S))
         {
-            _scene.Camera.Position -= camera.Front * cameraSpeed * deltaTime; // Backwards
+            _scene.Camera.Position -= camera.FrontVector * cameraSpeed * deltaTime; // Backwards
         }
         if (keyboardState.IsKeyDown(Keys.A))
         {
-            _scene.Camera.Position -= camera.Right * cameraSpeed * deltaTime; // Left
+            _scene.Camera.Position -= camera.RightVector * cameraSpeed * deltaTime; // Left
         }
         if (keyboardState.IsKeyDown(Keys.D))
         {
-            _scene.Camera.Position += camera.Right * cameraSpeed * deltaTime; // Right
+            _scene.Camera.Position += camera.RightVector * cameraSpeed * deltaTime; // Right
         }
         if (keyboardState.IsKeyDown(Keys.Space))
         {
-            _scene.Camera.Position += camera.Up * cameraSpeed * deltaTime; // Up
+            _scene.Camera.Position += camera.UpVector * cameraSpeed * deltaTime; // Up
         }
         if (keyboardState.IsKeyDown(Keys.LeftShift))
         {
-            _scene.Camera.Position -= camera.Up * cameraSpeed * deltaTime; // Down
+            _scene.Camera.Position -= camera.UpVector * cameraSpeed * deltaTime; // Down
         }
 
         var mouse = mouseState;
