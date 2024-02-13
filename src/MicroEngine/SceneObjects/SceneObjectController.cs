@@ -187,4 +187,33 @@ public class SceneObjectController : SceneObjectBase
         Position += _rightVector * -distance;
         NeedsModelMatrixUpdate = true;
     }
+    
+    
+    public override void Update(float deltaTime)
+    {
+        if (NeedsModelMatrixUpdate)
+        {
+            ModelMatrix = Matrix4.CreateScale(Scale);
+        
+            // TODO: Get rotations from vectors.
+            
+            ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
+            ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
+            ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
+
+            ModelMatrix *= Matrix4.CreateTranslation(Position);
+        
+            if (Parent != null)
+            {
+                ModelMatrix *= Parent.ModelMatrix;
+            }
+
+            NeedsModelMatrixUpdate = false;
+        }
+
+        foreach (var child in Children)
+        {
+            child.Update(deltaTime);
+        }
+    }
 }
