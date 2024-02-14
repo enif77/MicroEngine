@@ -123,7 +123,13 @@ public class FlyByCamera : SceneObjectBase, ICamera
     public Matrix4 GetViewMatrix()
     {
         // TODO: Get position and rotation from the parent.
-       
+
+        // var position = Vector3.TransformPosition(Position, ModelMatrix);
+        // var front = Vector3.TransformVector(_frontVector, ModelMatrix);
+        // var up = Vector3.TransformVector(_upVector, ModelMatrix);
+        //
+        // return Matrix4.LookAt(position, position + front, up);
+        
         return Matrix4.LookAt(Position, Position + _frontVector, _upVector);
     }
     
@@ -158,6 +164,8 @@ public class FlyByCamera : SceneObjectBase, ICamera
             modelMatrix.M32 = -_frontVector.Y;
             modelMatrix.M33 = -_frontVector.Z;
 
+            // We cannot translate the position here, because we are translating it
+            // in the GetViewMatrix() method. This prevent us from double transformation.
             modelMatrix *= Matrix4.CreateTranslation(Position);
         
             ModelMatrix = modelMatrix;

@@ -32,8 +32,7 @@ public class Game5 : IGame
     
     public bool Initialize(int width, int height)
     {
-        var scene = new Scene(
-            CreateCamera(width, height));
+        var scene = new Scene(new FlyByCamera(new Vector3(0, 1, 1.2f), width / (float)height));
         
         #region Skybox
         
@@ -61,6 +60,23 @@ public class Game5 : IGame
         cube2.Scale = 0.5f;
         
         cube1.AddChild(cube2);
+        
+        var cube3 = CreateCube(cubeMaterial, new Vector3(2.0f, 0.0f, 0f));
+        cube3.Scale = 0.5f;
+        
+        cube1.AddChild(cube3);
+        
+        var cube4 = CreateCube(cubeMaterial, new Vector3(-2.0f, 0.0f, 0f));
+        cube4.Scale = 0.5f;
+        
+        cube1.AddChild(cube4);
+        
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 10.0f, 0.0f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(5.0f, 10.0f, 5.0f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 5.0f, 0.0f)));
+        
+        
+        cube1.AddChild(scene.Camera);
         
         #endregion
         
@@ -230,15 +246,6 @@ public class Game5 : IGame
     
     
     #region creators and generators
-
-    private ICamera CreateCamera(int windowWidth, int windowHeight)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
-
-        return new FlyByCamera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
-    }
-    
     
     private ISceneObject CreateSkybox()
     {
