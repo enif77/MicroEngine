@@ -62,8 +62,11 @@ public class Scene : SceneObjectBase
 
     public override void Update(float deltaTime)
     {
-        Skybox?.Update(deltaTime);
         base.Update(deltaTime);
+        
+        // Skybox must update here, because it is not a child of the scene.
+        // And it requires the camera position to be already updated.
+        Skybox?.Update(deltaTime);
     }
 
 
