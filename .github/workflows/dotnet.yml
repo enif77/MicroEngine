@@ -11,8 +11,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
 
     steps:
     - uses: actions/checkout@v4
@@ -21,11 +23,8 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      working-directory: ./src
       run: dotnet restore
     - name: Build
-      working-directory: ./src
       run: dotnet build --no-restore
     - name: Test
-      working-directory: ./src
       run: dotnet test --no-build --verbosity normal
