@@ -2,6 +2,7 @@
 
 A miniature game engine written in C#, using OpenTk.
 
+[Main build workflow status](https://github.com/enif77/MicroEngine/actions/workflows/dotnet.yml/badge.svg)
 
 ## Features
 
