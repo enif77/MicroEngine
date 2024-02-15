@@ -122,16 +122,11 @@ public class FlyByCamera : SceneObjectBase, ICamera
     /// <returns>The view matrix.</returns>
     public Matrix4 GetViewMatrix()
     {
-        // TODO: Get position and rotation from the parent.
-
-        // var position = Vector3.TransformPosition(Position, ModelMatrix);
-        var position = new Vector3(ModelMatrix.M41, ModelMatrix.M42, ModelMatrix.M43);
+        var position = ModelMatrix.ExtractTranslation();
         var front = Vector3.TransformVector(_frontVector, ModelMatrix);
         var up = Vector3.TransformVector(_upVector, ModelMatrix);
         
         return Matrix4.LookAt(position, position + front, up);
-        
-        //return Matrix4.LookAt(Position, Position + _frontVector, _upVector);
     }
     
     /// <summary>
