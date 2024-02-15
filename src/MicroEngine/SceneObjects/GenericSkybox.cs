@@ -24,11 +24,8 @@ public class GenericSkybox : SceneObjectBase
     {
         _scene ??= this.GetScene();
 
-        // TODO: We should get the world camera position. A position, that is combination of the camera and its parents positions.
-        
         // Skybox should be rendered at the camera position.
-        //ModelMatrix = Matrix4.CreateTranslation(_scene.Camera.Position);
-        ModelMatrix = Matrix4.CreateTranslation(new Vector3(_scene.Camera.ModelMatrix.M41, _scene.Camera.ModelMatrix.M42, _scene.Camera.ModelMatrix.M43)); 
+        ModelMatrix = Matrix4.CreateTranslation(_scene.Camera.ModelMatrix.ExtractTranslation()); 
         
         // Sets shader and its properties.
         Material.Shader.Use(_scene, this);
