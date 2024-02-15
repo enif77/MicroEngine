@@ -48,11 +48,7 @@ public interface ISceneObject : IUpdatable, IRenderable
     /// True, if this object needs model matrix update.
     /// </summary>
     bool NeedsModelMatrixUpdate { get; set; }
-
-    /// <summary>
-    /// Recalculates the model matrix of this scene object.
-    /// </summary>
-    void UpdateModelMatrix();
+    
     
     /// <summary>
     /// Model matrix of tis scene object.

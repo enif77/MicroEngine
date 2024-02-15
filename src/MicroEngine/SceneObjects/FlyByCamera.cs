@@ -13,6 +13,45 @@ public class FlyByCamera : SceneObjectBase, ICamera
     private Vector3 _rightVector = Vector3.UnitX;
     
     
+    // public void UpdateAxes()
+    // {
+    //     var angles = Rotation;
+    //     
+    //     //const float DEG2RAD = acos(-1) / 180.0f;  // PI/180
+    //     float sx, sy, sz, cx, cy, cz, theta;
+    //
+    //     // rotation angle about X-axis (pitch)
+    //     theta = angles.X;
+    //     sx = (float)Math.Sin(theta);
+    //     cx = (float)Math.Cos(theta);
+    //
+    //     // rotation angle about Y-axis (yaw)
+    //     theta = angles.Y;
+    //     sy = (float)Math.Sin(theta);
+    //     cy = (float)Math.Cos(theta);
+    //
+    //     // rotation angle about Z-axis (roll)
+    //     theta = angles.Z;
+    //     sz = (float)Math.Sin(theta);
+    //     cz = (float)Math.Cos(theta);
+    //
+    //     // determine left (right) axis (Pozn.: přidal jsem počáteční mínus)
+    //     _rightVector.X = -(cy * cz);
+    //     _rightVector.Y = -(sx * sy * cz + cx * sz);
+    //     _rightVector.Z = -(-cx * sy * cz + sx * sz);
+    //
+    //     // determine up axis
+    //     _upVector.X = -cy * sz;
+    //     _upVector.Y = -sx * sy * sz + cx * cz;
+    //     _upVector.Z = cx * sy * sz + sx * cz;
+    //
+    //     // determine forward axis
+    //     _frontVector.X = sy;
+    //     _frontVector.Y = -sx * cy;
+    //     _frontVector.Z = cx * cy;
+    // }
+    
+    
     public float AspectRatio { get; set; }
     public Vector3 Direction => _frontVector;
     
@@ -53,8 +92,6 @@ public class FlyByCamera : SceneObjectBase, ICamera
         
         _rightVector = Vector3.TransformVector(_rightVector, m);
         _frontVector = Vector3.TransformVector(_frontVector, m);
-        
-        NeedsModelMatrixUpdate = true;
     }
     
     /// <summary>
@@ -69,8 +106,6 @@ public class FlyByCamera : SceneObjectBase, ICamera
         
         _upVector = Vector3.TransformVector(_upVector, m);
         _frontVector = Vector3.TransformVector(_frontVector, m);
-        
-        NeedsModelMatrixUpdate = true;
     }
 
     /// <summary>
@@ -85,8 +120,6 @@ public class FlyByCamera : SceneObjectBase, ICamera
         
         _rightVector = Vector3.TransformVector(_rightVector, m);
         _upVector = Vector3.TransformVector(_upVector, m);
-        
-        NeedsModelMatrixUpdate = true;
     }
     
     /// <summary>

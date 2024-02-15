@@ -18,47 +18,44 @@ public class SceneObjectController : SceneObjectBase
     private Vector3 _rightVector = Vector3.UnitX;
 
     
-    
-    // https://www.songho.ca/opengl/gl_anglestoaxes.html
-    void AnglesToAxes()
-    {
-        var angles = Rotation;
-        
-        //const float DEG2RAD = acos(-1) / 180.0f;  // PI/180
-        float sx, sy, sz, cx, cy, cz, theta;
-
-        // rotation angle about X-axis (pitch)
-        theta = angles.X;
-        sx = (float)Math.Sin(theta);
-        cx = (float)Math.Cos(theta);
-
-        // rotation angle about Y-axis (yaw)
-        theta = angles.Y;
-        sy = (float)Math.Sin(theta);
-        cy = (float)Math.Cos(theta);
-
-        // rotation angle about Z-axis (roll)
-        theta = angles.Z;
-        sz = (float)Math.Sin(theta);
-        cz = (float)Math.Cos(theta);
-
-        // determine left (right) axis (Pozn.: přidal jsem počáteční mínus)
-        _rightVector.X = -(cy * cz);
-        _rightVector.Y = -(sx * sy * cz + cx * sz);
-        _rightVector.Z = -(-cx * sy * cz + sx * sz);
-
-        // determine up axis
-        _upVector.X = -cy * sz;
-        _upVector.Y = -sx * sy * sz + cx * cz;
-        _upVector.Z = cx * sy * sz + sx * cz;
-
-        // determine forward axis
-        _frontVector.X = sy;
-        _frontVector.Y = -sx * cy;
-        _frontVector.Z = cx * cy;
-    }
-    
-    
+    // // https://www.songho.ca/opengl/gl_anglestoaxes.html
+    // public void UpdateAxes()
+    // {
+    //     var angles = Rotation;
+    //     
+    //     //const float DEG2RAD = acos(-1) / 180.0f;  // PI/180
+    //     float sx, sy, sz, cx, cy, cz, theta;
+    //
+    //     // rotation angle about X-axis (pitch)
+    //     theta = angles.X;
+    //     sx = (float)Math.Sin(theta);
+    //     cx = (float)Math.Cos(theta);
+    //
+    //     // rotation angle about Y-axis (yaw)
+    //     theta = angles.Y;
+    //     sy = (float)Math.Sin(theta);
+    //     cy = (float)Math.Cos(theta);
+    //
+    //     // rotation angle about Z-axis (roll)
+    //     theta = angles.Z;
+    //     sz = (float)Math.Sin(theta);
+    //     cz = (float)Math.Cos(theta);
+    //
+    //     // determine left (right) axis (Pozn.: přidal jsem počáteční mínus)
+    //     _rightVector.X = -(cy * cz);
+    //     _rightVector.Y = -(sx * sy * cz + cx * sz);
+    //     _rightVector.Z = -(-cx * sy * cz + sx * sz);
+    //
+    //     // determine up axis
+    //     _upVector.X = -cy * sz;
+    //     _upVector.Y = -sx * sy * sz + cx * cz;
+    //     _upVector.Z = cx * sy * sz + sx * cz;
+    //
+    //     // determine forward axis
+    //     _frontVector.X = sy;
+    //     _frontVector.Y = -sx * cy;
+    //     _frontVector.Z = cx * cy;
+    // }
     
     
     /// <summary>
@@ -71,13 +68,8 @@ public class SceneObjectController : SceneObjectBase
         
         var m = Matrix4.CreateFromAxisAngle(_upVector, MathHelper.DegreesToRadians(angle));
         
-        //_upVector = Vector3.TransformVector(_upVector, m);
         _rightVector = Vector3.TransformVector(_rightVector, m);
         _frontVector = Vector3.TransformVector(_frontVector, m);
-        
-        NeedsModelMatrixUpdate = true;
-        
-        //AnglesToAxes();
     }
     
     
@@ -89,8 +81,6 @@ public class SceneObjectController : SceneObjectBase
         
         _rightVector = Vector3.TransformVector(Vector3.UnitX, m);
         _frontVector = Vector3.TransformVector(-Vector3.UnitZ, m);
-        
-        NeedsModelMatrixUpdate = true;
     }
     
     /// <summary>
@@ -103,13 +93,8 @@ public class SceneObjectController : SceneObjectBase
         
         var m = Matrix4.CreateFromAxisAngle(_rightVector, MathHelper.DegreesToRadians(angle));
         
-        //_rightVector = Vector3.TransformVector(_rightVector, m);
         _upVector = Vector3.TransformVector(_upVector, m);
         _frontVector = Vector3.TransformVector(_frontVector, m);
-        
-        NeedsModelMatrixUpdate = true;
-        
-        //AnglesToAxes();
     }
     
     
@@ -121,8 +106,6 @@ public class SceneObjectController : SceneObjectBase
         
         _upVector = Vector3.TransformVector(Vector3.UnitY, m);
         _frontVector = Vector3.TransformVector(-Vector3.UnitZ, m);
-        
-        NeedsModelMatrixUpdate = true;
     }
     
 
@@ -136,13 +119,8 @@ public class SceneObjectController : SceneObjectBase
         
         var m = Matrix4.CreateFromAxisAngle(_frontVector, MathHelper.DegreesToRadians(angle)); 
         
-        //_frontVector = Vector3.TransformVector(_frontVector, m);
         _rightVector = Vector3.TransformVector(_rightVector, m);
         _upVector = Vector3.TransformVector(_upVector, m);
-        
-        NeedsModelMatrixUpdate = true;
-        
-        //AnglesToAxes();
     }
     
     
@@ -154,8 +132,6 @@ public class SceneObjectController : SceneObjectBase
         
         _rightVector = Vector3.TransformVector(Vector3.UnitX, m);
         _upVector = Vector3.TransformVector(Vector3.UnitY, m);
-        
-        NeedsModelMatrixUpdate = true;
     }
     
     /// <summary>
@@ -165,7 +141,6 @@ public class SceneObjectController : SceneObjectBase
     public void Advance(float distance)
     {
         Position += _frontVector * distance;
-        NeedsModelMatrixUpdate = true;
     }
 
     /// <summary>
@@ -175,7 +150,6 @@ public class SceneObjectController : SceneObjectBase
     public void Ascend(float distance)
     {
         Position += _upVector * -distance;
-        NeedsModelMatrixUpdate = true;
     }
 
     /// <summary>
@@ -185,7 +159,6 @@ public class SceneObjectController : SceneObjectBase
     public void Strafe(float distance)
     {
         Position += _rightVector * -distance;
-        NeedsModelMatrixUpdate = true;
     }
     
     

@@ -72,30 +72,24 @@ public abstract class SceneObjectBase : ISceneObject
     }
     
     public Matrix4 ModelMatrix { get; set; } = Matrix4.Identity;
-   
-    
-    public void UpdateModelMatrix()
-    {
-        ModelMatrix = Matrix4.CreateScale(Scale);
-        
-        ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
-        ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
-        ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
-
-        ModelMatrix *= Matrix4.CreateTranslation(Position);
-        
-        if (Parent != null)
-        {
-            ModelMatrix *= Parent.ModelMatrix;
-        }
-    }
     
     
     public virtual void Update(float deltaTime)
     {
         if (NeedsModelMatrixUpdate)
         {
-            UpdateModelMatrix();
+            ModelMatrix = Matrix4.CreateScale(Scale);
+        
+            ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
+            ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
+            ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
+
+            ModelMatrix *= Matrix4.CreateTranslation(Position);
+        
+            if (Parent != null)
+            {
+                ModelMatrix *= Parent.ModelMatrix;
+            }
 
             NeedsModelMatrixUpdate = false;
         }
@@ -106,6 +100,7 @@ public abstract class SceneObjectBase : ISceneObject
         }
     }
 
+    
     public virtual void Render()
     {
         foreach (var child in Children)

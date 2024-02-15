@@ -32,78 +32,7 @@ public class Game5 : IGame
     
     public bool Initialize(int width, int height)
     {
-        var scene = new Scene(new FlyByCamera(new Vector3(0, 1, 1.2f), width / (float)height));
-        
-        #region Skybox
-        
-        scene.AddSkybox(CreateSkybox());
-        
-        #endregion
-        
-        
-        #region Cubes
-        
-        scene.AddChild(_cubeController);
-        
-        _cubeController.AddChild(scene.Camera);
-        
-        var cubeMaterial = new Material(
-            _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
-            _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
-            new DefaultShader());
-
-        var cube1 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
-        
-        _cubeController.AddChild(cube1);
-
-        var cube2 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, -2.0f));
-        cube2.Scale = 0.5f;
-        
-        cube1.AddChild(cube2);
-        
-        var cube3 = CreateCube(cubeMaterial, new Vector3(2.0f, 0.0f, 0f));
-        cube3.Scale = 0.5f;
-        
-        cube1.AddChild(cube3);
-        
-        var cube4 = CreateCube(cubeMaterial, new Vector3(-2.0f, 0.0f, 0f));
-        cube4.Scale = 0.5f;
-        
-        cube1.AddChild(cube4);
-        
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 10.0f, 0.0f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(5.0f, 10.0f, 5.0f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 5.0f, 0.0f)));
-        
-        
-        cube1.AddChild(scene.Camera);
-        
-        #endregion
-        
-        
-        scene.AddLight(new DirectionalLight(scene.Lights.Count)
-        {
-            Ambient = new Vector3(0.65f)
-        });
-        
-        
-        #region plane
-       
-        var plane = TexturedPlaneGenerator.Generate(
-            cubeMaterial,
-            10.0f);
-        
-        plane.BuildGeometry();
-        
-        plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
-        plane.Scale = 50.0f;
-        
-        scene.AddChild(plane);
-        
-        #endregion
-        
-        
-        _scene = scene;
+        CreateScene(width, height);
         
         Renderer.EnableFaceCulling();
         
@@ -132,7 +61,7 @@ public class Game5 : IGame
         if (keyboardState.IsKeyDown(Keys.Space))
         {
             _cubeController.Position = Vector3.Zero;
-            _cubeController.Rotation = Vector3.Zero;
+            //_cubeController.Rotation = Vector3.Zero;
             
             _cubeController.YawAbs(0);
             _cubeController.PitchAbs(0);
@@ -199,27 +128,28 @@ public class Game5 : IGame
         // Roll rotation.
         if (keyboardState.IsKeyDown(Keys.Left))
         {
-            _cubeController.Roll(RotationSpeed * deltaTime);    
+            _cubeController.Roll(-RotationSpeed * deltaTime);    
         }
         
         if (keyboardState.IsKeyDown(Keys.Right))
         {
-            _cubeController.Roll(-RotationSpeed * deltaTime);    
+            _cubeController.Roll(RotationSpeed * deltaTime);    
         }
         
         // Pitch rotation.
         if (keyboardState.IsKeyDown(Keys.Up))
         {
-            _cubeController.Pitch(RotationSpeed * deltaTime);    
+            _cubeController.Pitch(-RotationSpeed * deltaTime);    
         }
         
         if (keyboardState.IsKeyDown(Keys.Down))
         {
-            _cubeController.Pitch(-RotationSpeed * deltaTime);    
+            _cubeController.Pitch(RotationSpeed * deltaTime);    
         }
         
-        _scene.Update(deltaTime);
         
+        _scene.Update(deltaTime);
+
         return true;
     }
 
@@ -247,9 +177,72 @@ public class Game5 : IGame
     
     #region creators and generators
     
-    private ISceneObject CreateSkybox()
+    private void CreateScene(int width, int height)
     {
-        return SimpleStarsSkyboxGenerator.Generate();
+        var scene = new Scene(new FlyByCamera(new Vector3(0, -1, 1.2f), width / (float)height));
+        
+        // Skybox
+        
+        scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate());
+        
+        // Cubes
+        
+        scene.AddChild(_cubeController);
+        
+        var cubeMaterial = new Material(
+            _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
+            _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
+            new DefaultShader());
+
+        var cube1 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
+        
+        _cubeController.AddChild(cube1);
+
+        var cube2 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, -2.0f));
+        cube2.Scale = 0.5f;
+        
+        cube1.AddChild(cube2);
+        
+        var cube3 = CreateCube(cubeMaterial, new Vector3(2.0f, 0.0f, 0f));
+        cube3.Scale = 0.5f;
+        
+        cube1.AddChild(cube3);
+        
+        var cube4 = CreateCube(cubeMaterial, new Vector3(-2.0f, 0.0f, 0f));
+        cube4.Scale = 0.5f;
+        
+        cube1.AddChild(cube4);
+       
+        
+        scene.RemoveChild(scene.Camera);
+        cube1.AddChild(scene.Camera);
+        
+        
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 10.0f, 0.0f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(5.0f, 10.0f, 5.0f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 5.0f, 0.0f)));
+       
+        // Lights
+        
+        scene.AddLight(new DirectionalLight(scene.Lights.Count)
+        {
+            Ambient = new Vector3(0.65f)
+        });
+        
+        // Plane
+       
+        var plane = TexturedPlaneGenerator.Generate(
+            cubeMaterial,
+            10.0f);
+        
+        plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
+        plane.Scale = 50.0f;
+        
+        plane.BuildGeometry();
+        
+        scene.AddChild(plane);
+       
+        _scene = scene;
     }
 
     
