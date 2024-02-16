@@ -61,22 +61,21 @@ public class Game5 : IGame
         if (keyboardState.IsKeyDown(Keys.Space))
         {
             _cubeController.Position = Vector3.Zero;
-            //_cubeController.Rotation = Vector3.Zero;
+            _cubeController.Rotation = Vector3.Zero;
             
-            _cubeController.YawAbs(0);
-            _cubeController.PitchAbs(0);
-            _cubeController.RollAbs(0);
+            _cubeController.UpdateAxes();
         }
         
         
         if (keyboardState.IsKeyDown(Keys.R))
         {
             _cubeController.Position = Vector3.Zero;
-            _cubeController.Rotation = Vector3.Zero;
+            _cubeController.Rotation = new Vector3(
+                MathHelper.DegreesToRadians(45),
+                MathHelper.DegreesToRadians(-35),
+                MathHelper.DegreesToRadians(25));
             
-            _cubeController.YawAbs(45);
-            _cubeController.PitchAbs(45);
-            _cubeController.RollAbs(0);
+            _cubeController.UpdateAxes();
         }
         
         
@@ -117,34 +116,71 @@ public class Game5 : IGame
         // Yaw rotation.
         if (keyboardState.IsKeyDown(Keys.Q))
         {
-            _cubeController.Yaw(RotationSpeed * deltaTime);    
+            _cubeController.Yaw(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
         }
         
         if (keyboardState.IsKeyDown(Keys.E))
         {
-            _cubeController.Yaw(-RotationSpeed * deltaTime);    
+            _cubeController.Yaw(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
         }
         
         // Roll rotation.
         if (keyboardState.IsKeyDown(Keys.Left))
         {
-            _cubeController.Roll(-RotationSpeed * deltaTime);    
+            _cubeController.Roll(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
         }
         
         if (keyboardState.IsKeyDown(Keys.Right))
         {
-            _cubeController.Roll(RotationSpeed * deltaTime);    
+            _cubeController.Roll(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
         }
         
         // Pitch rotation.
         if (keyboardState.IsKeyDown(Keys.Up))
         {
-            _cubeController.Pitch(-RotationSpeed * deltaTime);    
+            _cubeController.Pitch(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
         }
         
         if (keyboardState.IsKeyDown(Keys.Down))
         {
-            _cubeController.Pitch(RotationSpeed * deltaTime);    
+            _cubeController.Pitch(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
+        }
+        
+        
+        if (keyboardState.IsKeyDown(Keys.I))
+        {
+            _cubeController.SetRotationX( _cubeController.Rotation.X + MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));
+            _cubeController.UpdateAxes();
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.K))
+        {
+            _cubeController.SetRotationX(_cubeController.Rotation.X + MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
+            _cubeController.UpdateAxes();
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.J))
+        {
+            _cubeController.SetRotationY(_cubeController.Rotation.Y + MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
+            _cubeController.UpdateAxes();
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.L))
+        {
+            _cubeController.SetRotationY(_cubeController.Rotation.Y + MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));
+            _cubeController.UpdateAxes();
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.U))
+        {
+            _cubeController.SetRotationZ(_cubeController.Rotation.Z + MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));
+            _cubeController.UpdateAxes();
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.O))
+        {
+            _cubeController.SetRotationZ(_cubeController.Rotation.Z + MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
+            _cubeController.UpdateAxes();
         }
         
         
