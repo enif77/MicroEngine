@@ -8,54 +8,42 @@ using MicroEngine.Extensions;
 
 public class FlyByCamera : SceneObjectBase, ICamera
 {
-    private Vector3 _frontVector = -Vector3.UnitZ;
-    private Vector3 _upVector = Vector3.UnitY;
+    private Vector3 _frontVector = Vector3.UnitZ;
+    private Vector3 _upVector = -Vector3.UnitY;
     private Vector3 _rightVector = Vector3.UnitX;
-    
-    
-    // public void UpdateAxes()
-    // {
-    //     var angles = Rotation;
-    //     
-    //     //const float DEG2RAD = acos(-1) / 180.0f;  // PI/180
-    //     float sx, sy, sz, cx, cy, cz, theta;
-    //
-    //     // rotation angle about X-axis (pitch)
-    //     theta = angles.X;
-    //     sx = (float)Math.Sin(theta);
-    //     cx = (float)Math.Cos(theta);
-    //
-    //     // rotation angle about Y-axis (yaw)
-    //     theta = angles.Y;
-    //     sy = (float)Math.Sin(theta);
-    //     cy = (float)Math.Cos(theta);
-    //
-    //     // rotation angle about Z-axis (roll)
-    //     theta = angles.Z;
-    //     sz = (float)Math.Sin(theta);
-    //     cz = (float)Math.Cos(theta);
-    //
-    //     // determine left (right) axis (Pozn.: přidal jsem počáteční mínus)
-    //     _rightVector.X = -(cy * cz);
-    //     _rightVector.Y = -(sx * sy * cz + cx * sz);
-    //     _rightVector.Z = -(-cx * sy * cz + sx * sz);
-    //
-    //     // determine up axis
-    //     _upVector.X = -cy * sz;
-    //     _upVector.Y = -sx * sy * sz + cx * cz;
-    //     _upVector.Z = cx * sy * sz + sx * cz;
-    //
-    //     // determine forward axis
-    //     _frontVector.X = sy;
-    //     _frontVector.Y = -sx * cy;
-    //     _frontVector.Z = cx * cy;
-    // }
     
     
     public float AspectRatio { get; set; }
     public Vector3 Direction => _frontVector;
     
     private float _fov = MathHelper.PiOver2;
+    
+    
+    
+    /// <summary>
+    /// Updates the axes of this controller based on its actual rotation angles.
+    /// Call this method after you change the rotation angles so the axes are updated.
+    /// </summary>
+    public void UpdateAxes()
+    {
+        // Remember the current rotation.
+        var thisRotation = Rotation;
+        
+        // Reset the rotation.
+        Rotation = Vector3.Zero;
+        
+        // Reset the axes.
+        _frontVector = Vector3.UnitZ;
+        _upVector = -Vector3.UnitY;
+        _rightVector = Vector3.UnitX;
+       
+        // Apply the rotation.
+        Roll(thisRotation.Z);
+        Pitch(thisRotation.X);
+        Yaw(thisRotation.Y);
+    }
+    
+    
     
     /// <summary>
     /// The field of view (FOV) is the vertical angle of the camera view.
@@ -83,12 +71,12 @@ public class FlyByCamera : SceneObjectBase, ICamera
     /// <summary>
     /// Turns this camera to the left or right.
     /// </summary>
-    /// <param name="angle">The amount of degrees this camera should turn left or right.</param>
+    /// <param name="angle">The amount of degrees in radians this camera should turn left or right.</param>
     public void Yaw(float angle)
     {
-        this.SetRotationY(Rotation.Y + MathHelper.DegreesToRadians(angle));
+        this.SetRotationY(Rotation.Y + angle);
         
-        var m = Matrix4.CreateFromAxisAngle(_upVector, MathHelper.DegreesToRadians(angle));
+        var m = Matrix4.CreateFromAxisAngle(_upVector, angle);
         
         _rightVector = Vector3.TransformVector(_rightVector, m);
         _frontVector = Vector3.TransformVector(_frontVector, m);
@@ -97,12 +85,12 @@ public class FlyByCamera : SceneObjectBase, ICamera
     /// <summary>
     /// Turns this camera up or down.
     /// </summary>
-    /// <param name="angle">The amount of degrees this camera should turn left or right.</param>
+    /// <param name="angle">The amount of degrees in radians this camera should turn left or right.</param>
     public void Pitch(float angle)
     {
-        this.SetRotationX(Rotation.X + MathHelper.DegreesToRadians(angle));
+        this.SetRotationX(Rotation.X + angle);
         
-        var m = Matrix4.CreateFromAxisAngle(_rightVector, MathHelper.DegreesToRadians(angle));
+        var m = Matrix4.CreateFromAxisAngle(_rightVector, angle);
         
         _upVector = Vector3.TransformVector(_upVector, m);
         _frontVector = Vector3.TransformVector(_frontVector, m);
@@ -111,12 +99,12 @@ public class FlyByCamera : SceneObjectBase, ICamera
     /// <summary>
     /// Rolls this camera to the left or right.
     /// </summary>
-    /// <param name="angle">The amount of degrees this camera should roll left or right.</param>
+    /// <param name="angle">The amount of degrees in radians this camera should roll left or right.</param>
     public void Roll(float angle)
     {
-        this.SetRotationZ(Rotation.Z + MathHelper.DegreesToRadians(angle));
+        this.SetRotationZ(Rotation.Z + angle);
         
-        var m = Matrix4.CreateFromAxisAngle(_frontVector, MathHelper.DegreesToRadians(angle)); 
+        var m = Matrix4.CreateFromAxisAngle(_frontVector, angle); 
         
         _rightVector = Vector3.TransformVector(_rightVector, m);
         _upVector = Vector3.TransformVector(_upVector, m);
@@ -210,7 +198,6 @@ public class FlyByCamera : SceneObjectBase, ICamera
             child.Update(deltaTime);
         }
     }
-    
 }
 
 /*

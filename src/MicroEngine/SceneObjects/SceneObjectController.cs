@@ -20,38 +20,10 @@ public class SceneObjectController : SceneObjectBase
     
     /// <summary>
     /// Updates the axes of this controller based on its actual rotation angles.
+    /// Call this method after you change the rotation angles so the axes are updated.
     /// </summary>
     public void UpdateAxes()
     {
-        // https://www.songho.ca/opengl/gl_anglestoaxes.html
-        // // rotation angle about X-axis (pitch)
-        // var sx = (float)Math.Sin(Rotation.X);
-        // var cx = (float)Math.Cos(Rotation.X);
-        //
-        // // rotation angle about Y-axis (yaw)
-        // var sy = (float)Math.Sin(Rotation.Y);
-        // var cy = (float)Math.Cos(Rotation.Y);
-        //
-        // // rotation angle about Z-axis (roll)
-        // var sz = (float)Math.Sin(Rotation.Z);
-        // var cz = (float)Math.Cos(Rotation.Z);
-        //
-        // // determine left (right) axis (Pozn.: přidal jsem počáteční mínus)
-        // _rightVector.X = -(cy * cz);
-        // _rightVector.Y = -(sx * sy * cz + cx * sz);
-        // _rightVector.Z = -(-cx * sy * cz + sx * sz);
-        //
-        // // determine up axis
-        // _upVector.X = -cy * sz;
-        // _upVector.Y = -sx * sy * sz + cx * cz;
-        // _upVector.Z = cx * sy * sz + sx * cz;
-        //
-        // // determine forward axis
-        // _frontVector.X = sy;
-        // _frontVector.Y = -sx * cy;
-        // _frontVector.Z = cx * cy;
-
-        
         // Remember the current rotation.
         var thisRotation = Rotation;
         
@@ -64,11 +36,13 @@ public class SceneObjectController : SceneObjectBase
         _rightVector = Vector3.UnitX;
        
         // Apply the rotation.
-        Yaw(thisRotation.Y);
-        Pitch(thisRotation.X);
+        // Yaw(thisRotation.Y);
+        // Pitch(thisRotation.X);
+        // Roll(thisRotation.Z);
         Roll(thisRotation.Z);
+        Pitch(thisRotation.X);
+        Yaw(thisRotation.Y);
     }
-    
     
     /// <summary>
     /// Turns this camera to the left or right.
