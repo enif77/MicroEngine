@@ -22,9 +22,7 @@ public class Game4 : IGame
     private readonly SceneObjectController _cubeController = new();
 
     public string Name => "game-with-cubes4";
-
-    public ICamera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
-
+    
     
     public Game4(ResourcesManager resourcesManager)
     {
@@ -262,7 +260,10 @@ public class Game4 : IGame
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new FlyByCamera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
+        // TODO: create and use SOC for camera controls.
+        
+        //return new FlyByCamera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
+        return new FlyByCamera(windowWidth / (float)windowHeight);
     }
     
     

@@ -36,7 +36,7 @@ public class Game3 : IGame
     public bool Initialize(int width, int height)
     {
         var scene = new Scene(
-            new FlyByCamera(Vector3.Zero, width / (float)height));
+            new FlyByCamera(width / (float)height));
         
         #region Skybox
         
