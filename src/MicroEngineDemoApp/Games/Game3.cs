@@ -20,6 +20,7 @@ public class Game3 : IGame
     
     private Scene? _scene;
     private readonly List<ISceneObject> _cubes = new();
+    private readonly SceneObjectController _cameraController = new();
 
     public string Name => "game-with-cubes3";
 
@@ -35,7 +36,7 @@ public class Game3 : IGame
     public bool Initialize(int width, int height)
     {
         var scene = new Scene(
-            CreateCamera(width, height));
+            new FlyByCamera(Vector3.Zero, width / (float)height));
         
         #region Skybox
         
@@ -114,6 +115,12 @@ public class Game3 : IGame
         
         scene.AddChild(plane);
         
+        
+        _cameraController.Position = Vector3.UnitZ * 3.0f;
+        scene.AddChild(_cameraController);
+        
+        _cameraController.AddChild(scene.Camera);
+        
         #endregion
         
         
@@ -172,35 +179,35 @@ public class Game3 : IGame
         
         
         // Forward/backward movement.
-        _cameraForwardSpeed = UpdateSpeed(_cameraForwardSpeed, keyboardState.IsKeyDown(Keys.W), 0.2f, 0.01f, 3.5f, deltaTime);
-        _cameraForwardSpeed = UpdateSpeed(_cameraForwardSpeed, keyboardState.IsKeyDown(Keys.S), -0.2f, 0.01f, 3.5f, deltaTime);
-        camera.Advance(-_cameraForwardSpeed * deltaTime);
+        _cameraForwardSpeed = UpdateSpeed(_cameraForwardSpeed, keyboardState.IsKeyDown(Keys.W), -0.2f, 0.01f, 3.5f, deltaTime);
+        _cameraForwardSpeed = UpdateSpeed(_cameraForwardSpeed, keyboardState.IsKeyDown(Keys.S), 0.2f, 0.01f, 3.5f, deltaTime);
+        _cameraController.Advance(-_cameraForwardSpeed * deltaTime);
         
         // Left/right movement.
-        _cameraSideSpeed = UpdateSpeed(_cameraSideSpeed, keyboardState.IsKeyDown(Keys.A), 0.2f, 0.01f, 3.5f, deltaTime);
-        _cameraSideSpeed = UpdateSpeed(_cameraSideSpeed, keyboardState.IsKeyDown(Keys.D), -0.2f, 0.01f, 3.5f, deltaTime);
-        camera.Strafe(-_cameraSideSpeed * deltaTime);
+        _cameraSideSpeed = UpdateSpeed(_cameraSideSpeed, keyboardState.IsKeyDown(Keys.A), -0.2f, 0.01f, 3.5f, deltaTime);
+        _cameraSideSpeed = UpdateSpeed(_cameraSideSpeed, keyboardState.IsKeyDown(Keys.D), 0.2f, 0.01f, 3.5f, deltaTime);
+        _cameraController.Strafe(-_cameraSideSpeed * deltaTime);
         
         // Up/down movement.
-        _cameraVerticalSpeed = UpdateSpeed(_cameraVerticalSpeed, keyboardState.IsKeyDown(Keys.LeftControl), 0.2f, 0.01f, 3.5f, deltaTime);
-        _cameraVerticalSpeed = UpdateSpeed(_cameraVerticalSpeed, keyboardState.IsKeyDown(Keys.LeftShift), -0.2f, 0.01f, 3.5f, deltaTime);
-        camera.Ascend(-_cameraVerticalSpeed * deltaTime);
+        _cameraVerticalSpeed = UpdateSpeed(_cameraVerticalSpeed, keyboardState.IsKeyDown(Keys.LeftControl), -0.2f, 0.01f, 3.5f, deltaTime);
+        _cameraVerticalSpeed = UpdateSpeed(_cameraVerticalSpeed, keyboardState.IsKeyDown(Keys.LeftShift), 0.2f, 0.01f, 3.5f, deltaTime);
+        _cameraController.Ascend(-_cameraVerticalSpeed * deltaTime);
 
         
         // Yaw rotation.
         _cameraYawSpeed = UpdateSpeed(_cameraYawSpeed, keyboardState.IsKeyDown(Keys.Q), 40f, 4.0f, 120f, deltaTime);
         _cameraYawSpeed = UpdateSpeed(_cameraYawSpeed, keyboardState.IsKeyDown(Keys.E), -40f, 4.0f, 120f, deltaTime);
-        camera.Yaw(_cameraYawSpeed * deltaTime);
+        _cameraController.Yaw(MathHelper.DegreesToRadians(_cameraYawSpeed * deltaTime));
         
         // Roll rotation.
         _cameraRollSpeed = UpdateSpeed(_cameraRollSpeed, keyboardState.IsKeyDown(Keys.Left), 40f, 4.0f, 120f, deltaTime);
         _cameraRollSpeed = UpdateSpeed(_cameraRollSpeed, keyboardState.IsKeyDown(Keys.Right), -40f, 4.0f, 120f, deltaTime);
-        camera.Roll(-_cameraRollSpeed * deltaTime);
+        _cameraController.Roll(MathHelper.DegreesToRadians(-_cameraRollSpeed * deltaTime));
         
         // Pitch rotation.
         _cameraPitchSpeed = UpdateSpeed(_cameraPitchSpeed, keyboardState.IsKeyDown(Keys.Up), 40f, 4.0f, 120f, deltaTime);
         _cameraPitchSpeed = UpdateSpeed(_cameraPitchSpeed, keyboardState.IsKeyDown(Keys.Down), -40f, 4.0f, 120f, deltaTime);
-        camera.Pitch(-_cameraPitchSpeed * deltaTime);
+        _cameraController.Pitch(MathHelper.DegreesToRadians(-_cameraPitchSpeed * deltaTime));
         
         
         //_scene.Camera.Position += _cameraMovementVector;
@@ -219,9 +226,9 @@ public class Game3 : IGame
             var deltaY = mouseState.Y - _lastPos.Y;
             _lastPos = new Vector2(mouseState.X, mouseState.Y);
             
-            camera.Roll(deltaX * sensitivity);
-            //camera.Yaw(deltaX * sensitivity);
-            camera.Pitch(deltaY * sensitivity);
+            _cameraController.Roll(MathHelper.DegreesToRadians(deltaX * sensitivity));
+            //_cameraController.Yaw(deltaX * sensitivity);
+            _cameraController.Pitch(MathHelper.DegreesToRadians(deltaY * sensitivity));
         }
 
         
@@ -296,15 +303,6 @@ public class Game3 : IGame
     
     
     #region creators and generators
-
-    private ICamera CreateCamera(int windowWidth, int windowHeight)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
-
-        return new FlyByCamera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
-    }
-    
     
     private ISceneObject CreateSkybox()
     {
