@@ -33,25 +33,25 @@ public class FlyByCamera : SceneObjectBase, ICamera
     {
         AspectRatio = aspectRatio;
         
-        var modelMatrix = Matrix4.CreateScale(Scale);
+        var modelMatrix = Matrix4.CreateScale(1.0f);
            
         // right   = glm::vec3(matrix[0][0], matrix[0][1], matrix[0][2]);
-        var rightVector = Vector3.UnitX;
-        modelMatrix.M11 = -rightVector.X;
-        modelMatrix.M12 = -rightVector.Y;
-        modelMatrix.M13 = -rightVector.Z;
+        var rightVector = -Vector3.UnitX;
+        modelMatrix.M11 = rightVector.X;
+        modelMatrix.M12 = rightVector.Y;
+        modelMatrix.M13 = rightVector.Z;
 
         // up      = glm::vec3(matrix[1][0], matrix[1][1], matrix[1][2]);
         var upVector = Vector3.UnitY;
-        modelMatrix.M21 = -upVector.X;
-        modelMatrix.M22 = -upVector.Y;
-        modelMatrix.M23 = -upVector.Z;
+        modelMatrix.M21 = upVector.X;
+        modelMatrix.M22 = upVector.Y;
+        modelMatrix.M23 = upVector.Z;
 
         // forward = glm::vec3(matrix[2][0], matrix[2][1], matrix[2][2]);
-        var frontVector = -Vector3.UnitZ;
-        modelMatrix.M31 = -frontVector.X;
-        modelMatrix.M32 = -frontVector.Y;
-        modelMatrix.M33 = -frontVector.Z;
+        var frontVector = Vector3.UnitZ;
+        modelMatrix.M31 = frontVector.X;
+        modelMatrix.M32 = frontVector.Y;
+        modelMatrix.M33 = frontVector.Z;
 
         modelMatrix *= Matrix4.CreateTranslation(Position);
         
