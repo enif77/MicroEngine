@@ -43,6 +43,10 @@ public class Game5 : IGame
     
     private const float RotationSpeed = 60.0f;
     private const float MovementSpeed = 1.0f;
+
+    private const float MouseSensitivity = 0.2f;
+    private bool _firstMove = true;
+    private Vector2 _lastPos;
     
     public bool Update(float deltaTime)
     {
@@ -187,22 +191,87 @@ public class Game5 : IGame
         
         if (keyboardState.IsKeyDown(Keys.T))
         {
-            _cameraController.Pitch(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime)); 
+            var cameraPitch = ((FpsCamera)_scene.Camera).Pitch + -RotationSpeed * deltaTime;
+            if (cameraPitch < -45.0f)
+            {
+                cameraPitch = -45.0f;
+            }
+            
+            ((FpsCamera)_scene.Camera).Pitch = cameraPitch;
         }
         
         if (keyboardState.IsKeyDown(Keys.G))
         {
-            _cameraController.Pitch(MathHelper.DegreesToRadians(RotationSpeed * deltaTime)); 
+            var cameraPitch = ((FpsCamera)_scene.Camera).Pitch + RotationSpeed * deltaTime;
+            if (cameraPitch > 45.0f)
+            {
+                cameraPitch = 45.0f;
+            }
+            
+            ((FpsCamera)_scene.Camera).Pitch = cameraPitch;
         }
         
         if (keyboardState.IsKeyDown(Keys.F))
         {
-            _cameraController.Yaw(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime)); 
+            var cameraYaw = ((FpsCamera)_scene.Camera).Yaw + RotationSpeed * deltaTime;
+            if (cameraYaw > 25.0f)  // 0 = left
+            {
+                cameraYaw = 25.0f;
+            }
+            
+            ((FpsCamera)_scene.Camera).Yaw = cameraYaw; 
         }
         
         if (keyboardState.IsKeyDown(Keys.H))
         {
-            _cameraController.Yaw(MathHelper.DegreesToRadians(RotationSpeed * deltaTime)); 
+            var cameraYaw = ((FpsCamera)_scene.Camera).Yaw + -RotationSpeed * deltaTime;
+            if (cameraYaw < -205.0f)  // 180 = right
+            {
+                cameraYaw = -205.0f;
+            }
+            
+            ((FpsCamera)_scene.Camera).Yaw = cameraYaw; 
+        }
+        
+        
+        
+        var mouseState = InputManager.Instance.MouseState;
+        
+        if (_firstMove)
+        {
+            _lastPos = new Vector2(mouseState.X, mouseState.Y);
+            _firstMove = false;
+        }
+        else
+        {
+            var deltaX = mouseState.X - _lastPos.X;
+            var deltaY = mouseState.Y - _lastPos.Y;
+            _lastPos = new Vector2(mouseState.X, mouseState.Y);
+            
+            var cameraYaw = ((FpsCamera)_scene.Camera).Yaw + -deltaX * MouseSensitivity;
+            if (cameraYaw < -205.0f)
+            {
+                cameraYaw = -205.0f;
+            }
+            else if (cameraYaw > 25.0f)
+            {
+                cameraYaw = 25.0f;
+            }
+            
+            ((FpsCamera)_scene.Camera).Yaw = cameraYaw;
+            
+            
+            var cameraPitch = ((FpsCamera)_scene.Camera).Pitch + deltaY * MouseSensitivity;
+            if (cameraPitch < -45.0f)
+            {
+                cameraPitch = -45.0f;
+            }
+            else if (cameraPitch > 45.0f)
+            {
+                cameraPitch = 45.0f;
+            }
+            
+            ((FpsCamera)_scene.Camera).Pitch = cameraPitch;
         }
         
         
@@ -237,7 +306,8 @@ public class Game5 : IGame
     
     private void CreateScene(int width, int height)
     {
-        var scene = new Scene(new FlyByCamera(width / (float)height));
+        //var scene = new Scene(new FlyByCamera(width / (float)height));
+        var scene = new Scene(new FpsCamera(new Vector3(0, -1, 1), width / (float)height));
         
         // Skybox
         
@@ -288,11 +358,14 @@ public class Game5 : IGame
         }
 
 
-        _cameraController.Position = new Vector3(0, 1.1f, 1.2f);
-        cube1.AddChild(_cameraController);
+        //_cameraController.Position = new Vector3(0, -1.0f, 1.1f);
+        //cube1.AddChild(_cameraController);
+        //
+        //scene.RemoveChild(scene.Camera);
+        //_cameraController.AddChild(scene.Camera);
         
         scene.RemoveChild(scene.Camera);
-        _cameraController.AddChild(scene.Camera);
+        cube1.AddChild(scene.Camera);
         
         
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 10.0f, 0.0f)));
