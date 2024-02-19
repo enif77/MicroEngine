@@ -99,7 +99,13 @@ public class FpsCamera : SceneObjectBase, ICamera
     // Get the view matrix using the amazing LookAt function described more in depth on the web tutorials
     public Matrix4 GetViewMatrix()
     {
-        return Matrix4.LookAt(Position, Position + _frontVector, _upVector);
+        var position = ModelMatrix.ExtractTranslation();
+        var front = Vector3.TransformVector(-Vector3.UnitZ, ModelMatrix);
+        var up = Vector3.TransformVector(Vector3.UnitY, ModelMatrix);
+        
+        return Matrix4.LookAt(position, position + front, up);
+        
+        //return Matrix4.LookAt(Position, Position + _frontVector, _upVector);
     }
     
     // Get the projection matrix using the same method we have used up until this point
