@@ -69,18 +69,11 @@ public class Game5 : IGame
             _cubeController.Rotation = Vector3.Zero;
             
             _cubeController.UpdateAxes();
-        }
-        
-        
-        if (keyboardState.IsKeyDown(Keys.R))
-        {
-            _cubeController.Position = Vector3.Zero;
-            _cubeController.Rotation = new Vector3(
-                MathHelper.DegreesToRadians(45),
-                MathHelper.DegreesToRadians(-35),
-                MathHelper.DegreesToRadians(25));
             
-            _cubeController.UpdateAxes();
+            var camera = (FpsCamera)_scene.Camera;
+            
+            camera.Yaw = -90.0f;  // TODO: Yaw 0 should be forward.
+            camera.Pitch = 0.0f;
         }
         
         
