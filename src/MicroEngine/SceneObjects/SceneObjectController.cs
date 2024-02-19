@@ -34,11 +34,7 @@ public class SceneObjectController : SceneObjectBase
         _frontVector = -Vector3.UnitZ;
         _upVector = Vector3.UnitY;
         _rightVector = Vector3.UnitX;
-       
-        // Apply the rotation.
-        // Yaw(thisRotation.Y);
-        // Pitch(thisRotation.X);
-        // Roll(thisRotation.Z);
+        
         Roll(thisRotation.Z);
         Pitch(thisRotation.X);
         Yaw(thisRotation.Y);
