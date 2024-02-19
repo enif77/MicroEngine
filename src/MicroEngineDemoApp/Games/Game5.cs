@@ -237,7 +237,6 @@ public class Game5 : IGame
     
     private void CreateScene(int width, int height)
     {
-        //var scene = new Scene(new FlyByCamera(new Vector3(0, -1.1f, 1.2f), width / (float)height));
         var scene = new Scene(new FlyByCamera(Vector3.Zero, width / (float)height));
         
         // Skybox
@@ -294,9 +293,6 @@ public class Game5 : IGame
         
         scene.RemoveChild(scene.Camera);
         _cameraController.AddChild(scene.Camera);
-        
-        // scene.RemoveChild(scene.Camera);
-        // cube1.AddChild(scene.Camera);
         
         
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 10.0f, 0.0f)));
