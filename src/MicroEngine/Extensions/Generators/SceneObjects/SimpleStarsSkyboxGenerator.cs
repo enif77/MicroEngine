@@ -9,7 +9,9 @@ using MicroEngine.Materials;
 using MicroEngine.SceneObjects;
 using MicroEngine.Shaders;
 
-
+/// <summary>
+/// A simple stars skybox generator.
+/// </summary>
 public static class SimpleStarsSkyboxGenerator
 {
     public const int DefaultTextureSizePixels = 1024;

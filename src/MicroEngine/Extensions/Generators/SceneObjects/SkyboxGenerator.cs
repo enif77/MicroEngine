@@ -5,8 +5,17 @@ namespace MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Geometries;
 using MicroEngine.SceneObjects;
 
+/// <summary>
+/// Generator of a skybox that uses 6 textures.
+/// </summary>
 public static class SkyboxGenerator
 {
+    /// <summary>
+    /// Generates a skybox.
+    /// </summary>
+    /// <param name="material">A material with 6 textures, that will be used by the generated skybox.</param>
+    /// <returns>A skybox.</returns>
+    /// <exception cref="ArgumentNullException">Thrown, if the material argument is null.</exception>
     public static ISceneObject Generate(IMaterial material)
     {
         return new GenericSkybox(new MultiTextureIndexedGeometry(

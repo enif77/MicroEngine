@@ -5,8 +5,17 @@ namespace MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Geometries;
 using MicroEngine.SceneObjects;
 
+/// <summary>
+/// Generator of a textured cube that uses a single texture that fully covers each cube side.
+/// </summary>
 public static class TexturedCubeGenerator
 {
+    /// <summary>
+    /// Generates a textured cube.
+    /// </summary>
+    /// <param name="material">A material that will be used by the generated cube.</param>
+    /// <returns>A scene object with geometry representing a textured cube.</returns>
+    /// <exception cref="ArgumentNullException">Thrown, if the material argument is null.</exception>
     public static ISceneObject Generate(IMaterial material)
     {
         return new GenericSceneObject(new DefaultGeometry(

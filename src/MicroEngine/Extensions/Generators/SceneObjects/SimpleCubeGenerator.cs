@@ -5,8 +5,16 @@ namespace MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Geometries;
 using MicroEngine.SceneObjects;
 
+/// <summary>
+/// Generator of simple cubes.
+/// </summary>
 public static class SimpleCubeGenerator
 {
+    /// <summary>
+    /// Generates a cube as 8 vertices connected with indices.
+    /// </summary>
+    /// <param name="material">A material, that will be used by the generated cube.</param>
+    /// <returns>A scene object with geometry representing a simple cube.</returns>
     public static ISceneObject Generate(IMaterial material)
     {
         return new GenericSceneObject(new SimpleIndexedGeometry(
