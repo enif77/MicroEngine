@@ -10,6 +10,11 @@ using OpenTK.Mathematics;
 public interface ICamera : ISceneObject
 {
     /// <summary>
+    /// The field of view (FOV) is the vertical angle of the camera view in degrees.
+    /// </summary>
+    float Fov { get; set; }
+
+    /// <summary>
     /// Aspect ratio of the camera.
     /// </summary>
     float AspectRatio { get; set; }

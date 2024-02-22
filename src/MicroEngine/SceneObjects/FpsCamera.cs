@@ -20,9 +20,11 @@ public class FpsCamera : SceneObjectBase, ICamera
     private Vector3 _upVector = Vector3.UnitY;
     private Vector3 _rightVector = Vector3.UnitX;
     
-    // The field of view of the camera (radians)
+    
+    /// <summary>
+    /// The field of view of the camera in radians.
+    /// </summary>
     private float _fov = MathHelper.PiOver2;
-
     
     public FpsCamera(Vector3 position, float aspectRatio)
     {
@@ -81,19 +83,12 @@ public class FpsCamera : SceneObjectBase, ICamera
             UpdateVectors();
         }
     }
-
-    // The field of view (FOV) is the vertical angle of the camera view.
-    // This has been discussed more in depth in a previous tutorial,
-    // but in this tutorial, you have also learned how we can use this to simulate a zoom feature.
-    // We convert from degrees to radians as soon as the property is set to improve performance.
+    
+    
     public float Fov
     {
         get => MathHelper.RadiansToDegrees(_fov);
-        set
-        {
-            var angle = MathHelper.Clamp(value, 1f, 90f);
-            _fov = MathHelper.DegreesToRadians(angle);
-        }
+        set => _fov = MathHelper.DegreesToRadians(MathHelper.Clamp(value, 1f, 90f));
     }
 
     // Get the view matrix using the amazing LookAt function described more in depth on the web tutorials

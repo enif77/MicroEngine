@@ -12,12 +12,12 @@ public class FlyByCamera : SceneObjectBase, ICamera
     public float AspectRatio { get; set; }
     public Vector3 Direction => -Vector3.UnitZ;
     
-    private float _fov = MathHelper.PiOver2;
-    
     
     /// <summary>
-    /// The field of view (FOV) is the vertical angle of the camera view.
+    /// The field of view of the camera in radians.
     /// </summary>
+    private float _fov = MathHelper.PiOver2;
+    
     public float Fov
     {
         get => MathHelper.RadiansToDegrees(_fov);
