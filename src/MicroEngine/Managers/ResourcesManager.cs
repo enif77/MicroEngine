@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using MicroEngine.Textures;
+
 namespace MicroEngine.Managers;
 
 using OpenTK.Graphics.OpenGL4;
@@ -31,9 +33,21 @@ public class ResourcesManager : IResourcesManager
     
     #region textures
     
+    private readonly ITexture _nullTexture = new NullTexture();
     private readonly Dictionary<string, ITexture> _textures = new();
-    
-    
+
+
+    public ITexture GetTexture(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A texture name is null or empty.");
+        }
+
+        return _textures.GetValueOrDefault(name, _nullTexture);
+    }
+
+
     public ITexture LoadTexture(string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
     {
         if (string.IsNullOrWhiteSpace(path))

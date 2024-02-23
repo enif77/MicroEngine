@@ -12,6 +12,13 @@ public interface IResourcesManager
     #region textures
 
     /// <summary>
+    /// Gets a texture by its name.
+    /// </summary>
+    /// <param name="name">A texture name.</param>
+    /// <returns>A texture with a given name or the NullTexture instance.</returns>
+    ITexture GetTexture(string name);
+    
+    /// <summary>
     /// Loads a texture from the given path.
     /// </summary>
     /// <param name="path">A path to a texture. Will be used as an unique name for this texture.</param>
