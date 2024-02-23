@@ -52,5 +52,26 @@ public class ResourcesManager : IResourcesManager
         return texture;
     }
     
+    
+    public ITexture LoadTextureFromRgbaBytes(string name, byte[] pixels, int width, int height, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A texture name is null or empty.");
+        }
+
+        ArgumentNullException.ThrowIfNull(pixels);
+
+        if (_textures.TryGetValue(name, out var value))
+        {
+            return value;
+        }
+
+        var texture = Texture.LoadFromRgbaBytes(pixels, width, height, wrapMode);
+        _textures.Add(name, Texture.LoadFromRgbaBytes(pixels, width, height, wrapMode));
+        
+        return texture;
+    }
+    
     #endregion
 }
