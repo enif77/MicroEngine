@@ -64,9 +64,9 @@ public static class SimpleStarsSkyboxGenerator
         var texture = new byte[textureSizePixels * textureSizePixels * 4];
 
         // Clear the texture.
-        for (var i = 0; i < texture.Length; i++)
+        for (var i = 0; i < texture.Length; i += 4)
         {
-            texture[i] = 0;
+            texture[i + 3] = 255;
         }
 
         //var rand = new Random(5728);
@@ -110,9 +110,12 @@ public static class SimpleStarsSkyboxGenerator
 
             textures[t] = Texture.LoadFromRgbaBytes(texture, textureSizePixels, textureSizePixels, TextureWrapMode.ClampToEdge);
             
-            for (var i = 0; i < texture.Length; i++)
+            for (var i = 0; i < texture.Length; i += 4)
             {
                 texture[i] = 0;
+                texture[i + 1] = 0;
+                texture[i + 2] = 0;
+                texture[i + 3] = 255;
             }
         }
         
