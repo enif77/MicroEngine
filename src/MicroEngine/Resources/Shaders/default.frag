@@ -60,6 +60,12 @@ vec3 CalcSpotLight(Light light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
 void main()
 {
+    float alpha = texture(material.diffuse, TexCoords).a;
+    if (alpha < 0.1)
+    {
+        discard;
+    }
+    
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
 
