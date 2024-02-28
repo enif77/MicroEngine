@@ -97,9 +97,27 @@ public static class SceneObjectExtensions
     /// <summary>
     /// Generates OpenGL buffers for this objects geometry. 
     /// </summary>
-    /// <param name="sceneObject"></param>
+    /// <param name="sceneObject">A scene object.</param>
     public static void BuildGeometry(this ISceneObject sceneObject)
     {
         sceneObject.Geometry.Build(sceneObject.Material.Shader);
+    }
+
+    /// <summary>
+    /// Calculates the distance to another scene object.
+    /// </summary>
+    /// <param name="sceneObject">A scene object.</param>
+    /// <param name="otherSceneObject">Another scene object.</param>
+    /// <returns></returns>
+    public static float DistanceTo(this ISceneObject sceneObject, ISceneObject otherSceneObject)
+    {
+        if (sceneObject.NeedsModelMatrixUpdate || otherSceneObject.NeedsModelMatrixUpdate)
+        {
+            throw new InvalidOperationException("Scene object model matrix needs to be updated.");
+        }
+       
+        return Vector3.Distance(
+            sceneObject.ModelMatrix.ExtractTranslation(),
+            otherSceneObject.ModelMatrix.ExtractTranslation());
     }
 }
