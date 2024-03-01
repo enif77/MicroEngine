@@ -22,7 +22,7 @@ public static class TexturedPlaneGenerator
         return new GenericSceneObject(new DefaultIndexedGeometry(
             [
                 // Positions         Normals              Texture coords
-                -0.5f, 0.0f,  0.5f,  0.0f,  1.0f,  0.0f,            0.0f,         0.0f,
+                -0.5f, 0.0f,  0.5f,  0.0f,  1.0f,  0.0f,          0.0f,         0.0f,
                  0.5f, 0.0f,  0.5f,  0.0f,  1.0f,  0.0f,  textureScale,         0.0f,
                  0.5f, 0.0f, -0.5f,  0.0f,  1.0f,  0.0f,  textureScale, textureScale,
                 -0.5f, 0.0f, -0.5f,  0.0f,  1.0f,  0.0f,          0.0f, textureScale,
