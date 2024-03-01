@@ -82,7 +82,7 @@ public class ResourcesManager : IResourcesManager
         }
 
         var texture = Texture.LoadFromRgbaBytes(pixels, width, height, wrapMode);
-        _textures.Add(name, Texture.LoadFromRgbaBytes(pixels, width, height, wrapMode));
+        _textures.Add(name, texture);
         
         return texture;
     }
