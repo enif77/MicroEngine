@@ -28,7 +28,8 @@ public class DefaultGeometry : GeometryBase
         IndicesCount = indicesCount;
     }
     
-    public override void Build(IShader forShader)
+    
+    protected override void BuildImpl(IShader forShader)
     {
         // Vertex array object.
         VertexArrayObject = GL.GenVertexArray();
@@ -48,7 +49,7 @@ public class DefaultGeometry : GeometryBase
     }
 
 
-    public override void Render()
+    protected override void RenderImpl()
     {
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);

@@ -12,7 +12,7 @@ using MicroEngine.Extensions;
 public class SimpleIndexedGeometry(float[] vertices, uint[] indices)
     : GeometryBase(vertices, indices)
 {
-    public override void Build(IShader forShader)
+    protected override void BuildImpl(IShader forShader)
     {
         // Vertex array object.
         VertexArrayObject = GL.GenVertexArray();
@@ -33,7 +33,7 @@ public class SimpleIndexedGeometry(float[] vertices, uint[] indices)
     }
     
     
-    public override void Render()
+    protected override void RenderImpl()
     {
         GL.BindVertexArray(VertexArrayObject);
         GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);

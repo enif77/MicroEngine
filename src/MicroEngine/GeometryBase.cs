@@ -13,8 +13,34 @@ public abstract class GeometryBase(float[] vertices, uint[] indices) : IGeometry
     public int VertexBufferObject { get; set; } = -1;
     public int ElementBufferObject { get; set; } = -1;
     public int VertexArrayObject { get; set; } = -1;
+    public bool NeedsToBeBuild { get; private set; } = true;
 
 
-    public abstract void Build(IShader forShader);
-    public abstract void Render();
+    public void Build(IShader forShader)
+    {
+        if (NeedsToBeBuild == false)
+        {
+            throw new InvalidOperationException("The geometry was already built.");
+        }
+    
+        BuildImpl(forShader);
+        
+        NeedsToBeBuild = false;
+    }
+    
+    protected abstract void BuildImpl(IShader forShader);
+
+    
+    public void Render()
+    {
+        if (NeedsToBeBuild)
+        {
+            throw new InvalidOperationException("The geometry was not built.");
+        }
+        
+        RenderImpl();
+    }
+    
+    
+    protected abstract void RenderImpl();
 }

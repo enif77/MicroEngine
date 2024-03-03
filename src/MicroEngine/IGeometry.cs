@@ -41,7 +41,14 @@ public interface IGeometry : IRenderable
     
     
     /// <summary>
+    /// If true, this geometry needs to be built calling the Build() method.
+    /// Its true for newly created geometries. After the geometry is built, its set to false.
+    /// </summary>
+    bool NeedsToBeBuild { get; }
+    
+    /// <summary>
     /// Generates OpenGL buffer objects for this geometry.
+    /// Needs to be called once and before its used for rendering.
     /// </summary>
     /// <argument name="forShader">The shader to generate the geometry for.</argument>
     void Build(IShader forShader);
