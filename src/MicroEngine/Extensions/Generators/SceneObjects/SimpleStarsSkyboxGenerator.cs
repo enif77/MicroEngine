@@ -6,7 +6,6 @@ using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Core;
 using MicroEngine.Materials;
-using MicroEngine.SceneObjects;
 using MicroEngine.Shaders;
 
 /// <summary>
@@ -60,20 +59,17 @@ public static class SimpleStarsSkyboxGenerator
             throw new ArgumentOutOfRangeException(nameof(numberOfStars), "The maximal size of a star must be at most half of the texture size.");
         }
         
-        // RGBA texture buffer
-        var texture = new byte[textureSizePixels * textureSizePixels * 4];
-
-        // Clear the texture.
-        for (var i = 0; i < texture.Length; i += 4)
-        {
-            texture[i + 3] = 255;
-        }
-
+        // RGBA texture
+        var texture = new MicroEngine.Graphics.Texture(textureSizePixels, textureSizePixels);
+        
         //var rand = new Random(5728);
         var rand = new Random();
         var textures = new ITexture[6];
         for (var t = 0; t < textures.Length; t++)
         {
+            // Clear the texture with opaque black color.
+            texture.Fill(0, 0, 0, 255);
+            
             for (var s = 0; s < numberOfStars; s++)
             {
                 // Star size,
@@ -95,28 +91,20 @@ public static class SimpleStarsSkyboxGenerator
                     {
                         if (dx == 0 && dy == 0)
                         {
-                            PutPixel(texture, textureSizePixels, x + dx, y + dy, c, c, c);
+                            texture.PutPixel(x + dx, y + dy, c, c, c);
                         }
                         else
                         {
                             var abs = (Math.Abs(dx) + Math.Abs(dy)) / 2.0f;
                             var cc = (byte)(c * (1.0f / abs));
                             
-                            PutPixel(texture, textureSizePixels, x + dx, y + dy, cc, cc, cc);
+                            texture.PutPixel(x + dx, y + dy, cc, cc, cc);
                         }
                     }
                 }
             }
 
-            textures[t] = Texture.LoadFromRgbaBytes(texture, textureSizePixels, textureSizePixels, TextureWrapMode.ClampToEdge);
-            
-            for (var i = 0; i < texture.Length; i += 4)
-            {
-                texture[i] = 0;
-                texture[i + 1] = 0;
-                texture[i + 2] = 0;
-                texture[i + 3] = 255;
-            }
+            textures[t] = Texture.LoadFromRgbaBytes(texture.Pixels, textureSizePixels, textureSizePixels, TextureWrapMode.ClampToEdge);
         }
         
         var skybox = SkyboxGenerator.Generate(new MultiTextureMaterial(
@@ -126,15 +114,5 @@ public static class SimpleStarsSkyboxGenerator
         skybox.BuildGeometry();
         
         return skybox;
-    }
-
-    
-    private static void PutPixel(byte[] texture, int textureSize, int x, int y, byte r, byte g, byte b, byte a = 255)
-    {
-        var index = (x + y * textureSize) * 4;
-        texture[index] = r;
-        texture[index + 1] = g;
-        texture[index + 2] = b;
-        texture[index + 3] = a;
     }
 }
