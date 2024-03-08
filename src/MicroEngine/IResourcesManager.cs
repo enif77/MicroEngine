@@ -9,6 +9,18 @@ using OpenTK.Graphics.OpenGL4;
 /// </summary>
 public interface IResourcesManager
 {
+    #region general files
+
+    /// <summary>
+    /// Loads a text file from the given path.
+    /// </summary>
+    /// <param name="path">A file path.</param>
+    /// <returns>A string representing the contents of the requested file.</returns>
+    string LoadTextFile(string path);
+    
+    #endregion
+
+
     #region textures
 
     /// <summary>

@@ -1,12 +1,11 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine.Textures;
-
 namespace MicroEngine.Managers;
 
 using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Core;
+using MicroEngine.Textures;
 
 /// <summary>
 /// Manages resources.
@@ -26,6 +25,21 @@ public class ResourcesManager : IResourcesManager
     /// </summary>
     private ResourcesManager()
     {
+    }
+    
+    #endregion
+    
+    
+    #region general files
+    
+    public string LoadTextFile(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentException("A path to a text file expected.");
+        }
+
+        return File.ReadAllText(path);
     }
     
     #endregion
