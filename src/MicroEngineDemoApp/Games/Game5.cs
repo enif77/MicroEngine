@@ -31,9 +31,9 @@ public class Game5 : IGame
     }
     
     
-    public bool Initialize(int width, int height)
+    public bool Initialize()
     {
-        CreateScene(width, height);
+        CreateScene(Program.Settings.WindowWidth, Program.Settings.WindowHeight);
         
         Renderer.EnableFaceCulling();
         

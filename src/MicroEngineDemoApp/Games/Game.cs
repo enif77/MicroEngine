@@ -32,10 +32,10 @@ public class Game : IGame
     }
     
     
-    public bool Initialize(int width, int height)
+    public bool Initialize()
     {
         var scene = new Scene(
-            CreateCamera(width, height));
+            CreateCamera(Program.Settings.WindowWidth, Program.Settings.WindowHeight));
         
         #region Skybox
         

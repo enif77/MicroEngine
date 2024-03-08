@@ -34,7 +34,7 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
         InputManager.Instance.InitializeKeyboard(KeyboardState);
         InputManager.Instance.InitializeMouse(MouseState);
         
-        if (_game.Initialize(ClientSize.X, ClientSize.Y) == false)
+        if (_game.Initialize() == false)
         {
             Close();
         }

@@ -15,10 +15,8 @@ public interface IGame
     /// <summary>
     /// Initializes the game.
     /// </summary>
-    /// <param name="width">A width of the game window.</param>
-    /// <param name="height">A height of the game window.</param>
     /// <returns></returns>
-    bool Initialize(int width, int height);
+    bool Initialize();
 
     /// <summary>
     /// Updates the game state.
