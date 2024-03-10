@@ -34,8 +34,9 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
     
     public bool Initialize()
     {
-        var scene = new Scene(
-            CreateCamera(Program.Settings.WindowWidth, Program.Settings.WindowHeight));
+        var scene = new Scene();
+        
+        scene.SetCamera(CreateCamera(Program.Settings.WindowWidth, Program.Settings.WindowHeight));
         
         scene.AddSkybox(CreateSkybox());
 

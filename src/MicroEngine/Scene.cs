@@ -25,7 +25,7 @@ public class Scene : SceneObjectBase
     /// A primary camera for the scene.
     /// </summary>
     /// <exception cref="InvalidOperationException">Thrown, if the value is going to be set to null.</exception>
-    public ICamera Camera { get; }
+    public ICamera Camera { get; private set; }
     
     /// <summary>
     /// An optional skybox used by this scene.
@@ -46,11 +46,10 @@ public class Scene : SceneObjectBase
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="camera">A primary scene camera.</param>
     /// <param name="maxLights">A maximum of supported lights. 16 by default.</param>
-    public Scene(ICamera camera, int maxLights = 16)
+    public Scene(int maxLights = 16)
     {
-        Camera = camera ?? throw new ArgumentNullException(nameof(camera));
+        Camera = new NullCamera();
         Camera.Parent = this;
         Children.Add(Camera);
         
@@ -60,6 +59,29 @@ public class Scene : SceneObjectBase
     }
 
 
+    /// <summary>
+    /// Sets a camera for this scene.
+    /// </summary>
+    /// <param name="camera">An ICamera instance.</param>
+    /// <param name="addToChildren">If true (the default), the camera is added to the scene children too.</param>
+    public void SetCamera(ICamera camera, bool addToChildren = true)
+    {
+        ArgumentNullException.ThrowIfNull(camera);
+
+        Children.Remove(Camera);
+        
+        Camera = camera;
+
+        if (addToChildren == false)
+        {
+            return;
+        }
+
+        Camera.Parent = this;
+        Children.Add(Camera);
+    }
+
+    
     public override void Update(float deltaTime)
     {
         base.Update(deltaTime);

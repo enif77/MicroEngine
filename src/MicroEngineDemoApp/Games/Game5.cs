@@ -300,7 +300,9 @@ public class Game5 : IGame
     private void CreateScene(int width, int height)
     {
         //var scene = new Scene(new FlyByCamera(width / (float)height));
-        var scene = new Scene(new FpsCamera()
+        var scene = new Scene();
+        
+        scene.SetCamera(new FpsCamera()
         {
             Position = new Vector3(0f, -1f, 1f),
             AspectRatio = width / (float)height
