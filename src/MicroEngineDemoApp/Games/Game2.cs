@@ -241,7 +241,11 @@ public class Game2 : IGame
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new FpsCamera(new Vector3(1, 0, 1), windowWidth / (float)windowHeight);
+        return new FpsCamera()
+        {
+            Position = new Vector3(1, 0, 1),
+            AspectRatio = windowWidth / (float)windowHeight
+        };
     }
     
     

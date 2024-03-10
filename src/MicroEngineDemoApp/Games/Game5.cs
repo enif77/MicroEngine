@@ -300,7 +300,11 @@ public class Game5 : IGame
     private void CreateScene(int width, int height)
     {
         //var scene = new Scene(new FlyByCamera(width / (float)height));
-        var scene = new Scene(new FpsCamera(new Vector3(0, -1, 1), width / (float)height));
+        var scene = new Scene(new FpsCamera()
+        {
+            Position = new Vector3(0f, -1f, 1f),
+            AspectRatio = width / (float)height
+        });
         
         // Skybox
         

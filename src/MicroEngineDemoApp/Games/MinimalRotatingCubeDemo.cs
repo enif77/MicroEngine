@@ -121,7 +121,11 @@ public class MinimalRotatingCubeDemo : IGame
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new FpsCamera(Vector3.UnitZ * 1.5f, windowWidth / (float)windowHeight);
+        return new FpsCamera()
+        {
+            Position = Vector3.UnitZ * 1.5f,
+            AspectRatio = windowWidth / (float)windowHeight
+        };
     }
     
     

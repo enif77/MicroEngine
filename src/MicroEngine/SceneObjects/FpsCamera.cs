@@ -15,6 +15,8 @@ using MicroEngine.Extensions;
 // Check out the web version if you don't know why we are doing a specific thing or want to know more about the code.
 public class FpsCamera : SceneObjectBase, ICamera
 {
+    private const float DefaultAspectRatio = 16.0f / 9.0f;
+    
     // Those vectors are directions pointing outwards from the camera to define how it rotated.
     private Vector3 _frontVector = -Vector3.UnitZ;
     private Vector3 _upVector = Vector3.UnitY;
@@ -26,11 +28,14 @@ public class FpsCamera : SceneObjectBase, ICamera
     /// </summary>
     private float _fov = MathHelper.PiOver2;
     
-    public FpsCamera(Vector3 position, float aspectRatio)
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    public FpsCamera()
     {
-        Position = position;
+        Position = Vector3.Zero;
         Rotation = new Vector3(0f, -MathHelper.PiOver2, 0f);
-        AspectRatio = aspectRatio;
+        AspectRatio = DefaultAspectRatio;
     }
     
     

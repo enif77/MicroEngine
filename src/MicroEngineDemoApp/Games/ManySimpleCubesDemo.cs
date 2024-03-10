@@ -166,7 +166,11 @@ public class ManySimpleCubesDemo : IGame
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
 
-        return new FpsCamera(Vector3.UnitZ * 5, windowWidth / (float)windowHeight);
+        return new FpsCamera()
+        {
+            Position = Vector3.UnitZ * 5,
+            AspectRatio = windowWidth / (float)windowHeight
+        };
     }
 
     
