@@ -97,7 +97,7 @@ public class SceneObjectController : SceneObjectBase
     /// <param name="distance">How far this camera should move from its current position.</param>
     public void Ascend(float distance)
     {
-        Position += UpVector * -distance;
+        Position += UpVector * distance;
     }
 
     /// <summary>
