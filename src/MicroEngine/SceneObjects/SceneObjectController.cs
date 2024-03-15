@@ -106,7 +106,7 @@ public class SceneObjectController : SceneObjectBase
     /// <param name="distance">How far this camera should move from its current position.</param>
     public void Strafe(float distance)
     {
-        Position += RightVector * -distance;
+        Position += RightVector * distance;
     }
     
     
