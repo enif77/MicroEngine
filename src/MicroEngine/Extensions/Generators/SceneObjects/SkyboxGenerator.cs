@@ -18,50 +18,38 @@ public static class SkyboxGenerator
     /// <exception cref="ArgumentNullException">Thrown, if the material argument is null.</exception>
     public static ISceneObject Generate(IMaterial material)
     {
-        return new GenericSkybox(GenerateSkyboxGeometry())
-        {
-            Material = material ?? throw new ArgumentNullException(nameof(material))
-        };
-    }
-
-    /// <summary>
-    /// Generates a geometry for a skybox-like object with a per-side textures.
-    /// </summary>
-    /// <param name="textureScale">How many times will be texture repeated on a skybox side. 1.0 means that the texture will cover the whole skybox side just once.</param>
-    /// <returns>A geometry for a skybox-like object with a per-side textures.</returns>
-    public static IGeometry GenerateSkyboxGeometry(float textureScale = 1.0f)
-        => new MultiTextureIndexedGeometry(
+        return new GenericSkybox(new MultiTextureIndexedGeometry(
             [
                 // Positions          Texture ID and coords
-                -0.5f, -0.5f, -0.5f,  0,          0.0f,         0.0f, // Front face.
-                 0.5f, -0.5f, -0.5f,  0,  textureScale,         0.0f,
-                 0.5f,  0.5f, -0.5f,  0,  textureScale, textureScale,
-                -0.5f,  0.5f, -0.5f,  0,          0.0f, textureScale,
+                -0.5f, -0.5f, -0.5f,  0,  0.0f, 0.0f, // Front face.
+                 0.5f, -0.5f, -0.5f,  0,  1.0f, 0.0f,
+                 0.5f,  0.5f, -0.5f,  0,  1.0f, 1.0f,
+                -0.5f,  0.5f, -0.5f,  0,  0.0f, 1.0f,
 
-                 0.5f, -0.5f, -0.5f,  1,          0.0f,         0.0f, // Right face.
-                 0.5f, -0.5f,  0.5f,  1,  textureScale,         0.0f,
-                 0.5f,  0.5f,  0.5f,  1,  textureScale, textureScale,
-                 0.5f,  0.5f, -0.5f,  1,          0.0f, textureScale,
+                 0.5f, -0.5f, -0.5f,  1,  0.0f, 0.0f, // Right face.
+                 0.5f, -0.5f,  0.5f,  1,  1.0f, 0.0f,
+                 0.5f,  0.5f,  0.5f,  1,  1.0f, 1.0f,
+                 0.5f,  0.5f, -0.5f,  1,  0.0f, 1.0f,
 
-                 0.5f, -0.5f,  0.5f,  2,          0.0f,         0.0f, // Back face.
-                -0.5f, -0.5f,  0.5f,  2,  textureScale,         0.0f,
-                -0.5f,  0.5f,  0.5f,  2,  textureScale, textureScale,
-                 0.5f,  0.5f,  0.5f,  2,          0.0f, textureScale,
+                 0.5f, -0.5f,  0.5f,  2,  0.0f, 0.0f, // Back face.
+                -0.5f, -0.5f,  0.5f,  2,  1.0f, 0.0f,
+                -0.5f,  0.5f,  0.5f,  2,  1.0f, 1.0f,
+                 0.5f,  0.5f,  0.5f,  2,  0.0f, 1.0f,
 
-                -0.5f, -0.5f,  0.5f,  3,          0.0f,         0.0f, // Left face.
-                -0.5f, -0.5f, -0.5f,  3,  textureScale,         0.0f,
-                -0.5f,  0.5f, -0.5f,  3,  textureScale, textureScale,
-                -0.5f,  0.5f,  0.5f,  3,          0.0f, textureScale,
+                -0.5f, -0.5f,  0.5f,  3,  0.0f, 0.0f, // Left face.
+                -0.5f, -0.5f, -0.5f,  3,  1.0f, 0.0f,
+                -0.5f,  0.5f, -0.5f,  3,  1.0f, 1.0f,
+                -0.5f,  0.5f,  0.5f,  3,  0.0f, 1.0f,
 
-                -0.5f,  0.5f, -0.5f,  4,          0.0f,         0.0f, // Top face.
-                 0.5f,  0.5f, -0.5f,  4,  textureScale,         0.0f,
-                 0.5f,  0.5f,  0.5f,  4,  textureScale, textureScale,
-                -0.5f,  0.5f,  0.5f,  4,          0.0f, textureScale,
+                -0.5f,  0.5f, -0.5f,  4,  0.0f, 0.0f, // Top face.
+                 0.5f,  0.5f, -0.5f,  4,  1.0f, 0.0f,
+                 0.5f,  0.5f,  0.5f,  4,  1.0f, 1.0f,
+                -0.5f,  0.5f,  0.5f,  4,  0.0f, 1.0f,
 
-                -0.5f, -0.5f,  0.5f,  5,          0.0f,         0.0f, // Bottom face.
-                 0.5f, -0.5f,  0.5f,  5,  textureScale,         0.0f,
-                 0.5f, -0.5f, -0.5f,  5,  textureScale, textureScale,
-                -0.5f, -0.5f, -0.5f,  5,          0.0f, textureScale,
+                -0.5f, -0.5f,  0.5f,  5,  0.0f, 0.0f, // Bottom face.
+                 0.5f, -0.5f,  0.5f,  5,  1.0f, 0.0f,
+                 0.5f, -0.5f, -0.5f,  5,  1.0f, 1.0f,
+                -0.5f, -0.5f, -0.5f,  5,  0.0f, 1.0f,
             ],
             [
                 // Each side has 2 triangles, each triangle has 3 vertices.
@@ -71,5 +59,9 @@ public static class SkyboxGenerator
                 12, 13, 14,  14, 15, 12, // Left
                 16, 17, 18,  18, 19, 16, // Top
                 20, 21, 22,  22, 23, 20  // Bottom
-            ]);
+            ]))
+        {
+            Material = material ?? throw new ArgumentNullException(nameof(material))
+        };
+    }
 }
