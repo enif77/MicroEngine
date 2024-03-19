@@ -44,7 +44,7 @@ public class RotatingCubeDemo : IGame
             new Material(
                 _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
                 _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
-                new DefaultShader()),
+                new DefaultShader(_resourcesManager)),
             new Vector3(0.0f, 0.0f, 0.0f)));
         
         scene.AddLight(new DirectionalLight(scene.Lights.Count)
@@ -208,7 +208,7 @@ public class RotatingCubeDemo : IGame
                 _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
                 _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
             ],
-            new MultiTextureSkyboxShader()));
+            new MultiTextureSkyboxShader(_resourcesManager)));
         
         skybox.BuildGeometry();
         

@@ -310,7 +310,7 @@ public class Game5 : IGame
         
         // Skybox
         
-        scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate());
+        scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
         
         // Cubes
         
@@ -319,7 +319,7 @@ public class Game5 : IGame
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
             _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
-            new DefaultShader());
+            new DefaultShader(_resourcesManager));
 
         var cube1 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
         

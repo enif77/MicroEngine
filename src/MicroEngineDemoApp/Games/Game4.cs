@@ -52,7 +52,7 @@ public class Game4 : IGame
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
             _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
-            new DefaultShader());
+            new DefaultShader(_resourcesManager));
 
         var cube1 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
         
@@ -270,7 +270,7 @@ public class Game4 : IGame
     
     private ISceneObject CreateSkybox()
     {
-        return SimpleStarsSkyboxGenerator.Generate();
+        return SimpleStarsSkyboxGenerator.Generate(_resourcesManager);
     }
 
     

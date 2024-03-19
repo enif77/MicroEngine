@@ -39,7 +39,7 @@ public class Game2 : IGame
         
         #region Skybox
         
-        scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate());
+        scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
         
         #endregion
         
@@ -51,9 +51,9 @@ public class Game2 : IGame
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
             _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
-            new DefaultShader());
+            new DefaultShader(_resourcesManager));
         
-        var lampShader = new SimpleColorShader();
+        var lampShader = new SimpleColorShader(_resourcesManager);
         
         var lampMaterial = new SimpleColorMaterial(
             new Vector3(1.0f, 1.0f, 1.0f),

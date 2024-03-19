@@ -39,7 +39,7 @@ public class MinimalRotatingCubeDemo : IGame
         scene.AddChild(CreateCube(
             new SimpleTextureMaterial(
                 _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
-                new SimpleTextureShader()),
+                new SimpleTextureShader(_resourcesManager)),
             new Vector3(0.0f, 0.0f, 0.0f)));
         
         _scene = scene;

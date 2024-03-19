@@ -53,7 +53,7 @@ public class Game3 : IGame
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
             _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
-            new DefaultShader());
+            new DefaultShader(_resourcesManager));
         
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f)));
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(2.0f, 5.0f, -15.0f)));
@@ -307,7 +307,7 @@ public class Game3 : IGame
     
     private ISceneObject CreateSkybox()
     {
-        return SimpleStarsSkyboxGenerator.Generate();
+        return SimpleStarsSkyboxGenerator.Generate(_resourcesManager);
     }
     
 
@@ -341,7 +341,7 @@ public class Game3 : IGame
     
     private void CreateLamps(Scene scene)
     {
-        var lampShader = new SimpleColorShader();
+        var lampShader = new SimpleColorShader(_resourcesManager);
         
         var lampMaterial = new SimpleColorMaterial(
             new Vector3(1.0f, 1.0f, 1.0f),
@@ -381,7 +381,7 @@ public class Game3 : IGame
     
     private void CreateSubCubes2(ISceneObject parentCube)
     {
-        var shader = new SimpleColorShader();
+        var shader = new SimpleColorShader(_resourcesManager);
         
         var subCube = SimpleCubeGenerator.Generate(new SimpleColorMaterial(
             new Vector3(1.0f, 1.0f, 0.0f),
