@@ -39,7 +39,18 @@ public class ResourcesManager : IResourcesManager
             throw new ArgumentException("A path to a text file expected.");
         }
 
-        return File.ReadAllText(path);
+        if (File.Exists(path) == false)
+        {
+            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path)
+                .Replace("Contents/MacOS/", "Contents/");
+        }
+        
+        if (File.Exists(path))
+        {
+            return File.ReadAllText(path);
+        }
+        
+        throw new FileNotFoundException($"A file '{path}' not found.");
     }
     
     #endregion
@@ -74,10 +85,21 @@ public class ResourcesManager : IResourcesManager
             return value;
         }
 
-        var texture = Texture.LoadFromFile(path, wrapMode);
-        _textures.Add(path, texture);
+        if (File.Exists(path) == false)
+        {
+            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path)
+                .Replace("Contents/MacOS/", "Contents/");
+        }
         
-        return texture;
+        if (File.Exists(path))
+        {
+            var texture = Texture.LoadFromFile(path, wrapMode);
+            _textures.Add(path, texture);
+        
+            return texture;
+        }
+        
+        throw new FileNotFoundException($"A texture '{path}' not found.");
     }
     
     
