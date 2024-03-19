@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using System.Runtime.InteropServices;
+
 namespace MicroEngine.Managers;
 
 using OpenTK.Graphics.OpenGL4;
@@ -30,6 +32,9 @@ public class ResourcesManager : IResourcesManager
     #endregion
     
     
+    public string RootPath { get; set; } = string.Empty;
+    
+    
     #region general files
     
     public string LoadTextFile(string path)
@@ -39,18 +44,7 @@ public class ResourcesManager : IResourcesManager
             throw new ArgumentException("A path to a text file expected.");
         }
 
-        if (File.Exists(path) == false)
-        {
-            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path)
-                .Replace("Contents/MacOS/", "Contents/");
-        }
-        
-        if (File.Exists(path))
-        {
-            return File.ReadAllText(path);
-        }
-        
-        throw new FileNotFoundException($"A file '{path}' not found.");
+        return File.ReadAllText(GetFullPath(path));
     }
     
     #endregion
@@ -85,21 +79,10 @@ public class ResourcesManager : IResourcesManager
             return value;
         }
 
-        if (File.Exists(path) == false)
-        {
-            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path)
-                .Replace("Contents/MacOS/", "Contents/");
-        }
+        var texture = Texture.LoadFromFile(GetFullPath(path), wrapMode);
+        _textures.Add(path, texture);
         
-        if (File.Exists(path))
-        {
-            var texture = Texture.LoadFromFile(path, wrapMode);
-            _textures.Add(path, texture);
-        
-            return texture;
-        }
-        
-        throw new FileNotFoundException($"A texture '{path}' not found.");
+        return texture;
     }
     
     
@@ -121,6 +104,50 @@ public class ResourcesManager : IResourcesManager
         _textures.Add(name, texture);
         
         return texture;
+    }
+    
+    #endregion
+    
+    
+    #region helpers
+    
+    private string GetFullPath(string path)
+    {
+        // An absolute path or a path relative to the executable.
+        if (File.Exists(path))
+        {
+            return path;
+        }
+
+        // A path relative to the root path.
+        if (string.IsNullOrWhiteSpace(RootPath) == false)
+        {
+            var pathWithRoot = Path.Combine(RootPath, path);
+            if (File.Exists(pathWithRoot))
+            {
+                return OsSafePath(pathWithRoot);
+            }
+        }
+
+        // A path relative to the executable.
+        var pathWithBaseDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+        if (File.Exists(pathWithBaseDirectory))
+        {
+            return OsSafePath(pathWithBaseDirectory);
+        }
+
+        throw new FileNotFoundException($"A file '{path}' not found.");
+    }
+    
+    
+    private string OsSafePath(string path)
+    {
+        // We are fixing a path to a resource in a MacOS app bundle.
+        // The path to a resource in a MacOS app bundle is different (in the parent dir of the executable)
+        // from the path to the same resource in a Windows or Linux app.
+        return RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
+            ? path.Replace("Contents/MacOS/", "Contents/")
+            : path;
     }
     
     #endregion

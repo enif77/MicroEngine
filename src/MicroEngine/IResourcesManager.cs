@@ -9,6 +9,12 @@ using OpenTK.Graphics.OpenGL4;
 /// </summary>
 public interface IResourcesManager
 {
+    /// <summary>
+    /// An optional root directory path.
+    /// </summary>
+    string RootPath { get; set; }
+    
+    
     #region general files
 
     /// <summary>
