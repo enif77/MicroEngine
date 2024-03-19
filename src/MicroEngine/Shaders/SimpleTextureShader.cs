@@ -18,8 +18,8 @@ public class SimpleTextureShader : IShader
         ArgumentNullException.ThrowIfNull(resourcesManager);
         
         _shader = new Shader(
-            resourcesManager.LoadTextFile("Resources/Shaders/simple-texture.vert"),
-            resourcesManager.LoadTextFile("Resources/Shaders/simple-texture.frag"));
+            resourcesManager.LoadTextFile("Shaders/simple-texture.vert"),
+            resourcesManager.LoadTextFile("Shaders/simple-texture.frag"));
     }
 
     

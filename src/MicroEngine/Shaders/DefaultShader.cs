@@ -18,8 +18,8 @@ public class DefaultShader : IShader
         ArgumentNullException.ThrowIfNull(resourcesManager);
 
         _shader = new Shader(
-            resourcesManager.LoadTextFile("Resources/Shaders/shader.vert"),
-            resourcesManager.LoadTextFile("Resources/Shaders/default.frag"));
+            resourcesManager.LoadTextFile("Shaders/shader.vert"),
+            resourcesManager.LoadTextFile("Shaders/default.frag"));
     }
 
     

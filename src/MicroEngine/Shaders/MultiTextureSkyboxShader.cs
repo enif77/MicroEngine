@@ -10,8 +10,8 @@ public class MultiTextureSkyboxShader : MultiTextureShaderBase
     
     public MultiTextureSkyboxShader(IResourcesManager resourcesManager)
         : base(new Shader(
-            resourcesManager.LoadTextFile("Resources/Shaders/multi-texture-skybox.vert"),
-            resourcesManager.LoadTextFile("Resources/Shaders/multi-texture.frag")))
+            resourcesManager.LoadTextFile("Shaders/multi-texture-skybox.vert"),
+            resourcesManager.LoadTextFile("Shaders/multi-texture.frag")))
     {
         ArgumentNullException.ThrowIfNull(resourcesManager);
     }

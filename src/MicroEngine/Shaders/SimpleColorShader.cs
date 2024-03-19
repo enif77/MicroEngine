@@ -16,8 +16,8 @@ public class SimpleColorShader : IShader
         ArgumentNullException.ThrowIfNull(resourcesManager);
         
         _shader = new Shader(
-            resourcesManager.LoadTextFile("Resources/Shaders/shader.vert"),
-            resourcesManager.LoadTextFile("Resources/Shaders/simple-color.frag"));
+            resourcesManager.LoadTextFile("Shaders/shader.vert"),
+            resourcesManager.LoadTextFile("Shaders/simple-color.frag"));
     }
 
     

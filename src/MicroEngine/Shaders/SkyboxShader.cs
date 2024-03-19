@@ -18,8 +18,8 @@ public class SkyboxShader : IShader
         ArgumentNullException.ThrowIfNull(resourcesManager);
         
         _shader = new Shader(
-            resourcesManager.LoadTextFile("Resources/Shaders/skybox.vert"),
-            resourcesManager.LoadTextFile("Resources/Shaders/skybox.frag"));
+            resourcesManager.LoadTextFile("Shaders/skybox.vert"),
+            resourcesManager.LoadTextFile("Shaders/skybox.frag"));
     }
 
     

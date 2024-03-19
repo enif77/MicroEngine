@@ -11,8 +11,8 @@ public class MultiTextureShader : MultiTextureShaderBase
 
     public MultiTextureShader(IResourcesManager resourcesManager)
         : base(new Shader(
-            resourcesManager.LoadTextFile("Resources/Shaders/multi-texture.vert"),
-            resourcesManager.LoadTextFile("Resources/Shaders/multi-texture.frag")))
+            resourcesManager.LoadTextFile("Shaders/multi-texture.vert"),
+            resourcesManager.LoadTextFile("Shaders/multi-texture.frag")))
     {
         ArgumentNullException.ThrowIfNull(resourcesManager);
     }
