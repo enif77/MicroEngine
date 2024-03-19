@@ -9,10 +9,11 @@ public class MultiTextureShader : MultiTextureShaderBase
     public override string Name => "multi-texture";
     
 
-    public MultiTextureShader()
+    public MultiTextureShader(IResourcesManager resourcesManager)
         : base(new Shader(
-            File.ReadAllText("Resources/Shaders/multi-texture.vert"),
-            File.ReadAllText("Resources/Shaders/multi-texture.frag")))
+            resourcesManager.LoadTextFile("Resources/Shaders/multi-texture.vert"),
+            resourcesManager.LoadTextFile("Resources/Shaders/multi-texture.frag")))
     {
+        ArgumentNullException.ThrowIfNull(resourcesManager);
     }
 }

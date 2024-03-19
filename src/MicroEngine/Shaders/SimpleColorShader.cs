@@ -11,11 +11,13 @@ public class SimpleColorShader : IShader
     public string Name => "simple-color";
     
     
-    public SimpleColorShader()
+    public SimpleColorShader(IResourcesManager resourcesManager)
     {
+        ArgumentNullException.ThrowIfNull(resourcesManager);
+        
         _shader = new Shader(
-            File.ReadAllText("Resources/Shaders/shader.vert"),
-            File.ReadAllText("Resources/Shaders/simple-color.frag"));
+            resourcesManager.LoadTextFile("Resources/Shaders/shader.vert"),
+            resourcesManager.LoadTextFile("Resources/Shaders/simple-color.frag"));
     }
 
     

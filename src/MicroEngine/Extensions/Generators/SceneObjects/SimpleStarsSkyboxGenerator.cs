@@ -17,10 +17,11 @@ public static class SimpleStarsSkyboxGenerator
     public const int DefaultNumberOfStars = 256;
     public const int DefaultMinStartSize = 3;
     public const int DefaultMaxStartSize = 7;
-    
+
     /// <summary>
     /// Generates a simple stars skybox.
     /// </summary>
+    /// <param name="resourcesManager">A resource manager.</param>
     /// <param name="textureSizePixels">The side size of a texture used for this skybox. DefaultTextureSizePixels by default.</param>
     /// <param name="numberOfStars">A number of stars per skybox side to be generated. DefaultNumberOfStars by default.</param>
     /// <param name="minStarSize">A minimal size of a star generated. DefaultMinStartSize by default.</param>
@@ -29,6 +30,7 @@ public static class SimpleStarsSkyboxGenerator
     /// <exception cref="ArgumentOutOfRangeException">If textureSizePixels is les than 1.</exception>
     /// <exception cref="ArgumentOutOfRangeException">If numberOfStars is les than 1.</exception>
     public static ISceneObject Generate(
+        IResourcesManager resourcesManager,
         int textureSizePixels = DefaultTextureSizePixels,
         int numberOfStars = DefaultNumberOfStars,
         int minStarSize = DefaultMinStartSize,
@@ -109,7 +111,7 @@ public static class SimpleStarsSkyboxGenerator
         
         var skybox = SkyboxGenerator.Generate(new MultiTextureMaterial(
             textures,
-            new MultiTextureSkyboxShader()));
+            new MultiTextureSkyboxShader(resourcesManager)));
         
         skybox.BuildGeometry();
         

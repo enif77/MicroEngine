@@ -13,11 +13,13 @@ public class DefaultShader : IShader
     public string Name => "cube";
     
 
-    public DefaultShader()
+    public DefaultShader(IResourcesManager resourcesManager)
     {
+        ArgumentNullException.ThrowIfNull(resourcesManager);
+
         _shader = new Shader(
-            File.ReadAllText("Resources/Shaders/shader.vert"),
-            File.ReadAllText("Resources/Shaders/default.frag"));
+            resourcesManager.LoadTextFile("Resources/Shaders/shader.vert"),
+            resourcesManager.LoadTextFile("Resources/Shaders/default.frag"));
     }
 
     

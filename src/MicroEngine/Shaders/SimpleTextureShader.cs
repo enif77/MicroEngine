@@ -13,11 +13,13 @@ public class SimpleTextureShader : IShader
     public string Name => "simple-texture";
     
 
-    public SimpleTextureShader()
+    public SimpleTextureShader(IResourcesManager resourcesManager)
     {
+        ArgumentNullException.ThrowIfNull(resourcesManager);
+        
         _shader = new Shader(
-            File.ReadAllText("Resources/Shaders/simple-texture.vert"),
-            File.ReadAllText("Resources/Shaders/simple-texture.frag"));
+            resourcesManager.LoadTextFile("Resources/Shaders/simple-texture.vert"),
+            resourcesManager.LoadTextFile("Resources/Shaders/simple-texture.frag"));
     }
 
     

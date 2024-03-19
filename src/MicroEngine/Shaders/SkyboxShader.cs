@@ -13,11 +13,13 @@ public class SkyboxShader : IShader
     public string Name => "skybox";
     
     
-    public SkyboxShader()
+    public SkyboxShader(IResourcesManager resourcesManager)
     {
+        ArgumentNullException.ThrowIfNull(resourcesManager);
+        
         _shader = new Shader(
-            File.ReadAllText("Resources/Shaders/skybox.vert"),
-            File.ReadAllText("Resources/Shaders/skybox.frag"));
+            resourcesManager.LoadTextFile("Resources/Shaders/skybox.vert"),
+            resourcesManager.LoadTextFile("Resources/Shaders/skybox.frag"));
     }
 
     
