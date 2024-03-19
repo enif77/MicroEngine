@@ -46,11 +46,11 @@ public class Game2 : IGame
         
         #region Cubes
         
-        var map = ParseMap(File.ReadAllText("Resources/Maps/Map10x10.txt"));
+        var map = ParseMap(File.ReadAllText("Maps/Map10x10.txt"));
         
         var cubeMaterial = new Material(
-            _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
-            _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("Textures/container2.png"),
+            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
             new DefaultShader(_resourcesManager));
         
         var lampShader = new SimpleColorShader(_resourcesManager);

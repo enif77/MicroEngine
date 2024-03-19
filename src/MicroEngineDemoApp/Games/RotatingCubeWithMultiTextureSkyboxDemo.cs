@@ -42,8 +42,8 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
 
         scene.AddChild(CreateCube(
             new Material(
-                _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
-                _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
+                _resourcesManager.LoadTexture("Textures/container2.png"),
+                _resourcesManager.LoadTexture("Textures/container2_specular.png"),
                 new DefaultShader(_resourcesManager)),
             new Vector3(0.0f, 0.0f, 0.0f)));
         
@@ -193,12 +193,12 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
         //var skyboxName = "Rocky";
         var material = new MultiTextureMaterial(
             [
-                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/{skyboxName}/pz.jpg", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/{skyboxName}/px.jpg", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/{skyboxName}/nz.jpg", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/{skyboxName}/nx.jpg", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/{skyboxName}/py.jpg", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture($"Resources/Textures/Skyboxes/{skyboxName}/ny.jpg", TextureWrapMode.ClampToEdge)
+                _resourcesManager.LoadTexture($"Textures/Skyboxes/{skyboxName}/pz.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Textures/Skyboxes/{skyboxName}/px.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Textures/Skyboxes/{skyboxName}/nz.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Textures/Skyboxes/{skyboxName}/nx.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Textures/Skyboxes/{skyboxName}/py.jpg", TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture($"Textures/Skyboxes/{skyboxName}/ny.jpg", TextureWrapMode.ClampToEdge)
             ],
             new MultiTextureSkyboxShader(_resourcesManager));
         

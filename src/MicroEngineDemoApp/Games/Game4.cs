@@ -50,8 +50,8 @@ public class Game4 : IGame
         _cubeController.AddChild(scene.Camera);
         
         var cubeMaterial = new Material(
-            _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
-            _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("Textures/container2.png"),
+            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
             new DefaultShader(_resourcesManager));
 
         var cube1 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
@@ -93,9 +93,6 @@ public class Game4 : IGame
     }
 
     
-    private bool _firstMove = true;
-    private Vector2 _lastPos;
-    
     private float _forwardSpeed;
     private float _sideSpeed;
     private float _verticalSpeed;
@@ -119,8 +116,6 @@ public class Game4 : IGame
             return false;
         }
         
-        const float sensitivity = 0.2f;
-
         if (keyboardState.IsKeyDown(Keys.Space))
         {
             _forwardSpeed = 0.0f;

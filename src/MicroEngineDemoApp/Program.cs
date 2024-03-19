@@ -49,6 +49,8 @@ internal static class Program
             windowHeight = primaryMonitor.VerticalResolution;
         }
         
+        ResourcesManager.Instance.RootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
+        
         var games = new Dictionary<string, IGame>()
         {
             { "game-with-cubes", new Game(ResourcesManager.Instance) },

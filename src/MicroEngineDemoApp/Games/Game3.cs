@@ -51,8 +51,8 @@ public class Game3 : IGame
         // TODO: Create the first cube and then clone it with setting position to cube clones.
         
         var cubeMaterial = new Material(
-            _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
-            _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("Textures/container2.png"),
+            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
             new DefaultShader(_resourcesManager));
         
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f)));
@@ -101,7 +101,7 @@ public class Game3 : IGame
 
         // var plane = TexturedPlaneGenerator.Generate(
         //     new SimpleTextureMaterial(
-        //         Texture.LoadFromFile("Resources/Textures/container2.png"),
+        //         Texture.LoadFromFile("Textures/container2.png"),
         //         new SimpleTextureShader()),
         //     10.0f);
         

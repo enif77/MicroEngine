@@ -37,8 +37,8 @@ public class ManySimpleCubesDemo : IGame
         scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
 
         var cubeMaterial = new Material(
-            _resourcesManager.LoadTexture("Resources/Textures/container2.png"),
-            _resourcesManager.LoadTexture("Resources/Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("Textures/container2.png"),
+            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
             new DefaultShader(_resourcesManager));
         
         // Generates 1000 cubes in a 10x10x10 grid.
