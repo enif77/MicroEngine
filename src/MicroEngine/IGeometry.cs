@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using OpenTK.Mathematics;
+
 namespace MicroEngine;
 
 /// <summary>
@@ -7,8 +9,6 @@ namespace MicroEngine;
 /// </summary>
 public interface IGeometry : IRenderable
 {
-    #region Geometry
-    
     /// <summary>
     /// Vertices defining the geometry.
     /// </summary>
@@ -53,5 +53,14 @@ public interface IGeometry : IRenderable
     /// <argument name="forShader">The shader to generate the geometry for.</argument>
     void Build(IShader forShader);
     
+    
+    #region iterators
+
+    /// <summary>
+    /// Iterator, that returns the vertices of the geometry.
+    /// </summary>
+    /// <returns>An enumerator, that is returning vertices as Vector3 instances.</returns>
+    IEnumerable<Vector3> GetVertices();
+
     #endregion
 }

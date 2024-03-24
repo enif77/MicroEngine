@@ -1,5 +1,7 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
+using OpenTK.Mathematics;
+
 namespace MicroEngine;
 
 /// <summary>
@@ -40,6 +42,9 @@ public abstract class GeometryBase(float[] vertices, uint[] indices) : IGeometry
         
         RenderImpl();
     }
+
+
+    public abstract IEnumerable<Vector3> GetVertices();
     
     
     protected abstract void RenderImpl();

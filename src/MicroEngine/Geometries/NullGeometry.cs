@@ -2,6 +2,8 @@
 
 namespace MicroEngine.Geometries;
 
+using OpenTK.Mathematics;
+
 /// <summary>
 /// Represents a null geometry. This geometry is used for scene objects without geometry.
 /// </summary>
@@ -17,5 +19,11 @@ public class NullGeometry()
     protected override void RenderImpl()
     {
         // Nothing to do here.
+    }
+    
+    
+    public override IEnumerable<Vector3> GetVertices()
+    {
+        yield break;
     }
 }

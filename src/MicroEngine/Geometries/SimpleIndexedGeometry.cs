@@ -3,6 +3,7 @@
 namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 using MicroEngine.Extensions;
 
@@ -30,6 +31,15 @@ public class SimpleIndexedGeometry(float[] vertices, uint[] indices)
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         GL.BindVertexArray(0);
+    }
+    
+    
+    public override IEnumerable<Vector3> GetVertices()
+    {
+        for (var i = 0; i < Vertices.Length; i += 3)
+        {
+            yield return new Vector3(Vertices[i], Vertices[i + 1], Vertices[i + 2]);
+        }
     }
     
     
