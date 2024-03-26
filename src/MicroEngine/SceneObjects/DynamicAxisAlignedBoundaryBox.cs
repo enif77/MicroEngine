@@ -30,11 +30,10 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
             ModelMatrix = Matrix4.CreateScale(Scale);
             ModelMatrix *= Matrix4.CreateTranslation(Position);
         
-            if (Parent != null)
-            {
-                // Combine with the scale and the translation of the parent scene object.
-                ModelMatrix *= Parent.ModelMatrix.ClearRotation();
-            }
+            var parent = Parent!;
+            
+            // Combine with the scale and the translation of the parent scene object.
+            ModelMatrix *= parent.ModelMatrix.ClearRotation();
             
             // Update the Min and Max values.
             var minX = float.MaxValue;
@@ -45,7 +44,7 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
             var maxY = float.MinValue;
             var maxZ = float.MinValue;    
             
-            foreach (var vertex in Geometry.GetVertices())
+            foreach (var vertex in parent.Geometry.GetVertices())
             {
                 var transformedVertex = Vector3.TransformPosition(vertex, ModelMatrix);
                 
