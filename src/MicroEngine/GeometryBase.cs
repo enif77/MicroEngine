@@ -1,5 +1,6 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
+using MicroEngine.Extensions;
 using OpenTK.Mathematics;
 
 namespace MicroEngine;
@@ -9,7 +10,7 @@ namespace MicroEngine;
 /// </summary>
 public abstract class GeometryBase(float[] vertices, uint[] indices, bool isDynamic) : IGeometry
 {
-    public float[] Vertices { get; } = vertices;
+    public float[] Vertices { get; private set; } = vertices;
     public uint[] Indices { get; } = indices;
     public int IndicesCount { get; protected set; } = indices.Length;
     public int VertexBufferObject { get; set; } = -1;
@@ -33,6 +34,24 @@ public abstract class GeometryBase(float[] vertices, uint[] indices, bool isDyna
     
     protected abstract void BuildImpl(IShader forShader);
 
+    
+    public void UpdateVertices(float[] vertices)
+    {
+        if (IsDynamic == false)
+        {
+            throw new InvalidOperationException("This geometry is not dynamic.");
+        }
+        
+        if (NeedsToBeBuild)
+        {
+            throw new InvalidOperationException("The geometry was not built.");
+        }
+        
+        Vertices = vertices ?? throw new ArgumentNullException(nameof(vertices));
+        
+        this.UpdateVertexBufferObjectData();
+    }
+    
     
     public void Render()
     {

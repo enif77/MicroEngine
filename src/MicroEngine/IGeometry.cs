@@ -56,7 +56,12 @@ public interface IGeometry : IRenderable
     /// </summary>
     /// <argument name="forShader">The shader to generate the geometry for.</argument>
     void Build(IShader forShader);
-    
+
+    /// <summary>
+    /// Updates the vertices of the geometry.
+    /// </summary>
+    /// <param name="vertices">Vertices.</param>
+    void UpdateVertices(float[] vertices);
     
     #region iterators
 
