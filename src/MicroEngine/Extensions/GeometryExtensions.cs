@@ -17,7 +17,31 @@ public static class GeometryExtensions
     {
         geometry.VertexBufferObject = GL.GenBuffer();
         GL.BindBuffer(BufferTarget.ArrayBuffer, geometry.VertexBufferObject);
-        GL.BufferData(BufferTarget.ArrayBuffer, geometry.Vertices.Length * sizeof(float), geometry.Vertices, BufferUsageHint.StaticDraw);
+        GL.BufferData(
+            BufferTarget.ArrayBuffer,
+            geometry.Vertices.Length * sizeof(float),
+            geometry.Vertices,
+            geometry.IsDynamic
+                ? BufferUsageHint.DynamicDraw
+                : BufferUsageHint.StaticDraw);
+    }
+    
+    /// <summary>
+    /// Updates a VBO data.
+    /// </summary>
+    /// <param name="geometry">A scene object geometry instance.</param>
+    public static void UpdateVertexBufferObjectData(this IGeometry geometry)
+    {
+        GL.BindBuffer(BufferTarget.ArrayBuffer, geometry.VertexBufferObject);
+        GL.InvalidateBufferData(geometry.VertexBufferObject);
+        //GL.BufferData(BufferTarget.ArrayBuffer, 0, (float[])null, BufferUsageHint.DynamicDraw);
+        GL.BufferData(
+            BufferTarget.ArrayBuffer,
+            geometry.Vertices.Length * sizeof(float),
+            geometry.Vertices,
+            geometry.IsDynamic
+                ? BufferUsageHint.DynamicDraw
+                : BufferUsageHint.StaticDraw);
     }
     
     /// <summary>
@@ -28,7 +52,31 @@ public static class GeometryExtensions
     {
         geometry.ElementBufferObject = GL.GenBuffer();
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, geometry.ElementBufferObject);
-        GL.BufferData(BufferTarget.ElementArrayBuffer, geometry.Indices.Length * sizeof(uint), geometry.Indices, BufferUsageHint.StaticDraw);
+        GL.BufferData(
+            BufferTarget.ElementArrayBuffer,
+            geometry.Indices.Length * sizeof(uint),
+            geometry.Indices,
+            geometry.IsDynamic
+                ? BufferUsageHint.DynamicDraw
+                : BufferUsageHint.StaticDraw);
+    }
+    
+    /// <summary>
+    /// Updates an EBO data.
+    /// </summary>
+    /// <param name="geometry">A scene object instance.</param>
+    public static void UpdateElementBufferObject(this IGeometry geometry)
+    {
+        GL.BindBuffer(BufferTarget.ElementArrayBuffer, geometry.ElementBufferObject);
+        GL.InvalidateBufferData(geometry.ElementBufferObject);
+        //GL.BufferData(BufferTarget.ElementArrayBuffer, 0, (uint[])null, BufferUsageHint.DynamicDraw);
+        GL.BufferData(
+            BufferTarget.ElementArrayBuffer,
+            geometry.Indices.Length * sizeof(uint),
+            geometry.Indices,
+            geometry.IsDynamic
+                ? BufferUsageHint.DynamicDraw
+                : BufferUsageHint.StaticDraw);
     }
     
     /// <summary>

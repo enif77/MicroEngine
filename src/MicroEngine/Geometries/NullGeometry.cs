@@ -8,7 +8,7 @@ using OpenTK.Mathematics;
 /// Represents a null geometry. This geometry is used for scene objects without geometry.
 /// </summary>
 public class NullGeometry()
-    : GeometryBase(Array.Empty<float>(), Array.Empty<uint>())
+    : GeometryBase(Array.Empty<float>(), Array.Empty<uint>(), false)
 {
     protected override void BuildImpl(IShader forShader)
     {

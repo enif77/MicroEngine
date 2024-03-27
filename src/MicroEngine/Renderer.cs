@@ -74,9 +74,29 @@ public static class Renderer
     {
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
     }
+    
+    /// <summary>
+    /// Renders the given geometry as lines without using any indices (EBOs).
+    /// </summary>
+    /// <param name="geometry">A geometry to be rendered.</param>
+    public static void DrawLines(IGeometry geometry)
+    {
+        GL.BindVertexArray(geometry.VertexArrayObject);
+        GL.DrawArrays(PrimitiveType.Lines, 0, geometry.IndicesCount);
+    }
+    
+    /// <summary>
+    /// Renders the given geometry as lines using indices (EBOs).
+    /// </summary>
+    /// <param name="geometry">A geometry to be rendered.</param>
+    public static void DrawIndexedLines(IGeometry geometry)
+    {
+        GL.BindVertexArray(geometry.VertexArrayObject);
+        GL.DrawElements(PrimitiveType.Lines, geometry.IndicesCount, DrawElementsType.UnsignedInt, 0);
+    }
 
     /// <summary>
-    /// Renders the given geometry directly without using any indices (EBOs).
+    /// Renders the given geometry as triangles without using any indices (EBOs).
     /// </summary>
     /// <param name="geometry">A geometry to be rendered.</param>
     public static void DrawTriangles(IGeometry geometry)
@@ -86,7 +106,7 @@ public static class Renderer
     }
     
     /// <summary>
-    /// Renders the given geometry directly using indices (EBOs).
+    /// Renders the given geometry as triangles using indices (EBOs).
     /// </summary>
     /// <param name="geometry">A geometry to be rendered.</param>
     public static void DrawIndexedTriangles(IGeometry geometry)

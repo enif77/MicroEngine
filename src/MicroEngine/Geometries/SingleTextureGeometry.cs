@@ -17,9 +17,10 @@ public class SingleTextureGeometry : GeometryBase
     /// </summary>
     /// <param name="vertices">A list of vertices.</param>
     /// <param name="indicesCount">The number of indices. Example for a cube is 36 = 6 sides * 2 triangles per side * 3 vertices per triangle.</param>
+    /// <param name="isDynamic">A hint that marks a geometry as dynamically changing.</param>
     /// <exception cref="ArgumentOutOfRangeException">If the number of indices is less than zero.</exception>
-    public SingleTextureGeometry(float[] vertices, int indicesCount) 
-        : base(vertices, Array.Empty<uint>())
+    public SingleTextureGeometry(float[] vertices, int indicesCount, bool isDynamic = false) 
+        : base(vertices, Array.Empty<uint>(), isDynamic)
     {
         if (indicesCount < 0)
         {

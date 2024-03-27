@@ -7,7 +7,7 @@ namespace MicroEngine;
 /// <summary>
 /// The Base of geometry implementations.
 /// </summary>
-public abstract class GeometryBase(float[] vertices, uint[] indices) : IGeometry
+public abstract class GeometryBase(float[] vertices, uint[] indices, bool isDynamic) : IGeometry
 {
     public float[] Vertices { get; } = vertices;
     public uint[] Indices { get; } = indices;
@@ -15,6 +15,7 @@ public abstract class GeometryBase(float[] vertices, uint[] indices) : IGeometry
     public int VertexBufferObject { get; set; } = -1;
     public int ElementBufferObject { get; set; } = -1;
     public int VertexArrayObject { get; set; } = -1;
+    public bool IsDynamic { get; } = isDynamic;
     public bool NeedsToBeBuild { get; private set; } = true;
 
 

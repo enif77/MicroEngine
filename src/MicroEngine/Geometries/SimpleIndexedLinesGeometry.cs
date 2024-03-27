@@ -8,11 +8,18 @@ using OpenTK.Mathematics;
 using MicroEngine.Extensions;
 
 /// <summary>
-/// A geometry with vertexes and indices.
+/// A geometry with vertexes and indices, used for rendering lines.
 /// </summary>
-public class SimpleIndexedGeometry(float[] vertices, uint[] indices, bool isDynamic = false)
-    : GeometryBase(vertices, indices, isDynamic)
+public class SimpleIndexedLinesGeometry : GeometryBase
 {
+    /// <summary>
+    /// A geometry with vertexes and indices, used for rendering lines.
+    /// </summary>
+    public SimpleIndexedLinesGeometry(float[] vertices, uint[] indices, bool isDynamic = false)
+        : base(vertices, indices, isDynamic)
+    {
+    }
+
     protected override void BuildImpl(IShader forShader)
     {
         // Vertex array object.
@@ -45,7 +52,7 @@ public class SimpleIndexedGeometry(float[] vertices, uint[] indices, bool isDyna
     
     protected override void RenderImpl()
     {
-        Renderer.DrawIndexedTriangles(this);
+        Renderer.DrawIndexedLines(this);
     }
 }
 
@@ -54,25 +61,32 @@ public class SimpleIndexedGeometry(float[] vertices, uint[] indices, bool isDyna
 Example for a cube: 
  
 vertices = [
-    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,  // Front
      0.5f,  0.5f,  0.5f,
      0.5f, -0.5f,  0.5f,
     -0.5f, -0.5f,  0.5f,
 
-    -0.5f,  0.5f, -0.5f,
+    -0.5f,  0.5f, -0.5f,  // Back
      0.5f,  0.5f, -0.5f,
      0.5f, -0.5f, -0.5f,
     -0.5f, -0.5f, -0.5f
 ];
 
 indices = [
-    // Each side has 2 triangles, each triangle has 3 vertices.
-    0, 3, 2,  2, 1, 0, // Front
-    1, 2, 6,  6, 5, 1, // Right
-    5, 6, 7,  7, 4, 5, // Back
-    4, 7, 3,  3, 0, 4, // Left
-    0, 1, 5,  5, 4, 0, // Top
-    6, 2, 3,  3, 7, 6  // Bottom
-] 
+    0, 1,  // Front
+    1, 2,
+    2, 3,
+    3, 0,
+   
+    4, 5,  // Back
+    5, 6,
+    6, 7,
+    7, 4,
+   
+    0, 4,  // Connections
+    1, 5,
+    2, 6,
+    3, 7
+]; 
   
  */

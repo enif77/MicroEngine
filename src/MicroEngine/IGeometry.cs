@@ -39,6 +39,10 @@ public interface IGeometry : IRenderable
     /// </summary>
     int VertexArrayObject { get; set; }
     
+    /// <summary>
+    /// A hint, that this geometry is dynamic and its data can change.
+    /// </summary>
+    bool IsDynamic { get; }
     
     /// <summary>
     /// If true, this geometry needs to be built calling the Build() method.

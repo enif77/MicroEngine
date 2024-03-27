@@ -17,8 +17,9 @@ public class SingleTextureIndexedGeometry : GeometryBase
     /// </summary>
     /// <param name="vertices">A list of vertices.</param>
     /// <param name="indices">A list of indices.</param>
-    public SingleTextureIndexedGeometry(float[] vertices, uint[] indices) 
-        : base(vertices, indices)
+    /// <param name="isDynamic">A hint that marks a geometry as dynamically changing.</param>
+    public SingleTextureIndexedGeometry(float[] vertices, uint[] indices, bool isDynamic = false) 
+        : base(vertices, indices, isDynamic)
     {
         IndicesCount = indices.Length;
     }
