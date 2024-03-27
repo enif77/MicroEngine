@@ -45,8 +45,7 @@ public class SimpleIndexedGeometry(float[] vertices, uint[] indices)
     
     protected override void RenderImpl()
     {
-        GL.BindVertexArray(VertexArrayObject);
-        GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);
+        Renderer.DrawIndexedTriangles(this);
     }
 }
 

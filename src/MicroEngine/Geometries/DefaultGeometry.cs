@@ -61,8 +61,7 @@ public class DefaultGeometry : GeometryBase
 
     protected override void RenderImpl()
     {
-        GL.BindVertexArray(VertexArrayObject);
-        GL.DrawArrays(PrimitiveType.Triangles, 0, IndicesCount);
+        Renderer.DrawTriangles(this);
     }
 }
 
