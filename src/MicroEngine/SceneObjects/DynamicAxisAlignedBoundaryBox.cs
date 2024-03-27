@@ -20,17 +20,7 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
     {
         Parent = parent ?? throw new ArgumentNullException(nameof(parent));
         Geometry = new SimpleIndexedLinesGeometry(
-            [
-                -0.5f,  0.5f,  0.5f,
-                 0.5f,  0.5f,  0.5f,
-                 0.5f, -0.5f,  0.5f,
-                -0.5f, -0.5f,  0.5f,
-            
-                -0.5f,  0.5f, -0.5f,
-                 0.5f,  0.5f, -0.5f,
-                 0.5f, -0.5f, -0.5f,
-                -0.5f, -0.5f, -0.5f
-            ],
+            _vertices,
             [
                 0, 1,  // Front
                 1, 2,
@@ -46,12 +36,27 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
                 1, 5,
                 2, 6,
                 3, 7
-            ]
+            ],
+            true
         );
         
         Parent.AddChild(this);
     }
     
+    
+    // Buffer for the 8 vertices of the box.
+    private readonly float[] _vertices =
+    [
+        -0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+            
+        -0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f
+    ];
     
     public override void Update(float deltaTime)
     {
@@ -59,8 +64,13 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
         {
             var parent = Parent!;
             
+            // We are updating the geometry using world coordinates,
+            // so we do not need any transformations here.
+            // Note: This breaks the scene graph hierarchy, but we need to do it this way.
+            ModelMatrix = Matrix4.Identity;
+            
             // We need this to calculate Min/Max in world space.
-            ModelMatrix = parent.ModelMatrix;
+            var worldMatrix = parent.ModelMatrix;
             
             // Min/max in world space.
             var minX = float.MaxValue;
@@ -71,23 +81,10 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
             var maxY = float.MinValue;
             var maxZ = float.MinValue;    
             
-            // We need this to calculate min/max in parent's local space.
-            var localMatrix = Matrix4.CreateRotationZ(parent.Rotation.Z);  // Just the parent's rotation.
-            localMatrix *= Matrix4.CreateRotationX(parent.Rotation.X);
-            localMatrix *= Matrix4.CreateRotationY(parent.Rotation.Y);
-            
-            // Min/max in parent's local space.
-            var localMinX = float.MaxValue;
-            var localMinY = float.MaxValue;
-            var localMinZ = float.MaxValue;
-            
-            var localMaxX = float.MinValue;
-            var localMaxY = float.MinValue;
-            var localMaxZ = float.MinValue;
-            
+            // We need to transform all parent's vertices to world space.
             foreach (var vertex in parent.Geometry.GetVertices())
             {
-                var transformedVertex = Vector3.TransformPosition(vertex, ModelMatrix);
+                var transformedVertex = Vector3.TransformPosition(vertex, worldMatrix);
                 
                 if (transformedVertex.X < minX)
                 {
@@ -114,51 +111,46 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
                 {
                     maxZ = transformedVertex.Z;
                 }
-                
-                var transformedLocalVertex = Vector3.TransformPosition(vertex, localMatrix);
-                
-                if (transformedLocalVertex.X < localMinX)
-                {
-                    localMinX = transformedLocalVertex.X;
-                }
-                if (transformedLocalVertex.Y < localMinY)
-                {
-                    localMinY = transformedLocalVertex.Y;
-                }
-                if (transformedLocalVertex.Z < localMinZ)
-                {
-                    localMinZ = transformedLocalVertex.Z;
-                }
-                
-                if (transformedLocalVertex.X > localMaxX)
-                {
-                    localMaxX = transformedLocalVertex.X;
-                }
-                if (transformedLocalVertex.Y > localMaxY)
-                {
-                    localMaxY = transformedLocalVertex.Y;
-                }
-                if (transformedLocalVertex.Z > localMaxZ)
-                {
-                    localMaxZ = transformedLocalVertex.Z;
-                }
             }
             
+            // We have the min/max in world space.
             Min = new Vector3(minX, minY, minZ);
             Max = new Vector3(maxX, maxY, maxZ);
             
-            // TODO: Reuse a single array.
-            Geometry.UpdateVertices([
-                Min.X, Max.Y, Max.Z,
-                Max.X, Max.Y, Max.Z,
-                Max.X, Min.Y, Max.Z,
-                Min.X, Min.Y, Max.Z,
+            // Reusing a single array.
+            _vertices[0] = minX;
+            _vertices[1] = maxY;
+            _vertices[2] = maxZ;
             
-                Min.X, Max.Y, Min.Z,
-                Max.X, Max.Y, Min.Z,
-                Max.X, Min.Y, Min.Z,
-                Min.X, Min.Y, Min.Z
-            ]);
+            _vertices[3] = maxX;
+            _vertices[4] = maxY;
+            _vertices[5] = maxZ;
+            
+            _vertices[6] = maxX;
+            _vertices[7] = minY;
+            _vertices[8] = maxZ;
+            
+            _vertices[9] = minX;
+            _vertices[10] = minY;
+            _vertices[11] = maxZ;
+            
+            _vertices[12] = minX;
+            _vertices[13] = maxY;
+            _vertices[14] = minZ;
+            
+            _vertices[15] = maxX;
+            _vertices[16] = maxY;
+            _vertices[17] = minZ;
+            
+            _vertices[18] = maxX;
+            _vertices[19] = minY;
+            _vertices[20] = minZ;
+            
+            _vertices[21] = minX;
+            _vertices[22] = minY;
+            _vertices[23] = minZ;
+            
+            Geometry.UpdateVertices(_vertices);
             
             NeedsModelMatrixUpdate = false;
         }
@@ -169,4 +161,16 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
         }
     }
     
+    
+    private Scene? _scene;
+    
+    public override void Render()
+    {
+        _scene ??= this.GetScene();
+        
+        Material.Shader.Use(_scene, this);
+        Geometry.Render();
+        
+        base.Render();
+    }
 }

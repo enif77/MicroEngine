@@ -33,15 +33,19 @@ public static class GeometryExtensions
     public static void UpdateVertexBufferObjectData(this IGeometry geometry)
     {
         GL.BindBuffer(BufferTarget.ArrayBuffer, geometry.VertexBufferObject);
-        GL.InvalidateBufferData(geometry.VertexBufferObject);
-        //GL.BufferData(BufferTarget.ArrayBuffer, 0, (float[])null, BufferUsageHint.DynamicDraw);
-        GL.BufferData(
-            BufferTarget.ArrayBuffer,
-            geometry.Vertices.Length * sizeof(float),
-            geometry.Vertices,
-            geometry.IsDynamic
-                ? BufferUsageHint.DynamicDraw
-                : BufferUsageHint.StaticDraw);
+     
+        // For OpenGL 4.3 and higher.
+        //GL.InvalidateBufferData(geometry.VertexBufferObject);  
+        
+        var bufferUsageHint = geometry.IsDynamic
+            ? BufferUsageHint.DynamicDraw
+            : BufferUsageHint.StaticDraw;
+        
+        // Clear the buffer.
+        GL.BufferData(BufferTarget.ArrayBuffer, 0, (float[])null!, bufferUsageHint);
+        
+        // Fill the buffer with new data.
+        GL.BufferData(BufferTarget.ArrayBuffer, geometry.Vertices.Length * sizeof(float), geometry.Vertices, bufferUsageHint);
     }
     
     /// <summary>
@@ -68,15 +72,13 @@ public static class GeometryExtensions
     public static void UpdateElementBufferObject(this IGeometry geometry)
     {
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, geometry.ElementBufferObject);
-        GL.InvalidateBufferData(geometry.ElementBufferObject);
-        //GL.BufferData(BufferTarget.ElementArrayBuffer, 0, (uint[])null, BufferUsageHint.DynamicDraw);
-        GL.BufferData(
-            BufferTarget.ElementArrayBuffer,
-            geometry.Indices.Length * sizeof(uint),
-            geometry.Indices,
-            geometry.IsDynamic
-                ? BufferUsageHint.DynamicDraw
-                : BufferUsageHint.StaticDraw);
+
+        var bufferUsageHint = geometry.IsDynamic
+            ? BufferUsageHint.DynamicDraw
+            : BufferUsageHint.StaticDraw;
+        
+        GL.BufferData(BufferTarget.ElementArrayBuffer, 0, (uint[])null!, bufferUsageHint);
+        GL.BufferData(BufferTarget.ElementArrayBuffer, geometry.Indices.Length * sizeof(uint), geometry.Indices, bufferUsageHint);
     }
     
     /// <summary>
