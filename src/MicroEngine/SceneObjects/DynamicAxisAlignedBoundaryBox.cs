@@ -58,6 +58,7 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
         -0.5f, -0.5f, -0.5f
     ];
     
+
     public override void Update(float deltaTime)
     {
         if (NeedsModelMatrixUpdate)
