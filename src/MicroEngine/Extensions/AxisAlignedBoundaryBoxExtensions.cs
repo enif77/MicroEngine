@@ -10,11 +10,11 @@ using OpenTK.Mathematics;
 public static class AxisAlignedBoundaryBoxExtensions
 {
     /// <summary>
-    /// Returns true, if the given point is inside the box.
+    /// Returns true, if the given point is inside of this box.
     /// </summary>
     /// <param name="box">An AABB box.</param>
     /// <param name="point">A 3D point.</param>
-    /// <returns>True, if the given point is inside the box.</returns>
+    /// <returns>True, if the given point is inside this box.</returns>
     public static bool IsPointInside(this IAxisAlignedBoundaryBox box, Vector3 point) =>
         point.X >= box.Min.X &&
         point.X <= box.Max.X &&
@@ -22,6 +22,20 @@ public static class AxisAlignedBoundaryBoxExtensions
         point.Y <= box.Max.Y &&
         point.Z >= box.Min.Z &&
         point.Z <= box.Max.Z;
+    
+    /// <summary>
+    /// Returns true, if the given box is inside of this box.
+    /// </summary>
+    /// <param name="box">An AABB box.</param>
+    /// <param name="otherBox">Another AABB box.</param>
+    /// <returns>True, if the given box is inside of this box.</returns>
+    public static bool IsBoxInside(this IAxisAlignedBoundaryBox box, IAxisAlignedBoundaryBox otherBox) =>
+        otherBox.Min.X >= box.Min.X &&
+        otherBox.Max.X <= box.Max.X &&
+        otherBox.Min.Y >= box.Min.Y &&
+        otherBox.Max.Y <= box.Max.Y &&
+        otherBox.Min.Z >= box.Min.Z &&
+        otherBox.Max.Z <= box.Max.Z;
 
     /// <summary>
     /// Returns true, if the given box intersects with this box.
