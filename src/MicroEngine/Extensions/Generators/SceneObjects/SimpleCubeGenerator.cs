@@ -17,7 +17,7 @@ public static class SimpleCubeGenerator
     /// <returns>A scene object with geometry representing a simple cube.</returns>
     public static ISceneObject Generate(IMaterial material)
     {
-        return new GenericSceneObject(new SimpleIndexedGeometry(
+        return new RenderableSceneObject(new SimpleIndexedGeometry(
             [
                 -0.5f,  0.5f,  0.5f,
                  0.5f,  0.5f,  0.5f,

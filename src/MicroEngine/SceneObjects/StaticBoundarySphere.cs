@@ -4,14 +4,16 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Extensions;
 using MicroEngine.Geometries;
 
 /// <summary>
 /// A boundary sphere, that is not automatically changing its size.
 /// </summary>
-public class StaticBoundarySphere : SceneObjectBase
+public class StaticBoundarySphere : RenderableSceneObject
 {
+    // The base constructor requires a geometry, but we will update it in our constructor.
+    private static readonly IGeometry NullGeometry = new NullGeometry();
+    
     /// <summary>
     /// World center of this boundary sphere.
     /// </summary>
@@ -19,6 +21,7 @@ public class StaticBoundarySphere : SceneObjectBase
     
     
     public StaticBoundarySphere()
+        : base(NullGeometry)
     {
         // 22.5 degrees splits circle to 16 segments.
         var circlePoints = GetCircularPoints(1.0f, Vector3.Zero, MathHelper.DegreesToRadians(22.5f));
@@ -148,18 +151,5 @@ public class StaticBoundarySphere : SceneObjectBase
         {
             child.Update(deltaTime);
         }
-    }
-    
-    
-    private Scene? _scene;
-    
-    public override void Render()
-    {
-        _scene ??= this.GetScene();
-        
-        Material.Shader.Use(_scene, this);
-        Geometry.Render();
-        
-        base.Render();
     }
 }

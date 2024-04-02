@@ -50,6 +50,11 @@ public interface ISceneObject : IUpdatable, IRenderable
     bool NeedsModelMatrixUpdate { get; set; }
     
     /// <summary>
+    /// If true, this scene object and its children is visible and will be rendered.
+    /// </summary>
+    bool IsVisible { get; set; }
+    
+    /// <summary>
     /// Model matrix of tis scene object.
     /// Should be updated before rendering.
     /// </summary>

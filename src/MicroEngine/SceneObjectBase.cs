@@ -71,6 +71,8 @@ public abstract class SceneObjectBase : ISceneObject
         }
     }
     
+    public bool IsVisible { get; set; } = true;
+    
     public Matrix4 ModelMatrix { get; set; } = Matrix4.Identity;
     
     
@@ -103,6 +105,11 @@ public abstract class SceneObjectBase : ISceneObject
     
     public virtual void Render()
     {
+        if (IsVisible == false)
+        {
+            return;
+        }
+        
         foreach (var child in Children)
         {
             child.Render();

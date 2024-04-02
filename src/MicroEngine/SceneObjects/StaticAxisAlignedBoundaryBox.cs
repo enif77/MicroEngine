@@ -11,8 +11,11 @@ using MicroEngine.Geometries;
 /// An axis-aligned boundary box, that is not automatically changing its size.
 /// Its similar to the SceneObjectsGroup (hac no geometry etc.), but it is ignoring its rotation and its parent rotation.
 /// </summary>
-public class StaticAxisAlignedBoundaryBox : SceneObjectBase, IAxisAlignedBoundaryBox
+public class StaticAxisAlignedBoundaryBox : RenderableSceneObject, IAxisAlignedBoundaryBox
 {
+    // The base constructor requires a geometry, but we will update it in our constructor.
+    private static readonly IGeometry NullGeometry = new NullGeometry();
+    
     private static readonly Vector3 MinVertex = new(-0.5f, -0.5f, -0.5f);
     private static readonly Vector3 MaxVertex = new(0.5f, 0.5f, 0.5f);
     
@@ -21,6 +24,7 @@ public class StaticAxisAlignedBoundaryBox : SceneObjectBase, IAxisAlignedBoundar
     
     
     public StaticAxisAlignedBoundaryBox()
+        : base(NullGeometry)
     {
         Geometry = new SimpleIndexedLinesGeometry(
             [
@@ -79,18 +83,5 @@ public class StaticAxisAlignedBoundaryBox : SceneObjectBase, IAxisAlignedBoundar
         {
             child.Update(deltaTime);
         }
-    }
-    
-    
-    private Scene? _scene;
-    
-    public override void Render()
-    {
-        _scene ??= this.GetScene();
-        
-        Material.Shader.Use(_scene, this);
-        Geometry.Render();
-        
-        base.Render();
     }
 }

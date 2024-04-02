@@ -10,13 +10,17 @@ using MicroEngine.Geometries;
 /// <summary>
 /// An axis-aligned boundary box, that is automatically changing its size, when its parent object changes its size or rotation.
 /// </summary>
-public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAlignedBoundaryBox
+public sealed class DynamicAxisAlignedBoundaryBox : RenderableSceneObject, IAxisAlignedBoundaryBox
 {
+    // The base constructor requires a geometry, but we will update it in our constructor.
+    private static readonly IGeometry NullGeometry = new NullGeometry();
+    
     public Vector3 Min { get; private set; } = new(-0.5f, -0.5f, -0.5f);
     public Vector3 Max { get; private set; } = new(0.5f, 0.5f, 0.5f);
 
     
     public DynamicAxisAlignedBoundaryBox(ISceneObject parent)
+        : base(NullGeometry)
     {
         Parent = parent ?? throw new ArgumentNullException(nameof(parent));
         Geometry = new SimpleIndexedLinesGeometry(
@@ -63,12 +67,12 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
     {
         if (NeedsModelMatrixUpdate)
         {
-            var parent = Parent!;
-            
             // We are updating the geometry using world coordinates,
             // so we do not need any transformations here.
             // Note: This breaks the scene graph hierarchy, but we need to do it this way.
             ModelMatrix = Matrix4.Identity;
+            
+            var parent = Parent!;
             
             // We need this to calculate Min/Max in world space.
             var worldMatrix = parent.ModelMatrix;
@@ -123,41 +127,44 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
             // We have the min/max in world space.
             Min = new Vector3(minX, minY, minZ);
             Max = new Vector3(maxX, maxY, maxZ);
+
+            if (IsVisible)
+            {
+                // Reusing a single array.
+                _vertices[0] = minX;
+                _vertices[1] = maxY;
+                _vertices[2] = maxZ;
             
-            // Reusing a single array.
-            _vertices[0] = minX;
-            _vertices[1] = maxY;
-            _vertices[2] = maxZ;
+                _vertices[3] = maxX;
+                _vertices[4] = maxY;
+                _vertices[5] = maxZ;
             
-            _vertices[3] = maxX;
-            _vertices[4] = maxY;
-            _vertices[5] = maxZ;
+                _vertices[6] = maxX;
+                _vertices[7] = minY;
+                _vertices[8] = maxZ;
             
-            _vertices[6] = maxX;
-            _vertices[7] = minY;
-            _vertices[8] = maxZ;
+                _vertices[9] = minX;
+                _vertices[10] = minY;
+                _vertices[11] = maxZ;
             
-            _vertices[9] = minX;
-            _vertices[10] = minY;
-            _vertices[11] = maxZ;
+                _vertices[12] = minX;
+                _vertices[13] = maxY;
+                _vertices[14] = minZ;
             
-            _vertices[12] = minX;
-            _vertices[13] = maxY;
-            _vertices[14] = minZ;
+                _vertices[15] = maxX;
+                _vertices[16] = maxY;
+                _vertices[17] = minZ;
             
-            _vertices[15] = maxX;
-            _vertices[16] = maxY;
-            _vertices[17] = minZ;
+                _vertices[18] = maxX;
+                _vertices[19] = minY;
+                _vertices[20] = minZ;
             
-            _vertices[18] = maxX;
-            _vertices[19] = minY;
-            _vertices[20] = minZ;
+                _vertices[21] = minX;
+                _vertices[22] = minY;
+                _vertices[23] = minZ;
             
-            _vertices[21] = minX;
-            _vertices[22] = minY;
-            _vertices[23] = minZ;
-            
-            Geometry.UpdateVertices(_vertices);
+                Geometry.UpdateVertices(_vertices);
+            }
             
             NeedsModelMatrixUpdate = false;
         }
@@ -166,18 +173,5 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
         {
             child.Update(deltaTime);
         }
-    }
-    
-    
-    private Scene? _scene;
-    
-    public override void Render()
-    {
-        _scene ??= this.GetScene();
-        
-        Material.Shader.Use(_scene, this);
-        Geometry.Render();
-        
-        base.Render();
     }
 }

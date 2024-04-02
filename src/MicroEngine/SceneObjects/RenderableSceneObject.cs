@@ -5,16 +5,16 @@ namespace MicroEngine.SceneObjects;
 using MicroEngine.Extensions;
 
 /// <summary>
-/// A generic scene object.
+/// A renderable scene object.
 /// </summary>
-public class GenericSceneObject : SceneObjectBase
+public class RenderableSceneObject : SceneObjectBase
 {
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <param name="geometry">A geometry representing this scene object.</param>
     /// <exception cref="ArgumentNullException">If the geometry parameter is null.</exception>
-    public GenericSceneObject(IGeometry geometry)
+    public RenderableSceneObject(IGeometry geometry)
     {
         Geometry = geometry ?? throw new ArgumentNullException(nameof(geometry));
     }
@@ -24,6 +24,11 @@ public class GenericSceneObject : SceneObjectBase
 
     public override void Render()
     {
+        if (IsVisible == false)
+        {
+            return;
+        }
+        
         _scene ??= this.GetScene();
         
         Material.Shader.Use(_scene, this);

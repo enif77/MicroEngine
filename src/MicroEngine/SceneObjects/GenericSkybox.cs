@@ -22,6 +22,11 @@ public class GenericSkybox : SceneObjectBase
 
     public override void Render()
     {
+        if (IsVisible == false)
+        {
+            return;
+        }
+        
         _scene ??= this.GetScene();
 
         // Skybox should be rendered at the camera position.

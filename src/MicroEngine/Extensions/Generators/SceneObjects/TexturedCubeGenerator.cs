@@ -18,7 +18,7 @@ public static class TexturedCubeGenerator
     /// <exception cref="ArgumentNullException">Thrown, if the material argument is null.</exception>
     public static ISceneObject Generate(IMaterial material)
     {
-        return new GenericSceneObject(new DefaultGeometry(
+        return new RenderableSceneObject(new DefaultGeometry(
         [
             // Each side has 2 triangles, each triangle has 3 vertices.
             

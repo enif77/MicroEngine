@@ -19,7 +19,7 @@ public static class TexturedPlaneGenerator
     /// <exception cref="ArgumentNullException">Thrown, if the material argument is null.</exception>
     public static ISceneObject Generate(IMaterial material, float textureScale = 1.0f)
     {
-        return new GenericSceneObject(new DefaultIndexedGeometry(
+        return new RenderableSceneObject(new DefaultIndexedGeometry(
             [
                 // Positions         Normals              Texture coords
                 -0.5f, 0.0f,  0.5f,  0.0f,  1.0f,  0.0f,          0.0f,         0.0f,
@@ -45,7 +45,7 @@ public static class TexturedPlaneGenerator
     /// <exception cref="ArgumentNullException">Thrown, if the material argument is null.</exception>
     public static ISceneObject GenerateWithSimpleTextureGeometry(IMaterial material, float textureScale = 1.0f)
     {
-        return new GenericSceneObject(new SingleTextureIndexedGeometry(
+        return new RenderableSceneObject(new SingleTextureIndexedGeometry(
             [
                 // Positions          Texture coords
                 -0.5f, 0.0f,  0.5f,          0.0f,         0.0f,
