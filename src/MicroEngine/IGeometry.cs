@@ -66,10 +66,16 @@ public interface IGeometry : IRenderable
     #region iterators
 
     /// <summary>
-    /// Iterator, that returns the vertices of the geometry.
+    /// Iterator, that returns the vertices of the geometry as a list of Vector3 instances.
     /// </summary>
     /// <returns>An enumerator, that is returning vertices as Vector3 instances.</returns>
     IEnumerable<Vector3> GetVertices();
+    
+    /// <summary>
+    /// Iterator, that returns the vertices of the geometry as indexes to the Vertices[] array.
+    /// </summary>
+    /// <returns>Returns vertices as indexes to the Vertices[] array. Returns -1 if no more vertices are available.</returns>
+    IEnumerable<int> GetRawVertices();
 
     #endregion
 }

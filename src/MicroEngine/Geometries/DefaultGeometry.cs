@@ -58,6 +58,17 @@ public class DefaultGeometry : GeometryBase
             yield return new Vector3(Vertices[i], Vertices[i + 1], Vertices[i + 2]);
         }
     }
+    
+    
+    public override IEnumerable<int> GetRawVertices()
+    {
+        for (var i = 0; i < Vertices.Length; i += 8)
+        {
+            yield return i;
+        }
+        
+        yield return -1;
+    }
 
 
     protected override void RenderImpl()

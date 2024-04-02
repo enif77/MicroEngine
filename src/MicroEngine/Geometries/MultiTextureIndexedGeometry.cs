@@ -57,6 +57,17 @@ public class MultiTextureIndexedGeometry : GeometryBase
     }
     
     
+    public override IEnumerable<int> GetRawVertices()
+    {
+        for (var i = 0; i < Vertices.Length; i += 6)
+        {
+            yield return i;
+        }
+        
+        yield return -1;
+    }
+    
+    
     protected override void RenderImpl()
     {
         Renderer.DrawIndexedTriangles(this);

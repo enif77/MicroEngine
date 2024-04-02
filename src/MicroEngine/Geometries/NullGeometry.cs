@@ -26,4 +26,10 @@ public class NullGeometry()
     {
         yield break;
     }
+    
+    
+    public override IEnumerable<int> GetRawVertices()
+    {
+        yield return -1;
+    }
 }

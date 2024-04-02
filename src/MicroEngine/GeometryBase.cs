@@ -65,6 +65,7 @@ public abstract class GeometryBase(float[] vertices, uint[] indices, bool isDyna
 
 
     public abstract IEnumerable<Vector3> GetVertices();
+    public abstract IEnumerable<int> GetRawVertices();
     
     
     protected abstract void RenderImpl();
