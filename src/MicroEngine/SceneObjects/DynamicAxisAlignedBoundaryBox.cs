@@ -80,37 +80,43 @@ public sealed class DynamicAxisAlignedBoundaryBox : SceneObjectBase, IAxisAligne
             
             var maxX = float.MinValue;
             var maxY = float.MinValue;
-            var maxZ = float.MinValue;    
-            
-            // We need to transform all parent's vertices to world space.
-            foreach (var vertex in parent.Geometry.GetVertices())
+            var maxZ = float.MinValue;
+
+            foreach (var vertexIndex in parent.Geometry.GetVertexData())
             {
-                var transformedVertex = Vector3.TransformPosition(vertex, worldMatrix);
+                var x = parent.Geometry.VertexData[vertexIndex];
+                var y = parent.Geometry.VertexData[vertexIndex + 1];
+                var z = parent.Geometry.VertexData[vertexIndex + 2];
                 
-                if (transformedVertex.X < minX)
+                //var transformedVertex = Vector3.TransformPosition(vertex, worldMatrix)
+                var transformedVertexX = (float) (x * (double) worldMatrix.Row0.X + y * (double) worldMatrix.Row1.X + z * (double) worldMatrix.Row2.X) + worldMatrix.Row3.X;
+                var transformedVertexY = (float) (x * (double) worldMatrix.Row0.Y + y * (double) worldMatrix.Row1.Y + z * (double) worldMatrix.Row2.Y) + worldMatrix.Row3.Y;
+                var transformedVertexZ = (float) (x * (double) worldMatrix.Row0.Z + y * (double) worldMatrix.Row1.Z + z * (double) worldMatrix.Row2.Z) + worldMatrix.Row3.Z;
+                
+                if (transformedVertexX < minX)
                 {
-                    minX = transformedVertex.X;
+                    minX = transformedVertexX;
                 }
-                if (transformedVertex.Y < minY)
+                if (transformedVertexY < minY)
                 {
-                    minY = transformedVertex.Y;
+                    minY = transformedVertexY;
                 }
-                if (transformedVertex.Z < minZ)
+                if (transformedVertexZ < minZ)
                 {
-                    minZ = transformedVertex.Z;
+                    minZ = transformedVertexZ;
                 }
                 
-                if (transformedVertex.X > maxX)
+                if (transformedVertexX > maxX)
                 {
-                    maxX = transformedVertex.X;
+                    maxX = transformedVertexX;
                 }
-                if (transformedVertex.Y > maxY)
+                if (transformedVertexY > maxY)
                 {
-                    maxY = transformedVertex.Y;
+                    maxY = transformedVertexY;
                 }
-                if (transformedVertex.Z > maxZ)
+                if (transformedVertexZ > maxZ)
                 {
-                    maxZ = transformedVertex.Z;
+                    maxZ = transformedVertexZ;
                 }
             }
             

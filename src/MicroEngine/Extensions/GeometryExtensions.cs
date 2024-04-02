@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using OpenTK.Mathematics;
+
 namespace MicroEngine.Extensions;
 
 using OpenTK.Graphics.OpenGL4;
@@ -135,5 +137,59 @@ public static class GeometryExtensions
         var texCoordLocation = forShader.GetAttributeLocation("aTexCoords");
         GL.EnableVertexAttribArray(texCoordLocation);
         GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, stride * sizeof(float), offset * sizeof(float));
+    }
+    
+    
+    /// <summary>
+    /// Gets the bounding box of a geometry in world space.
+    /// </summary>
+    /// <param name="geometry">A scene object geometry instance.</param>
+    /// <param name="worldMatrix">A matrix, that transforms geometry vertices to the world space.</param>
+    /// <returns></returns>
+    public static (Vector3 Min, Vector3 Max) GetBoundingBox(this IGeometry geometry, Matrix4 worldMatrix)
+    {
+        // Min/max in world space.
+        var minX = float.MaxValue;
+        var minY = float.MaxValue;
+        var minZ = float.MaxValue;
+            
+        var maxX = float.MinValue;
+        var maxY = float.MinValue;
+        var maxZ = float.MinValue;    
+            
+        // We need to transform all parent's vertices to world space.
+        foreach (var vertex in geometry.GetVertices())
+        {
+            var transformedVertex = Vector3.TransformPosition(vertex, worldMatrix);
+                
+            if (transformedVertex.X < minX)
+            {
+                minX = transformedVertex.X;
+            }
+            if (transformedVertex.Y < minY)
+            {
+                minY = transformedVertex.Y;
+            }
+            if (transformedVertex.Z < minZ)
+            {
+                minZ = transformedVertex.Z;
+            }
+                
+            if (transformedVertex.X > maxX)
+            {
+                maxX = transformedVertex.X;
+            }
+            if (transformedVertex.Y > maxY)
+            {
+                maxY = transformedVertex.Y;
+            }
+            if (transformedVertex.Z > maxZ)
+            {
+                maxZ = transformedVertex.Z;
+            }
+        }
+            
+        // We have the min/max in world space.
+        return (new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
     }
 }
