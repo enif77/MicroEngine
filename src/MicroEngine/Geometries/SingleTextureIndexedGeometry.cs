@@ -3,7 +3,6 @@
 namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 using MicroEngine.Extensions;
 
@@ -12,14 +11,17 @@ using MicroEngine.Extensions;
 /// </summary>
 public class SingleTextureIndexedGeometry : GeometryBase
 {
+    public override int VertexDataStride => 5;
+    
+    
     /// <summary>
     /// Constructor for a geometry with indices defined in a list.
     /// </summary>
-    /// <param name="vertices">A list of vertices.</param>
+    /// <param name="vertexData">A list of floats describing vertices.</param>
     /// <param name="indices">A list of indices.</param>
     /// <param name="isDynamic">A hint that marks a geometry as dynamically changing.</param>
-    public SingleTextureIndexedGeometry(float[] vertices, uint[] indices, bool isDynamic = false) 
-        : base(vertices, indices, isDynamic)
+    public SingleTextureIndexedGeometry(float[] vertexData, uint[] indices, bool isDynamic = false) 
+        : base(vertexData, indices, isDynamic)
     {
         IndicesCount = indices.Length;
     }
@@ -38,32 +40,12 @@ public class SingleTextureIndexedGeometry : GeometryBase
         this.GenerateElementBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(forShader, 5);
-        this.GenerateVertexAttribPointerForTextureCoords(forShader, 5, 3);
+        this.GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        this.GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 3);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         GL.BindVertexArray(0);
-    }
-    
-    
-    public override IEnumerable<Vector3> GetVertices()
-    {
-        for (var i = 0; i < Vertices.Length; i += 5)
-        {
-            yield return new Vector3(Vertices[i], Vertices[i + 1], Vertices[i + 2]);
-        }
-    }
-    
-    
-    public override IEnumerable<int> GetRawVertices()
-    {
-        for (var i = 0; i < Vertices.Length; i += 5)
-        {
-            yield return i;
-        }
-        
-        yield return -1;
     }
     
     

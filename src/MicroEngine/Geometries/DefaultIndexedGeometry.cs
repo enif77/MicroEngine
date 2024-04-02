@@ -3,7 +3,6 @@
 namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 using MicroEngine.Extensions;
 
@@ -12,14 +11,17 @@ using MicroEngine.Extensions;
 /// </summary>
 public class DefaultIndexedGeometry : GeometryBase
 {
+    public override int VertexDataStride => 8;
+    
+    
     /// <summary>
     /// Constructor for a geometry with indices defined in a list.
     /// </summary>
-    /// <param name="vertices">A list of vertices.</param>
+    /// <param name="vertexData">A list of floats describing vertices.</param>
     /// <param name="indices">A list of indices.</param>
     /// <param name="isDynamic">A hint that marks a geometry as dynamically changing.</param>
-    public DefaultIndexedGeometry(float[] vertices, uint[] indices, bool isDynamic = false) 
-        : base(vertices, indices, isDynamic)
+    public DefaultIndexedGeometry(float[] vertexData, uint[] indices, bool isDynamic = false) 
+        : base(vertexData, indices, isDynamic)
     {
         IndicesCount = indices.Length;
     }
@@ -38,33 +40,13 @@ public class DefaultIndexedGeometry : GeometryBase
         this.GenerateElementBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(forShader, 8);
-        this.GenerateVertexAttribPointerForNormals(forShader, 8, 3);
-        this.GenerateVertexAttribPointerForTextureCoords(forShader, 8, 6);
+        this.GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        this.GenerateVertexAttribPointerForNormals(forShader, VertexDataStride, 3);
+        this.GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 6);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         GL.BindVertexArray(0);
-    }
-
-    
-    public override IEnumerable<Vector3> GetVertices()
-    {
-        for (var i = 0; i < Vertices.Length; i += 8)
-        {
-            yield return new Vector3(Vertices[i], Vertices[i + 1], Vertices[i + 2]);
-        }
-    }
-    
-    
-    public override IEnumerable<int> GetRawVertices()
-    {
-        for (var i = 0; i < Vertices.Length; i += 8)
-        {
-            yield return i;
-        }
-        
-        yield return -1;
     }
     
 

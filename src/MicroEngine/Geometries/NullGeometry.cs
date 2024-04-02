@@ -10,6 +10,9 @@ using OpenTK.Mathematics;
 public class NullGeometry()
     : GeometryBase(Array.Empty<float>(), Array.Empty<uint>(), false)
 {
+    public override int VertexDataStride => 0;
+    
+    
     protected override void BuildImpl(IShader forShader)
     {
         // Nothing to do here.
@@ -28,8 +31,8 @@ public class NullGeometry()
     }
     
     
-    public override IEnumerable<int> GetRawVertices()
+    public override IEnumerable<int> GetVertexData()
     {
-        yield return -1;
+        yield break;
     }
 }

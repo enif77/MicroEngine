@@ -3,7 +3,6 @@
 namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
-using OpenTK.Mathematics;
 
 using MicroEngine.Extensions;
 
@@ -12,11 +11,14 @@ using MicroEngine.Extensions;
 /// </summary>
 public class SimpleIndexedLinesGeometry : GeometryBase
 {
+    public override int VertexDataStride => 3;
+
+    
     /// <summary>
     /// A geometry with vertexes and indices, used for rendering lines.
     /// </summary>
-    public SimpleIndexedLinesGeometry(float[] vertices, uint[] indices, bool isDynamic = false)
-        : base(vertices, indices, isDynamic)
+    public SimpleIndexedLinesGeometry(float[] vertexData, uint[] indices, bool isDynamic = false)
+        : base(vertexData, indices, isDynamic)
     {
     }
 
@@ -33,31 +35,11 @@ public class SimpleIndexedLinesGeometry : GeometryBase
         this.GenerateElementBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(forShader, 3);
+        this.GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         GL.BindVertexArray(0);
-    }
-    
-    
-    public override IEnumerable<Vector3> GetVertices()
-    {
-        for (var i = 0; i < Vertices.Length; i += 3)
-        {
-            yield return new Vector3(Vertices[i], Vertices[i + 1], Vertices[i + 2]);
-        }
-    }
-    
-    
-    public override IEnumerable<int> GetRawVertices()
-    {
-        for (var i = 0; i < Vertices.Length; i += 3)
-        {
-            yield return i;
-        }
-        
-        yield return -1;
     }
     
     

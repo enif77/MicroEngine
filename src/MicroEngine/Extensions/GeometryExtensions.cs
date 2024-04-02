@@ -19,8 +19,8 @@ public static class GeometryExtensions
         GL.BindBuffer(BufferTarget.ArrayBuffer, geometry.VertexBufferObject);
         GL.BufferData(
             BufferTarget.ArrayBuffer,
-            geometry.Vertices.Length * sizeof(float),
-            geometry.Vertices,
+            geometry.VertexData.Length * sizeof(float),
+            geometry.VertexData,
             geometry.IsDynamic
                 ? BufferUsageHint.DynamicDraw
                 : BufferUsageHint.StaticDraw);
@@ -45,7 +45,7 @@ public static class GeometryExtensions
         GL.BufferData(BufferTarget.ArrayBuffer, 0, (float[])null!, bufferUsageHint);
         
         // Fill the buffer with new data.
-        GL.BufferData(BufferTarget.ArrayBuffer, geometry.Vertices.Length * sizeof(float), geometry.Vertices, bufferUsageHint);
+        GL.BufferData(BufferTarget.ArrayBuffer, geometry.VertexData.Length * sizeof(float), geometry.VertexData, bufferUsageHint);
     }
     
     /// <summary>

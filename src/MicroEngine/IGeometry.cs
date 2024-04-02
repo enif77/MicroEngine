@@ -1,8 +1,8 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using OpenTK.Mathematics;
-
 namespace MicroEngine;
+
+using OpenTK.Mathematics;
 
 /// <summary>
 /// Generic interface for a scene object geometry.
@@ -10,9 +10,14 @@ namespace MicroEngine;
 public interface IGeometry : IRenderable
 {
     /// <summary>
-    /// Vertices defining the geometry.
+    /// Vertices related data defining the geometry.
     /// </summary>
-    float[] Vertices { get; }
+    float[] VertexData { get; }
+    
+    /// <summary>
+    /// The number of floats per vertex.
+    /// </summary>
+    int VertexDataStride { get; }
     
     /// <summary>
     /// Defines the order of vertices to form triangles.
@@ -60,8 +65,9 @@ public interface IGeometry : IRenderable
     /// <summary>
     /// Updates the vertices of the geometry.
     /// </summary>
-    /// <param name="vertices">Vertices.</param>
-    void UpdateVertices(float[] vertices);
+    /// <param name="vertexData">Vertex data.</param>
+    void UpdateVertices(float[] vertexData);
+    
     
     #region iterators
 
@@ -72,10 +78,10 @@ public interface IGeometry : IRenderable
     IEnumerable<Vector3> GetVertices();
     
     /// <summary>
-    /// Iterator, that returns the vertices of the geometry as indexes to the Vertices[] array.
+    /// Iterator, that returns the starting index of data describing a vertex of the geometry.
     /// </summary>
-    /// <returns>Returns vertices as indexes to the Vertices[] array. Returns -1 if no more vertices are available.</returns>
-    IEnumerable<int> GetRawVertices();
+    /// <returns>Returns indexes to the Vertices[] array.</returns>
+    IEnumerable<int> GetVertexData();
 
     #endregion
 }
