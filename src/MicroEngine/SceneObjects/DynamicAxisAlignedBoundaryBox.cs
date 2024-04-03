@@ -4,7 +4,6 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Extensions;
 using MicroEngine.Geometries;
 
 /// <summary>
@@ -19,10 +18,9 @@ public sealed class DynamicAxisAlignedBoundaryBox : RenderableSceneObject, IAxis
     public Vector3 Max { get; private set; } = new(0.5f, 0.5f, 0.5f);
 
     
-    public DynamicAxisAlignedBoundaryBox(ISceneObject parent)
+    public DynamicAxisAlignedBoundaryBox()
         : base(NullGeometry)
     {
-        Parent = parent ?? throw new ArgumentNullException(nameof(parent));
         Geometry = new SimpleIndexedLinesGeometry(
             _vertices,
             [
@@ -43,8 +41,6 @@ public sealed class DynamicAxisAlignedBoundaryBox : RenderableSceneObject, IAxis
             ],
             true
         );
-        
-        Parent.AddChild(this);
     }
     
     
@@ -72,7 +68,7 @@ public sealed class DynamicAxisAlignedBoundaryBox : RenderableSceneObject, IAxis
             // Note: This breaks the scene graph hierarchy, but we need to do it this way.
             ModelMatrix = Matrix4.Identity;
             
-            var parent = Parent!;
+            var parent = Parent ?? throw new InvalidOperationException("Parent is not set.");
             
             // We need this to calculate Min/Max in world space.
             var worldMatrix = parent.ModelMatrix;
