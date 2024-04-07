@@ -59,7 +59,7 @@ public static class Renderer
     ///  <item>depthNear is larger than depthFar</item>
     ///  </list>
     /// </exception>
-    private static void SetClipPlanes(float depthNear, float depthFar)
+    public static void SetClipPlanes(float depthNear, float depthFar)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depthNear);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depthFar);
