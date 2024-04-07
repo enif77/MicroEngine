@@ -29,11 +29,4 @@ public interface IGame
     /// Renders the current game state.
     /// </summary>
     void Render();
-    
-
-    /// <summary>
-    /// Sets the camera aspect ratio.
-    /// </summary>
-    /// <param name="aspectRatio">A camera aspect ratio.</param>
-    void SetCameraAspectRatio(float aspectRatio);
 }

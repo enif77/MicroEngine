@@ -7,9 +7,8 @@ using OpenTK.Mathematics;
 public class FlyByCamera : SceneObjectBase, ICamera
 {
     private readonly Matrix4 _modelMatrixBase;
+
     
-    
-    public float AspectRatio { get; set; }
     public Vector3 Direction => -Vector3.UnitZ;
     
     
@@ -28,11 +27,8 @@ public class FlyByCamera : SceneObjectBase, ICamera
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="aspectRatio">The initial aspect ratio of this camera.</param>
-    public FlyByCamera(float aspectRatio)
+    public FlyByCamera()
     {
-        AspectRatio = aspectRatio;
-        
         var modelMatrix = Matrix4.CreateScale(1.0f);
            
         // right   = glm::vec3(matrix[0][0], matrix[0][1], matrix[0][2]);
@@ -78,7 +74,7 @@ public class FlyByCamera : SceneObjectBase, ICamera
     /// <returns>The projection matrix.</returns>
     public Matrix4 GetProjectionMatrix()
     {
-        return Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
+        return Renderer.CreatePerspectiveProjectionMatrix(_fov);
     }
     
     

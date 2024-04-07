@@ -3,12 +3,28 @@
 namespace MicroEngine;
 
 using OpenTK.Graphics.OpenGL4;
+using OpenTK.Mathematics;
 
 /// <summary>
 /// General rendering related tools.
 /// </summary>
 public static class Renderer
 {
+    public static readonly float DefaultAspectRatio = 16.0f / 9.0f;
+    public static readonly float DefaultNearClipPlaneDepth = 0.01f;
+    public static readonly float DefaultFarClipPlaneDepth = 100.0f;
+    
+    
+    /// <summary>
+    /// Constructor.
+    /// </summary>
+    static Renderer()
+    {
+        _aspectRatio = DefaultAspectRatio;
+        SetClipPlanes(DefaultNearClipPlaneDepth, DefaultFarClipPlaneDepth);
+    }
+    
+
     /// <summary>
     /// Sets the viewport.
     /// </summary>
@@ -18,9 +34,60 @@ public static class Renderer
     /// <param name="height">The height of the viewport. When a GL context is first attached to a window, width and height are set to the dimensions of that window.</param>
     public static void SetViewport(int x, int y, int width, int height)
     {
+        ArgumentOutOfRangeException.ThrowIfLessThan(width, 1);
+        ArgumentOutOfRangeException.ThrowIfLessThan(height, 1);
+
+        _aspectRatio = (float)width / height;
+        
         GL.Viewport(x, y, width, height);
     }
-    
+
+    private static float _aspectRatio;
+    private static float _nearClipPlaneDepth;
+    private static float _farClipPlaneDepth;
+
+    /// <summary>
+    /// Sets the near and far clip planes.
+    /// </summary>
+    /// <param name="depthNear">Distance to the near clip plane.</param>
+    /// <param name="depthFar">Distance to the far clip plane.</param>
+    /// <exception cref="T:System.ArgumentOutOfRangeException">
+    /// Thrown under the following conditions:
+    ///  <list type="bullet">
+    ///  <item>depthNear is negative or zero</item>
+    ///  <item>depthFar is negative or zero</item>
+    ///  <item>depthNear is larger than depthFar</item>
+    ///  </list>
+    /// </exception>
+    private static void SetClipPlanes(float depthNear, float depthFar)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depthNear);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(depthFar);
+        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(depthNear, depthFar);
+
+        _nearClipPlaneDepth = depthNear;
+        _farClipPlaneDepth = depthFar;
+    }
+
+    /// <summary>
+    /// Creates a perspective projection matrix.  
+    /// </summary>
+    /// <param name="fovy">Angle of the field of view in the y direction (in radians).</param>
+    /// <returns></returns>
+    /// <exception cref="T:System.ArgumentOutOfRangeException">
+    /// Thrown under the following conditions:
+    ///  <list type="bullet">
+    ///  <item>fovy is zero, less than zero or larger than Math.PI</item>
+    ///  </list>
+    /// </exception>
+    public static Matrix4 CreatePerspectiveProjectionMatrix(float fovy)
+    {
+        if (fovy <= 0.0 || fovy > Math.PI) throw new ArgumentOutOfRangeException(nameof (fovy));
+        ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(_aspectRatio, 0.0f);
+
+        return Matrix4.CreatePerspectiveFieldOfView(fovy, _aspectRatio, _nearClipPlaneDepth, _farClipPlaneDepth);
+    }
+
     /// <summary>
     /// Sets the clear color.
     /// </summary>

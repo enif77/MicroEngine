@@ -15,8 +15,6 @@ using MicroEngine.Extensions;
 // Check out the web version if you don't know why we are doing a specific thing or want to know more about the code.
 public class FpsCamera : SceneObjectBase, ICamera
 {
-    private const float DefaultAspectRatio = 16.0f / 9.0f;
-    
     // Those vectors are directions pointing outwards from the camera to define how it rotated.
     private Vector3 _frontVector = -Vector3.UnitZ;
     private Vector3 _upVector = Vector3.UnitY;
@@ -35,13 +33,9 @@ public class FpsCamera : SceneObjectBase, ICamera
     {
         Position = Vector3.Zero;
         Rotation = new Vector3(0f, -MathHelper.PiOver2, 0f);
-        AspectRatio = DefaultAspectRatio;
     }
     
     
-    // This is simply the aspect ratio of the viewport, used for the projection matrix.
-    public float AspectRatio { get; set; }
-
     public Vector3 FrontVector => _frontVector;
 
     public Vector3 UpVector => _upVector;
@@ -108,10 +102,10 @@ public class FpsCamera : SceneObjectBase, ICamera
         //return Matrix4.LookAt(Position, Position + _frontVector, _upVector);
     }
     
-    // Get the projection matrix using the same method we have used up until this point
+
     public Matrix4 GetProjectionMatrix()
     {
-        return Matrix4.CreatePerspectiveFieldOfView(_fov, AspectRatio, 0.01f, 100f);
+        return Renderer.CreatePerspectiveProjectionMatrix(_fov);
     }
 
     
