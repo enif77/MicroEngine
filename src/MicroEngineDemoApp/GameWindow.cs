@@ -107,7 +107,6 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
         base.OnResize(e);
         
         Renderer.SetViewport(0, 0, ClientSize.X, ClientSize.Y);
-        _game.SetCameraAspectRatio(ClientSize.X / (float)ClientSize.Y);
     }
     
     

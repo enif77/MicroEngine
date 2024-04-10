@@ -37,7 +37,7 @@ public class Game3 : IGame
     {
         var scene = new Scene();
         
-        scene.SetCamera(new FlyByCamera(Program.Settings.WindowWidth / (float)Program.Settings.WindowHeight));
+        scene.SetCamera(new FlyByCamera());
         
         #region Skybox
         
@@ -247,16 +247,6 @@ public class Game3 : IGame
         }
 
         _scene.Render();
-    }
-
-    public void SetCameraAspectRatio(float aspectRatio)
-    {
-        if (_scene == null)
-        {
-            throw new InvalidOperationException("The scene is not initialized.");
-        }
-        
-        _scene.Camera.AspectRatio = aspectRatio;
     }
     
     

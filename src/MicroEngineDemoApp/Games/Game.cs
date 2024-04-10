@@ -338,27 +338,6 @@ public class Game : IGame
 
         _scene.Render();
     }
-
-    
-    // public void UpdateCameraFov(float fovChange)
-    // {
-    //     if (_scene == null)
-    //     {
-    //         throw new InvalidOperationException("The scene is not initialized.");
-    //     }
-    //     
-    //     _scene.Camera.Fov += fovChange;
-    // }
-
-    public void SetCameraAspectRatio(float aspectRatio)
-    {
-        if (_scene == null)
-        {
-            throw new InvalidOperationException("The scene is not initialized.");
-        }
-        
-        ((FpsCamera)_scene.Camera).AspectRatio = aspectRatio;
-    }
     
     
     #region creators and generators
@@ -371,7 +350,6 @@ public class Game : IGame
         return new FpsCamera()
         {
             Position = Vector3.UnitZ * 3,
-            AspectRatio = windowWidth / (float)windowHeight
         };
     }
     

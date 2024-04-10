@@ -33,7 +33,7 @@ public class Game5 : IGame
     
     public bool Initialize()
     {
-        CreateScene(Program.Settings.WindowWidth, Program.Settings.WindowHeight);
+        CreateScene();
         
         Renderer.EnableFaceCulling();
         
@@ -283,29 +283,18 @@ public class Game5 : IGame
 
         _scene.Render();
     }
-
-    public void SetCameraAspectRatio(float aspectRatio)
-    {
-        if (_scene == null)
-        {
-            throw new InvalidOperationException("The scene is not initialized.");
-        }
-        
-        _scene.Camera.AspectRatio = aspectRatio;
-    }
     
     
     #region creators and generators
     
-    private void CreateScene(int width, int height)
+    private void CreateScene()
     {
         //var scene = new Scene(new FlyByCamera(width / (float)height));
         var scene = new Scene();
         
         scene.SetCamera(new FpsCamera()
         {
-            Position = new Vector3(0f, -1f, 1f),
-            AspectRatio = width / (float)height
+            Position = new Vector3(0f, -1f, 1f)
         });
         
         // Skybox

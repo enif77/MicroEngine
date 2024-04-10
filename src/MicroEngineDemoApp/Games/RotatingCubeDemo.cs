@@ -170,16 +170,6 @@ public class RotatingCubeDemo : IGame
         
         ((FpsCamera)_scene.Camera).Fov += fovChange;
     }
-
-    public void SetCameraAspectRatio(float aspectRatio)
-    {
-        if (_scene == null)
-        {
-            throw new InvalidOperationException("The scene is not initialized.");
-        }
-        
-        ((FpsCamera)_scene.Camera).AspectRatio = aspectRatio;
-    }
     
     
     #region creators and generators
@@ -191,8 +181,7 @@ public class RotatingCubeDemo : IGame
 
         return new FpsCamera()
         {
-            Position = Vector3.UnitZ * 3,
-            AspectRatio = windowWidth / (float)windowHeight
+            Position = Vector3.UnitZ * 3
         };
     }
     

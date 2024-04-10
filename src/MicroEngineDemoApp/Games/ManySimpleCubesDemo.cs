@@ -147,17 +147,6 @@ public class ManySimpleCubesDemo : IGame
 
         _scene.Render();
     }
-
-    
-    public void SetCameraAspectRatio(float aspectRatio)
-    {
-        if (_scene == null)
-        {
-            throw new InvalidOperationException("The scene is not initialized.");
-        }
-        
-        ((FpsCamera)_scene.Camera).AspectRatio = aspectRatio;
-    }
     
     
     #region creators and generators
@@ -169,8 +158,7 @@ public class ManySimpleCubesDemo : IGame
 
         return new FpsCamera()
         {
-            Position = Vector3.UnitZ * 5,
-            AspectRatio = windowWidth / (float)windowHeight
+            Position = Vector3.UnitZ * 5
         };
     }
 

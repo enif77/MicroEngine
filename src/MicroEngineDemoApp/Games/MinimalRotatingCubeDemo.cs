@@ -104,15 +104,6 @@ public class MinimalRotatingCubeDemo : IGame
 
         _scene.Render();
     }
-
-    
-    public void UpdateCameraFov(float fovChange)
-    {
-    }
-
-    public void SetCameraAspectRatio(float aspectRatio)
-    {
-    }
     
     
     #region creators and generators
@@ -124,8 +115,7 @@ public class MinimalRotatingCubeDemo : IGame
 
         return new FpsCamera()
         {
-            Position = Vector3.UnitZ * 1.5f,
-            AspectRatio = windowWidth / (float)windowHeight
+            Position = Vector3.UnitZ * 1.5f
         };
     }
     

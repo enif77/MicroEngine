@@ -194,16 +194,6 @@ public class Game4 : IGame
 
         _scene.Render();
     }
-
-    public void SetCameraAspectRatio(float aspectRatio)
-    {
-        if (_scene == null)
-        {
-            throw new InvalidOperationException("The scene is not initialized.");
-        }
-        
-        _scene.Camera.AspectRatio = aspectRatio;
-    }
     
     
     #region physics
@@ -258,8 +248,7 @@ public class Game4 : IGame
 
         // TODO: create and use SOC for camera controls.
         
-        //return new FlyByCamera(Vector3.UnitZ * 3, windowWidth / (float)windowHeight);
-        return new FlyByCamera(windowWidth / (float)windowHeight);
+        return new FlyByCamera();
     }
     
     
