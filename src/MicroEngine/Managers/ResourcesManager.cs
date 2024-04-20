@@ -37,6 +37,17 @@ public class ResourcesManager : IResourcesManager
     
     #region general files
     
+    public bool FileExists(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentException("A path to a file expected.");
+        }
+
+        return File.Exists(GetFullPath(path));
+    }
+    
+    
     public string LoadTextFile(string path)
     {
         if (string.IsNullOrWhiteSpace(path))

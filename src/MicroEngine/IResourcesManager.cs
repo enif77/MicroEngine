@@ -18,6 +18,13 @@ public interface IResourcesManager
     #region general files
 
     /// <summary>
+    /// Determines whether the specified file exists.
+    /// </summary>
+    /// <param name="path">The file to check.</param>
+    /// <returns>True if the file exists.</returns>
+    bool FileExists(string path);
+    
+    /// <summary>
     /// Loads a text file from the given path.
     /// </summary>
     /// <param name="path">A file path.</param>
