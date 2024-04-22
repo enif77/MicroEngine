@@ -37,6 +37,13 @@ public interface IResourcesManager
     #region textures
 
     /// <summary>
+    /// Checks whether a texture with the given name exists.
+    /// </summary>
+    /// <param name="name">A texture name.</param>
+    /// <returns>True if a texture with the given name exists.</returns>
+    bool HasTexture(string name);
+    
+    /// <summary>
     /// Gets a texture by its name.
     /// </summary>
     /// <param name="name">A texture name.</param>
@@ -70,16 +77,39 @@ public interface IResourcesManager
     #region materials
     
     /// <summary>
+    /// Checks whether a material with the given name exists.
+    /// </summary>
+    /// <param name="name">A material name.</param>
+    /// <returns>True if a material with the given name exists.</returns>
+    bool HasMaterial(string name);
+    
+    /// <summary>
     /// Gets a material by its name.
     /// </summary>
     /// <param name="name">A material name.</param>
     /// <returns>A material with a given name or the NullMaterial instance.</returns>
     IMaterial GetMaterial(string name);
     
+    /// <summary>
+    /// Loads a material to the resources manager.
+    /// If such a material already exists, it won't be replaced.
+    /// </summary>
+    /// <param name="name">A material name.</param>
+    /// <param name="material">A material.</param>
+    /// <returns>True if the material was successfully added.</returns>
+    bool LoadMaterial(string name, IMaterial material);
+    
     #endregion
     
     
     #region shaders
+    
+    /// <summary>
+    /// Checks whether a shader with the given name exists.
+    /// </summary>
+    /// <param name="name">A shader name.</param>
+    /// <returns>True if a shader with the given name exists.</returns>
+    bool HasShader(string name);
     
     /// <summary>
     /// Gets a shader by its name.
@@ -88,10 +118,25 @@ public interface IResourcesManager
     /// <returns>A shader with a given name or the NullShader instance.</returns>
     IShader GetShader(string name);
     
+    /// <summary>
+    /// Loads a shader to the resources manager.
+    /// </summary>
+    /// <param name="name">A shader name.</param>
+    /// <param name="shader">A shader.</param>
+    /// <returns>True if the shader was successfully added.</returns>
+    bool LoadShader(string name, IShader shader);
+    
     #endregion
     
     
     #region geometries
+    
+    /// <summary>
+    /// Checks whether a geometry with the given name exists.
+    /// </summary>
+    /// <param name="name">A geometry name.</param>
+    /// <returns>True if a geometry with the given name exists.</returns>
+    bool HasGeometry(string name);
     
     /// <summary>
     /// Gets a geometry by its name.
@@ -99,6 +144,14 @@ public interface IResourcesManager
     /// <param name="name">A geometry name.</param>
     /// <returns>A geometry with a given name or the NullGeometry instance.</returns>
     IGeometry GetGeometry(string name);
+    
+    /// <summary>
+    /// Loads a geometry to the resources manager.
+    /// </summary>
+    /// <param name="name">A geometry name.</param>
+    /// <param name="geometry">A geometry.</param>
+    /// <returns>True if the geometry was successfully added.</returns>
+    bool LoadGeometry(string name, IGeometry geometry);
     
     #endregion
 }

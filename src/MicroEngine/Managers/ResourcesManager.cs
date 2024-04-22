@@ -70,6 +70,17 @@ public class ResourcesManager : IResourcesManager
     private readonly Dictionary<string, ITexture> _textures = new();
 
 
+    public bool HasTexture(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A texture name expected.");
+        }
+
+        return _textures.ContainsKey(name);
+    }
+    
+    
     public ITexture GetTexture(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -128,6 +139,18 @@ public class ResourcesManager : IResourcesManager
     private readonly IMaterial _nullMaterial = new NullMaterial();
     private readonly Dictionary<string, IMaterial> _materials = new();
     
+    
+    public bool HasMaterial(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A material name expected.");
+        }
+
+        return _materials.ContainsKey(name);
+    }
+    
+    
     public IMaterial GetMaterial(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -138,6 +161,19 @@ public class ResourcesManager : IResourcesManager
         return _materials.GetValueOrDefault(name, _nullMaterial);
     }
     
+    
+    public bool LoadMaterial(string name, IMaterial material)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A material name expected.");
+        }
+
+        ArgumentNullException.ThrowIfNull(material);
+
+        return _materials.TryAdd(name, material);
+    }
+    
     #endregion
     
     
@@ -145,6 +181,18 @@ public class ResourcesManager : IResourcesManager
     
     private readonly IShader _nullShader = new NullShader();
     private readonly Dictionary<string, IShader> _shaders = new();
+    
+    
+    public bool HasShader(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A shader name expected.");
+        }
+
+        return _shaders.ContainsKey(name);
+    }
+    
     
     public IShader GetShader(string name)
     {
@@ -156,6 +204,19 @@ public class ResourcesManager : IResourcesManager
         return _shaders.GetValueOrDefault(name, _nullShader);
     }
     
+    
+    public bool LoadShader(string name, IShader shader)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A shader name expected.");
+        }
+
+        ArgumentNullException.ThrowIfNull(shader);
+
+        return _shaders.TryAdd(name, shader);
+    }
+    
     #endregion
     
     
@@ -163,6 +224,18 @@ public class ResourcesManager : IResourcesManager
     
     private readonly IGeometry _nullGeometry = new NullGeometry();
     private readonly Dictionary<string, IGeometry> _geometries = new();
+    
+    
+    public bool HasGeometry(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A geometry name expected.");
+        }
+
+        return _geometries.ContainsKey(name);
+    }
+    
     
     public IGeometry GetGeometry(string name)
     {
@@ -172,6 +245,19 @@ public class ResourcesManager : IResourcesManager
         }
 
         return _geometries.GetValueOrDefault(name, _nullGeometry);
+    }
+    
+    
+    public bool LoadGeometry(string name, IGeometry geometry)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A geometry name expected.");
+        }
+
+        ArgumentNullException.ThrowIfNull(geometry);
+
+        return _geometries.TryAdd(name, geometry);
     }
     
     #endregion
