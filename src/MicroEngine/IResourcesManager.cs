@@ -65,4 +65,40 @@ public interface IResourcesManager
         TextureWrapMode wrapMode = TextureWrapMode.Repeat);
 
     #endregion
+    
+    
+    #region materials
+    
+    /// <summary>
+    /// Gets a material by its name.
+    /// </summary>
+    /// <param name="name">A material name.</param>
+    /// <returns>A material with a given name or the NullMaterial instance.</returns>
+    IMaterial GetMaterial(string name);
+    
+    #endregion
+    
+    
+    #region shaders
+    
+    /// <summary>
+    /// Gets a shader by its name.
+    /// </summary>
+    /// <param name="name">A shader name.</param>
+    /// <returns>A shader with a given name or the NullShader instance.</returns>
+    IShader GetShader(string name);
+    
+    #endregion
+    
+    
+    #region geometries
+    
+    /// <summary>
+    /// Gets a geometry by its name.
+    /// </summary>
+    /// <param name="name">A geometry name.</param>
+    /// <returns>A geometry with a given name or the NullGeometry instance.</returns>
+    IGeometry GetGeometry(string name);
+    
+    #endregion
 }

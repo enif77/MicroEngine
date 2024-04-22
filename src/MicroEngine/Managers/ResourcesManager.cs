@@ -1,12 +1,15 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using System.Runtime.InteropServices;
-
 namespace MicroEngine.Managers;
+
+using System.Runtime.InteropServices;
 
 using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Core;
+using MicroEngine.Geometries;
+using MicroEngine.Materials;
+using MicroEngine.Shaders;
 using MicroEngine.Textures;
 
 /// <summary>
@@ -71,7 +74,7 @@ public class ResourcesManager : IResourcesManager
     {
         if (string.IsNullOrWhiteSpace(name))
         {
-            throw new ArgumentException("A texture name is null or empty.");
+            throw new ArgumentException("A texture name expected.");
         }
 
         return _textures.GetValueOrDefault(name, _nullTexture);
@@ -120,6 +123,60 @@ public class ResourcesManager : IResourcesManager
     #endregion
     
     
+    #region materials
+    
+    private readonly IMaterial _nullMaterial = new NullMaterial();
+    private readonly Dictionary<string, IMaterial> _materials = new();
+    
+    public IMaterial GetMaterial(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A material name expected.");
+        }
+
+        return _materials.GetValueOrDefault(name, _nullMaterial);
+    }
+    
+    #endregion
+    
+    
+    #region shaders
+    
+    private readonly IShader _nullShader = new NullShader();
+    private readonly Dictionary<string, IShader> _shaders = new();
+    
+    public IShader GetShader(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A shader name expected.");
+        }
+
+        return _shaders.GetValueOrDefault(name, _nullShader);
+    }
+    
+    #endregion
+    
+    
+    #region geometries
+    
+    private readonly IGeometry _nullGeometry = new NullGeometry();
+    private readonly Dictionary<string, IGeometry> _geometries = new();
+    
+    public IGeometry GetGeometry(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A geometry name expected.");
+        }
+
+        return _geometries.GetValueOrDefault(name, _nullGeometry);
+    }
+    
+    #endregion
+    
+    
     #region helpers
     
     private string GetFullPath(string path)
@@ -151,7 +208,7 @@ public class ResourcesManager : IResourcesManager
     }
     
     
-    private string OsSafePath(string path)
+    private static string OsSafePath(string path)
     {
         // We are fixing a path to a resource in a MacOS app bundle.
         // The path to a resource in a MacOS app bundle is different (in the parent dir of the executable)

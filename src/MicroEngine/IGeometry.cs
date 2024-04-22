@@ -57,7 +57,7 @@ public interface IGeometry : IRenderable
     
     /// <summary>
     /// Generates OpenGL buffer objects for this geometry.
-    /// Needs to be called once and before its used for rendering.
+    /// Needs to be called once and before it is used for rendering.
     /// </summary>
     /// <argument name="forShader">The shader to generate the geometry for.</argument>
     void Build(IShader forShader);
