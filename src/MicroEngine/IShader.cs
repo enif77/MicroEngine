@@ -8,11 +8,6 @@ namespace MicroEngine;
 public interface IShader
 {
     /// <summary>
-    /// An unique name of the shader.
-    /// </summary>
-    string Name { get; }
-    
-    /// <summary>
     /// Gets an attribute location by its name.
     /// </summary>
     /// <param name="name">An attribute name.</param>

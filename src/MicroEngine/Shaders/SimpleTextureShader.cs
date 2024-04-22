@@ -9,10 +9,8 @@ using MicroEngine.Core;
 public class SimpleTextureShader : IShader
 {
     private readonly Shader _shader;
-
-    public string Name => "simple-texture";
     
-
+    
     public SimpleTextureShader(IResourcesManager resourcesManager)
     {
         ArgumentNullException.ThrowIfNull(resourcesManager);

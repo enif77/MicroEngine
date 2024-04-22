@@ -4,9 +4,6 @@ namespace MicroEngine.Shaders;
 
 public class NullShader : IShader
 {
-    public string Name => "null";
-
-    
     public int GetAttributeLocation(string name)
     {
         return -1;

@@ -13,8 +13,6 @@ using MicroEngine.Materials;
 public abstract class MultiTextureShaderBase : IShader
 {
     protected Shader Shader { get; }
-
-    public abstract string Name { get; }
     
     
     protected MultiTextureShaderBase(Shader shader)
