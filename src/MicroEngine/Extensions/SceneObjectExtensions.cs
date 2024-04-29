@@ -63,8 +63,9 @@ public static class SceneObjectExtensions
     /// </summary>
     /// <param name="sceneObject">A scene object.</param>
     /// <param name="child">A child to be added.</param>
+    /// <returns>The added child.</returns>
     /// <exception cref="InvalidOperationException">Thrown, when such child already exists in the scene object children.</exception>
-    public static void AddChild(this ISceneObject sceneObject, ISceneObject child)
+    public static ISceneObject AddChild(this ISceneObject sceneObject, ISceneObject child)
     {
         ArgumentNullException.ThrowIfNull(child);
         if (sceneObject.Children.Contains(child))
@@ -74,6 +75,8 @@ public static class SceneObjectExtensions
         
         child.Parent = sceneObject;
         sceneObject.Children.Add(child);
+        
+        return child;
     }
     
     /// <summary>
