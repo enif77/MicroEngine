@@ -102,19 +102,19 @@ public class PointLight : SceneObjectBase, ILight
     }
 
     
-    public virtual void SetUniforms(Shader shader)
+    public virtual void SetUniforms(GlslShader glslShader)
     {
-        shader.SetInt(LightTypeUniformName, (int)LightType);
+        glslShader.SetInt(LightTypeUniformName, (int)LightType);
         
-        shader.SetVector3(PositionUniformName, Position);
-        shader.SetVector3(AmbientUniformName, Ambient);
-        shader.SetVector3(DiffuseUniformName, Diffuse);
-        shader.SetVector3(SpecularUniformName, Specular);
+        glslShader.SetVector3(PositionUniformName, Position);
+        glslShader.SetVector3(AmbientUniformName, Ambient);
+        glslShader.SetVector3(DiffuseUniformName, Diffuse);
+        glslShader.SetVector3(SpecularUniformName, Specular);
         
-        shader.SetFloat(ConstantUniformName, Constant);
-        shader.SetFloat(LinearUniformName, Linear);
-        shader.SetFloat(QuadraticUniformName, Quadratic);
+        glslShader.SetFloat(ConstantUniformName, Constant);
+        glslShader.SetFloat(LinearUniformName, Linear);
+        glslShader.SetFloat(QuadraticUniformName, Quadratic);
         
-        shader.SetFloat(RangeUniformName, Range);
+        glslShader.SetFloat(RangeUniformName, Range);
     }
 }

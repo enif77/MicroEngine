@@ -46,13 +46,13 @@ public class DirectionalLight : SceneObjectBase, ILight
     }
     
     
-    public void SetUniforms(Shader shader)
+    public void SetUniforms(GlslShader glslShader)
     {
-        shader.SetInt(LightTypeUniformName, (int)LightType);
+        glslShader.SetInt(LightTypeUniformName, (int)LightType);
         
-        shader.SetVector3(DirectionUniformName, Direction);
-        shader.SetVector3(AmbientUniformName, Ambient);
-        shader.SetVector3(DiffuseUniformName, Diffuse);
-        shader.SetVector3(SpecularUniformName, Specular);
+        glslShader.SetVector3(DirectionUniformName, Direction);
+        glslShader.SetVector3(AmbientUniformName, Ambient);
+        glslShader.SetVector3(DiffuseUniformName, Diffuse);
+        glslShader.SetVector3(SpecularUniformName, Specular);
     }
 }

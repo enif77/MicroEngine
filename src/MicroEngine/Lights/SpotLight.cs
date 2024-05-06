@@ -82,12 +82,12 @@ public class SpotLight : PointLight
     }
 
 
-    public override void SetUniforms(Shader shader)
+    public override void SetUniforms(GlslShader glslShader)
     {
-        base.SetUniforms(shader);
+        base.SetUniforms(glslShader);
         
-        shader.SetVector3(DirectionUniformName, Direction);
-        shader.SetFloat(CutOffUniformName, CutOff);
-        shader.SetFloat(OuterCutOffUniformName, OuterCutOff);
+        glslShader.SetVector3(DirectionUniformName, Direction);
+        glslShader.SetFloat(CutOffUniformName, CutOff);
+        glslShader.SetFloat(OuterCutOffUniformName, OuterCutOff);
     }
 }

@@ -6,13 +6,13 @@ using MicroEngine.Core;
 
 public class SimpleColorShader : IShader
 {
-    private readonly Shader _shader;
+    private readonly GlslShader _glslShader;
     
     public SimpleColorShader(IResourcesManager resourcesManager)
     {
         ArgumentNullException.ThrowIfNull(resourcesManager);
         
-        _shader = new Shader(
+        _glslShader = new GlslShader(
             /*language=glsl*/
             """
             #version 330 core
@@ -55,7 +55,7 @@ public class SimpleColorShader : IShader
     
     public int GetAttributeLocation(string name)
     {
-        return _shader.GetAttribLocation(name);
+        return _glslShader.GetAttribLocation(name);
     }
     
     
@@ -63,11 +63,11 @@ public class SimpleColorShader : IShader
     {
         var camera = scene.Camera;
         
-        _shader.Use();
+        _glslShader.Use();
         
-        _shader.SetVector3("color", sceneObject.Material.Color);
-        _shader.SetMatrix4("view", camera.GetViewMatrix());
-        _shader.SetMatrix4("projection", camera.GetProjectionMatrix());
-        _shader.SetMatrix4("model", sceneObject.ModelMatrix);
+        _glslShader.SetVector3("color", sceneObject.Material.Color);
+        _glslShader.SetMatrix4("view", camera.GetViewMatrix());
+        _glslShader.SetMatrix4("projection", camera.GetProjectionMatrix());
+        _glslShader.SetMatrix4("model", sceneObject.ModelMatrix);
     }
 }

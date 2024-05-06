@@ -12,18 +12,18 @@ using MicroEngine.Materials;
 /// </summary>
 public abstract class MultiTextureShaderBase : IShader
 {
-    protected Shader Shader { get; }
+    protected GlslShader GlslShader { get; }
     
     
-    protected MultiTextureShaderBase(Shader shader)
+    protected MultiTextureShaderBase(GlslShader glslShader)
     {
-        Shader = shader ?? throw new ArgumentNullException(nameof(shader));
+        GlslShader = glslShader ?? throw new ArgumentNullException(nameof(glslShader));
     }
     
 
     public int GetAttributeLocation(string name)
     {
-        return Shader.GetAttribLocation(name);
+        return GlslShader.GetAttribLocation(name);
     }
     
     
@@ -32,7 +32,7 @@ public abstract class MultiTextureShaderBase : IShader
         var camera = scene.Camera;
         var material = sceneObject.Material;
         
-        Shader.Use();
+        GlslShader.Use();
         
         // TODO: The base material should support for multiple textures.
         var m = material as MultiTextureMaterial;
@@ -45,13 +45,13 @@ public abstract class MultiTextureShaderBase : IShader
             for (var i = 0; i < m.Textures.Length; i++)
             {
                 m.Textures[i].Use(TextureUnit.Texture0 + i);
-                Shader.SetInt(SamplersUniformNames[i], i);
+                GlslShader.SetInt(SamplersUniformNames[i], i);
             }
         }
         
-        Shader.SetMatrix4("view", camera.GetViewMatrix());
-        Shader.SetMatrix4("projection", camera.GetProjectionMatrix());
-        Shader.SetMatrix4("model", sceneObject.ModelMatrix);
+        GlslShader.SetMatrix4("view", camera.GetViewMatrix());
+        GlslShader.SetMatrix4("projection", camera.GetProjectionMatrix());
+        GlslShader.SetMatrix4("model", sceneObject.ModelMatrix);
     }
     
     

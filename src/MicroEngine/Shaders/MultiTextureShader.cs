@@ -7,7 +7,7 @@ using MicroEngine.Core;
 public class MultiTextureShader : MultiTextureShaderBase
 {
     public MultiTextureShader(IResourcesManager resourcesManager)
-        : base(new Shader(
+        : base(new GlslShader(
             /*language=glsl*/
             """
             #version 330 core

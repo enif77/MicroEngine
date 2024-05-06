@@ -8,13 +8,13 @@ using MicroEngine.Core;
 
 public class DefaultShader : IShader
 {
-    private readonly Shader _shader;
+    private readonly GlslShader _glslShader;
     
     public DefaultShader(IResourcesManager resourcesManager)
     {
         ArgumentNullException.ThrowIfNull(resourcesManager);
         
-        _shader = new Shader(
+        _glslShader = new GlslShader(
             /*language=glsl*/
             """
             #version 330 core
@@ -225,7 +225,7 @@ public class DefaultShader : IShader
     
     public int GetAttributeLocation(string name)
     {
-        return _shader.GetAttribLocation(name);
+        return _glslShader.GetAttribLocation(name);
     }
     
     
@@ -237,16 +237,16 @@ public class DefaultShader : IShader
         material.DiffuseMap.Use(TextureUnit.Texture0);
         material.SpecularMap.Use(TextureUnit.Texture1);
         
-        _shader.Use();
+        _glslShader.Use();
         
-        _shader.SetInt("material.diffuse", 0);
-        _shader.SetInt("material.specular", 1);
-        _shader.SetFloat("material.shininess", material.Shininess);
+        _glslShader.SetInt("material.diffuse", 0);
+        _glslShader.SetInt("material.specular", 1);
+        _glslShader.SetFloat("material.shininess", material.Shininess);
         
-        _shader.SetMatrix4("view", camera.GetViewMatrix());
-        _shader.SetMatrix4("projection", camera.GetProjectionMatrix());
-        _shader.SetVector3("viewPos", camera.Position);
-        _shader.SetMatrix4("model", sceneObject.ModelMatrix);
+        _glslShader.SetMatrix4("view", camera.GetViewMatrix());
+        _glslShader.SetMatrix4("projection", camera.GetProjectionMatrix());
+        _glslShader.SetVector3("viewPos", camera.Position);
+        _glslShader.SetMatrix4("model", sceneObject.ModelMatrix);
         
         /*
            Here we set all the uniforms for the 5/6 types of lights we have. We have to set them manually and index
@@ -255,11 +255,11 @@ public class DefaultShader : IShader
            by using 'Uniform buffer objects', but that is something we'll discuss in the 'Advanced GLSL' tutorial.
         */
         
-        _shader.SetInt("numLights", scene.Lights.Count);
+        _glslShader.SetInt("numLights", scene.Lights.Count);
         
         foreach (var light in scene.Lights)
         {
-            light.SetUniforms(_shader);
+            light.SetUniforms(_glslShader);
         }
     }
 }

@@ -7,7 +7,7 @@ using MicroEngine.Core;
 public class MultiTextureSkyboxShader : MultiTextureShaderBase
 {
     public MultiTextureSkyboxShader(IResourcesManager resourcesManager)
-        : base(new Shader(
+        : base(new GlslShader(
             /*language=glsl*/
             """
             #version 330 core

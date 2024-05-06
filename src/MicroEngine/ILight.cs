@@ -17,6 +17,6 @@ public interface ILight : ISceneObject
     /// <summary>
     /// Sets this light uniforms in the shader.
     /// </summary>
-    /// <param name="shader">A shader, which uniforms should be set.</param>
-    void SetUniforms(Shader shader);
+    /// <param name="glslShader">A shader, which uniforms should be set.</param>
+    void SetUniforms(GlslShader glslShader);
 }
