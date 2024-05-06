@@ -15,10 +15,6 @@ public class SkyboxShader : IShader
     {
         ArgumentNullException.ThrowIfNull(resourcesManager);
         
-        // _shader = new Shader(
-        //     resourcesManager.LoadTextFile("Shaders/skybox.vert"),
-        //     resourcesManager.LoadTextFile("Shaders/skybox.frag"));
-        
         _shader = new Shader(
             /*language=glsl*/
             """
