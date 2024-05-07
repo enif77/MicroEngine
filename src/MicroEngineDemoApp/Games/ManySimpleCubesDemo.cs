@@ -39,7 +39,11 @@ public class ManySimpleCubesDemo : IGame
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Textures/container2.png"),
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-            new DefaultShader(_resourcesManager));
+            new DefaultShader(_resourcesManager))
+        {
+            IsTransparent = true,
+            TransparencyThreshold = 2
+        };
         
         // Generates 1000 cubes in a 10x10x10 grid.
         for (var x = -5; x < 5; x++)

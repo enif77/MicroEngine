@@ -21,6 +21,8 @@ public class MultiTextureMaterial : IMaterial
     public ITexture SpecularMap { get; } = new NullTexture();
     public Vector3 Specular { get; set; } = Vector3.Zero;
     public float Shininess { get; set; }
+    public bool IsTransparent { get; set; }
+    public int TransparencyThreshold { get; set; }
     public IShader Shader { get; }
 
 
@@ -46,5 +48,8 @@ public class MultiTextureMaterial : IMaterial
         {
             throw new ArgumentException("The number of textures must be 16 or less.", nameof(textures));
         }
+        
+        IsTransparent = false;
+        TransparencyThreshold = 2;
     }
 }

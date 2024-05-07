@@ -14,6 +14,8 @@ public class Material : IMaterial
     public ITexture SpecularMap { get; }
     public Vector3 Specular { get; set; }
     public float Shininess { get; set; }
+    public bool IsTransparent { get; set; }
+    public int TransparencyThreshold { get; set; }
 
     public IShader Shader { get; }
 
@@ -24,6 +26,8 @@ public class Material : IMaterial
         SpecularMap = specularMap ?? throw new ArgumentNullException(nameof(specularMap));
         Specular = new Vector3(0.5f, 0.5f, 0.5f);
         Shininess = 32.0f;
+        IsTransparent = false;
+        TransparencyThreshold = 2;
         Shader = shader ?? throw new ArgumentNullException(nameof(shader));
     }
 }

@@ -48,6 +48,8 @@ public class DefaultShader : IShader
                 sampler2D diffuse;
                 sampler2D specular;
                 float     shininess;
+                int isTransparent;
+                int transparencyThreshold;
             };
             
             
@@ -85,6 +87,10 @@ public class DefaultShader : IShader
             // This is the number of point lights we have, we need this to loop through the point lights in the main function.
             uniform int numLights;
             
+            // Transparency effect.
+            uniform int isTransparent;          // Turns on the transparency effect.
+            uniform int transparencyThreshold;  // The higher the number, the less transparent the object will be.
+            
             uniform Material material;
             uniform vec3 viewPos;
             
@@ -103,6 +109,13 @@ public class DefaultShader : IShader
             
             void main()
             {
+                // Transparency effect.
+                if (material.isTransparent != 0 && ((int(gl_FragCoord.x) + int(gl_FragCoord.y) + int(FragPos.z)) % material.transparencyThreshold) == 1)
+                {
+                    discard;
+                }
+                
+                // Holes in the texture effect.
                 float alpha = texture(material.diffuse, TexCoords).a;
                 if (alpha < 0.1)
                 {
@@ -242,6 +255,8 @@ public class DefaultShader : IShader
         _glslShader.SetInt("material.diffuse", 0);
         _glslShader.SetInt("material.specular", 1);
         _glslShader.SetFloat("material.shininess", material.Shininess);
+        _glslShader.SetInt("material.isTransparent", material.IsTransparent ? 1 : 0);
+        _glslShader.SetInt("material.transparencyThreshold", material.TransparencyThreshold);
         
         _glslShader.SetMatrix4("view", camera.GetViewMatrix());
         _glslShader.SetMatrix4("projection", camera.GetProjectionMatrix());

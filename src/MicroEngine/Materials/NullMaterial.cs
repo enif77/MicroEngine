@@ -17,5 +17,7 @@ public class NullMaterial : IMaterial
     public ITexture SpecularMap { get; } = new NullTexture();
     public Vector3 Specular { get; set; } = Vector3.Zero;
     public float Shininess { get; set; }
+    public bool IsTransparent { get; set; }
+    public int TransparencyThreshold { get; set; }
     public IShader Shader { get; } = new NullShader();
 }

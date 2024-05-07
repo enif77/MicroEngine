@@ -17,5 +17,7 @@ public class SimpleColorMaterial(Vector3 color, IShader shader) : IMaterial
     public ITexture SpecularMap { get; } = new NullTexture();
     public Vector3 Specular { get; set; } = Vector3.Zero;
     public float Shininess { get; set; }
+    public bool IsTransparent { get; set; } = false;
+    public int TransparencyThreshold { get; set; } = 2;
     public IShader Shader { get; } = shader ?? throw new ArgumentNullException(nameof(shader));
 }
