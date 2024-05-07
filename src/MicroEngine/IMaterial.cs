@@ -35,15 +35,12 @@ public interface IMaterial
     float Shininess { get; set; }
     
     /// <summary>
-    /// Turns on/off transparency effect of this material.
+    /// Value above 1 turns on/off transparency effect of this material.
+    /// 0 or 1 = fully opaque, 2 = maximally (approx. 50%) transparent. Above = more opaque.
+    /// The higher the number, the less transparent the object will be.
     /// The transparency effect is achieved by discarding some fragments based on their screen position and depth.
     /// </summary>
-    bool IsTransparent { get; set; }
-    
-    /// <summary>
-    /// The higher the number, the less transparent the object will be.
-    /// </summary>
-    int TransparencyThreshold { get; set; }
+    int OpacityLevel { get; set; }
     
     /// <summary>
     /// Shader to be used for rendering of this material.

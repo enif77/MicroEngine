@@ -48,8 +48,7 @@ public class DefaultShader : IShader
                 sampler2D diffuse;
                 sampler2D specular;
                 float     shininess;
-                int isTransparent;
-                int transparencyThreshold;
+                int       opacityLevel;
             };
             
             
@@ -119,7 +118,7 @@ public class DefaultShader : IShader
                 // Transparency effect.
                 // gl_FragCoord is a built-in variable that contains the window relative coordinate (x, y, z, 1/w) values for the fragment.
                 // gl_FragCoord is updated by OpenGL after the texture is sampled. So we can update it here, not before.
-                if (material.isTransparent != 0 && ((int(gl_FragCoord.x) + int(gl_FragCoord.y) + int(FragPos.z)) % material.transparencyThreshold) == 1)
+                if (material.opacityLevel > 1 && ((int(gl_FragCoord.x) + int(gl_FragCoord.y) + int(FragPos.z)) % material.opacityLevel) == 1)
                 {
                     discard;
                 }
@@ -257,8 +256,7 @@ public class DefaultShader : IShader
         _glslShader.SetInt("material.diffuse", 0);
         _glslShader.SetInt("material.specular", 1);
         _glslShader.SetFloat("material.shininess", material.Shininess);
-        _glslShader.SetInt("material.isTransparent", material.IsTransparent ? 1 : 0);
-        _glslShader.SetInt("material.transparencyThreshold", material.TransparencyThreshold);
+        _glslShader.SetInt("material.opacityLevel", material.OpacityLevel);
         
         _glslShader.SetMatrix4("view", camera.GetViewMatrix());
         _glslShader.SetMatrix4("projection", camera.GetProjectionMatrix());

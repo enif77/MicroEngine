@@ -41,8 +41,7 @@ public class ManySimpleCubesDemo : IGame
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
             new DefaultShader(_resourcesManager))
         {
-            IsTransparent = true,
-            TransparencyThreshold = 2
+            OpacityLevel = 2
         };
         
         // Generates 1000 cubes in a 10x10x10 grid.

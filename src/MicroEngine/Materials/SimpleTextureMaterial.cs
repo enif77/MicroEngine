@@ -21,8 +21,7 @@ public class SimpleTextureMaterial : IMaterial
     public ITexture SpecularMap { get; } = new NullTexture();
     public Vector3 Specular { get; set; } = Vector3.Zero;
     public float Shininess { get; set; }
-    public bool IsTransparent { get; set; }
-    public int TransparencyThreshold { get; set; }
+    public int OpacityLevel { get; set; }
     public IShader Shader { get; }
 
 
@@ -36,8 +35,5 @@ public class SimpleTextureMaterial : IMaterial
     {
         DiffuseMap = diffuseMap ?? throw new ArgumentNullException(nameof(diffuseMap));
         Shader = shader ?? throw new ArgumentNullException(nameof(shader));
-        
-        IsTransparent = false;
-        TransparencyThreshold = 2;
     }
 }
