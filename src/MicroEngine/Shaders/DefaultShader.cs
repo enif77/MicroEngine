@@ -109,15 +109,17 @@ public class DefaultShader : IShader
             
             void main()
             {
-                // Transparency effect.
-                if (material.isTransparent != 0 && ((int(gl_FragCoord.x) + int(gl_FragCoord.y) + int(FragPos.z)) % material.transparencyThreshold) == 1)
+                // Holes in the texture effect.
+                float alpha = texture(material.diffuse, TexCoords).a;
+                if (alpha < 0.1)
                 {
                     discard;
                 }
                 
-                // Holes in the texture effect.
-                float alpha = texture(material.diffuse, TexCoords).a;
-                if (alpha < 0.1)
+                // Transparency effect.
+                // gl_FragCoord is a built-in variable that contains the window relative coordinate (x, y, z, 1/w) values for the fragment.
+                // gl_FragCoord is updated by OpenGL after the texture is sampled. So we can update it here, not before.
+                if (material.isTransparent != 0 && ((int(gl_FragCoord.x) + int(gl_FragCoord.y) + int(FragPos.z)) % material.transparencyThreshold) == 1)
                 {
                     discard;
                 }
