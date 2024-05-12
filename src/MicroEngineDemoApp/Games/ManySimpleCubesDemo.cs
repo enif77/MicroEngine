@@ -44,6 +44,11 @@ public class ManySimpleCubesDemo : IGame
             OpacityLevel = 2
         };
         
+        var cubeMaterial2 = new Material(
+            _resourcesManager.LoadTexture("Textures/container2.png"),
+            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+            new DefaultShader(_resourcesManager));
+        
         // Generates 1000 cubes in a 10x10x10 grid.
         for (var x = -5; x < 5; x++)
         {
@@ -51,6 +56,13 @@ public class ManySimpleCubesDemo : IGame
             {
                 for (var z = -5; z < 5; z++)
                 {
+                    if ((x + y + z) % 2 == 0)
+                    {
+                        scene.AddChild(CreateCube(cubeMaterial2, new Vector3(x, y, z)));
+                        
+                        continue;
+                    }
+                    
                     scene.AddChild(CreateCube(cubeMaterial, new Vector3(x, y, z)));
                 }
             }
@@ -63,7 +75,7 @@ public class ManySimpleCubesDemo : IGame
        
         _scene = scene;
         
-        Renderer.EnableFaceCulling();
+        //Renderer.EnableFaceCulling();
         
         return true;
     }
@@ -103,11 +115,11 @@ public class ManySimpleCubesDemo : IGame
         }
         if (keyboardState.IsKeyDown(Keys.A))
         {
-            _scene.Camera.Position -= camera.RightVector * cameraSpeed * deltaTime; // Left
+            _scene.Camera.Position += camera.RightVector * cameraSpeed * deltaTime; // Left
         }
         if (keyboardState.IsKeyDown(Keys.D))
         {
-            _scene.Camera.Position += camera.RightVector * cameraSpeed * deltaTime; // Right
+            _scene.Camera.Position -= camera.RightVector * cameraSpeed * deltaTime; // Right
         }
         if (keyboardState.IsKeyDown(Keys.Space))
         {
@@ -131,8 +143,8 @@ public class ManySimpleCubesDemo : IGame
             var deltaY = mouse.Y - _lastPos.Y;
             _lastPos = new Vector2(mouse.X, mouse.Y);
 
-            camera.Yaw += deltaX * sensitivity;
-            camera.Pitch -= deltaY * sensitivity;
+            camera.Yaw -= deltaX * sensitivity;
+            camera.Pitch += deltaY * sensitivity;
         }
 
         _scene.Update(deltaTime);
@@ -170,7 +182,7 @@ public class ManySimpleCubesDemo : IGame
     {
         var cube = TexturedCubeGenerator.Generate(material);
         cube.Position = position;
-        cube.Scale = 0.5f;
+        cube.Scale = 0.25f;
         
         cube.BuildGeometry();
         
