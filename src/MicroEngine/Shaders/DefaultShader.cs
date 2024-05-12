@@ -118,7 +118,14 @@ public class DefaultShader : IShader
                 // Transparency effect.
                 // gl_FragCoord is a built-in variable that contains the window relative coordinate (x, y, z, 1/w) values for the fragment.
                 // gl_FragCoord is updated by OpenGL after the texture is sampled. So we can update it here, not before.
-                if (material.opacityLevel > 1 && ((int(gl_FragCoord.x) + int(gl_FragCoord.y) + int(FragPos.z)) % material.opacityLevel) == 1)
+                if (material.opacityLevel > 1 && (
+                    (int(gl_FragCoord.x) + int(gl_FragCoord.y)
+                    
+                    // This is not working as expected. Transparent objects can be seen through a transparent object, but with artefacts.
+                    // Without this, transparent objects are not visible behind a transparent object at all. Non-transparent objects are visible perfectly.
+                    //+ int(FragPos.z)   
+                    
+                    ) % material.opacityLevel) == 1)
                 {
                     discard;
                 }
@@ -247,6 +254,15 @@ public class DefaultShader : IShader
     {
         var camera = scene.Camera;
         var material = sceneObject.Material;
+
+        if (material.OpacityLevel > 1)
+        {
+            Renderer.DisableFaceCulling();    
+        }
+        else
+        {
+            Renderer.EnableFaceCulling();
+        }
         
         material.DiffuseMap.Use(TextureUnit.Texture0);
         material.SpecularMap.Use(TextureUnit.Texture1);
