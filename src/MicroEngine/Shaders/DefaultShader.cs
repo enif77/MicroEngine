@@ -49,6 +49,7 @@ public class DefaultShader : IShader
                 sampler2D specular;
                 float     shininess;
                 int       opacityLevel;
+                int       opacityBias;
             };
             
             
@@ -86,10 +87,6 @@ public class DefaultShader : IShader
             // This is the number of point lights we have, we need this to loop through the point lights in the main function.
             uniform int numLights;
             
-            // Transparency effect.
-            uniform int isTransparent;          // Turns on the transparency effect.
-            uniform int transparencyThreshold;  // The higher the number, the less transparent the object will be.
-            
             uniform Material material;
             uniform vec3 viewPos;
             
@@ -120,6 +117,8 @@ public class DefaultShader : IShader
                 // gl_FragCoord is updated by OpenGL after the texture is sampled. So we can update it here, not before.
                 if (material.opacityLevel > 1 && (
                     (int(gl_FragCoord.x) + int(gl_FragCoord.y)
+                    
+                    + material.opacityBias
                     
                     // This is not working as expected. Transparent objects can be seen through a transparent object, but with artefacts.
                     // Without this, transparent objects are not visible behind a transparent object at all. Non-transparent objects are visible perfectly.
@@ -273,6 +272,7 @@ public class DefaultShader : IShader
         _glslShader.SetInt("material.specular", 1);
         _glslShader.SetFloat("material.shininess", material.Shininess);
         _glslShader.SetInt("material.opacityLevel", material.OpacityLevel);
+        _glslShader.SetInt("material.opacityBias", material.OpacityBias);
         
         _glslShader.SetMatrix4("view", camera.GetViewMatrix());
         _glslShader.SetMatrix4("projection", camera.GetProjectionMatrix());

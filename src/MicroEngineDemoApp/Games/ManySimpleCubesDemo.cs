@@ -36,13 +36,13 @@ public class ManySimpleCubesDemo : IGame
         
         scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
 
-        var cubeMaterial = new Material(
-            _resourcesManager.LoadTexture("Textures/container2.png"),
-            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-            new DefaultShader(_resourcesManager))
-        {
-            OpacityLevel = 2
-        };
+        // var cubeMaterial = new Material(
+        //     _resourcesManager.LoadTexture("Textures/container2.png"),
+        //     _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+        //     new DefaultShader(_resourcesManager))
+        // {
+        //     OpacityLevel = 2
+        // };
         
         var cubeMaterial2 = new Material(
             _resourcesManager.LoadTexture("Textures/container2.png"),
@@ -50,6 +50,7 @@ public class ManySimpleCubesDemo : IGame
             new DefaultShader(_resourcesManager));
         
         // Generates 1000 cubes in a 10x10x10 grid.
+        var opacityBias = 0;
         for (var x = -5; x < 5; x++)
         {
             for (var y = -5; y < 5; y++)
@@ -63,10 +64,46 @@ public class ManySimpleCubesDemo : IGame
                         continue;
                     }
                     
-                    scene.AddChild(CreateCube(cubeMaterial, new Vector3(x, y, z)));
+                    scene.AddChild(CreateCube(new Material(
+                        _resourcesManager.LoadTexture("Textures/container2.png"),
+                        _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+                        new DefaultShader(_resourcesManager))
+                    {
+                        OpacityLevel = 2,
+                        OpacityBias = opacityBias++
+                    }, new Vector3(x, y, z)));
                 }
             }
         }
+        
+        
+        // for (var x = -5; x < 5; x++)
+        // {
+        //     var cubeMaterial = new Material(
+        //         _resourcesManager.LoadTexture("Textures/container2.png"),
+        //         _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+        //         new DefaultShader(_resourcesManager))
+        //     {
+        //         OpacityLevel = 2,
+        //         OpacityBias = x * 5
+        //     };
+        //     
+        //     for (var y = -5; y < 5; y++)
+        //     {
+        //         for (var z = -5; z < 5; z++)
+        //         {
+        //             if ((x + y + z) % 2 == 0)
+        //             {
+        //                 scene.AddChild(CreateCube(cubeMaterial2, new Vector3(x, y, z)));
+        //                 
+        //                 continue;
+        //             }
+        //             
+        //             scene.AddChild(CreateCube(cubeMaterial, new Vector3(x, y, z)));
+        //         }
+        //     }
+        // }
+        
         
         scene.AddLight(new DirectionalLight(scene.Lights.Count)
         {

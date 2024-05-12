@@ -43,6 +43,11 @@ public interface IMaterial
     int OpacityLevel { get; set; }
     
     /// <summary>
+    /// Modifies the transparency effect of this material.
+    /// </summary>
+    int OpacityBias { get; set; }
+    
+    /// <summary>
     /// Shader to be used for rendering of this material.
     /// </summary>
     IShader Shader { get; }

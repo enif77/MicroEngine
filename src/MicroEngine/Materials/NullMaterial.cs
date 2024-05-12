@@ -18,5 +18,6 @@ public class NullMaterial : IMaterial
     public Vector3 Specular { get; set; } = Vector3.Zero;
     public float Shininess { get; set; }
     public int OpacityLevel { get; set; }
+    public int OpacityBias { get; set; }
     public IShader Shader { get; } = new NullShader();
 }

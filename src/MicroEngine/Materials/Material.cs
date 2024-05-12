@@ -15,6 +15,7 @@ public class Material : IMaterial
     public Vector3 Specular { get; set; }
     public float Shininess { get; set; }
     public int OpacityLevel { get; set; }
+    public int OpacityBias { get; set; }
 
     public IShader Shader { get; }
 
@@ -26,6 +27,7 @@ public class Material : IMaterial
         Specular = new Vector3(0.5f, 0.5f, 0.5f);
         Shininess = 32.0f;
         OpacityLevel = 0;
+        OpacityBias = 0;
         Shader = shader ?? throw new ArgumentNullException(nameof(shader));
     }
 }
