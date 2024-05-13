@@ -57,6 +57,11 @@ public class ManySimpleCubesDemo : IGame
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
             _resourcesManager.GetShader("default"));
         
+        var cubeMaterialGray = new Material(
+            _resourcesManager.LoadTexture("Textures/container2_gray.png"),
+            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+            _resourcesManager.GetShader("default"));
+        
         // Generates 1000 cubes in a 10x10x10 grid.
         // for (var x = -5; x < 5; x++)
         // {
@@ -83,6 +88,13 @@ public class ManySimpleCubesDemo : IGame
             {
                 for (var z = -5; z < 5; z++)
                 {
+                    if ((x + y + z) % 8 == 0)
+                    {
+                        scene.AddChild(CreateCube(cubeMaterialGray, new Vector3(x, y, z)));
+                        
+                        continue;
+                    }
+                    
                     if ((x + y + z) % 4 == 0)
                     {
                         scene.AddChild(CreateCube(cubeMaterialRed, new Vector3(x, y, z)));
