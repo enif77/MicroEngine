@@ -47,8 +47,13 @@ public class ManySimpleCubesDemo : IGame
         //     OpacityLevel = 2
         // };
         
-        var cubeMaterial2 = new Material(
-            _resourcesManager.LoadTexture("Textures/container2.png"),
+        var cubeMaterialGreen = new Material(
+            _resourcesManager.LoadTexture("Textures/container2_green.png"),
+            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+            _resourcesManager.GetShader("default"));
+        
+        var cubeMaterialRed = new Material(
+            _resourcesManager.LoadTexture("Textures/container2_red.png"),
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
             _resourcesManager.GetShader("default"));
         
@@ -78,21 +83,42 @@ public class ManySimpleCubesDemo : IGame
             {
                 for (var z = -5; z < 5; z++)
                 {
-                    if ((x + y + z) % 2 == 0)
+                    if ((x + y + z) % 4 == 0)
                     {
-                        scene.AddChild(CreateCube(cubeMaterial2, new Vector3(x, y, z)));
+                        scene.AddChild(CreateCube(cubeMaterialRed, new Vector3(x, y, z)));
                         
                         continue;
                     }
                     
-                    scene.AddChild(CreateCube(new Material(
-                        _resourcesManager.LoadTexture("Textures/container2.png"),
-                        _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-                        _resourcesManager.GetShader("default"))
+                    if ((x + y + z) % 2 == 0)
                     {
-                        OpacityLevel = 2,
-                        OpacityBias = opacityBias + 1
-                    }, new Vector3(x, y, z)));
+                        scene.AddChild(CreateCube(cubeMaterialGreen, new Vector3(x, y, z)));
+                        
+                        continue;
+                    }
+                    
+                    if ((x + y + z) % 3 == 0)
+                    {
+                        scene.AddChild(CreateCube(new Material(
+                            _resourcesManager.LoadTexture("Textures/container2_pink.png"),
+                            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+                            _resourcesManager.GetShader("default"))
+                        {
+                            OpacityLevel = 2,
+                            OpacityBias = opacityBias + 1
+                        }, new Vector3(x, y, z)));
+                    }
+                    else
+                    {
+                        scene.AddChild(CreateCube(new Material(
+                            _resourcesManager.LoadTexture("Textures/container2.png"),
+                            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+                            _resourcesManager.GetShader("default"))
+                        {
+                            OpacityLevel = 2,
+                            OpacityBias = opacityBias + 1
+                        }, new Vector3(x, y, z)));
+                    }
                     
                     // This will alternate the opacity bias.
                     // Half of the cubes will have the opacity bias set to 1, the other half to 0.
