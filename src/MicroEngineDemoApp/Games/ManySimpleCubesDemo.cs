@@ -36,10 +36,13 @@ public class ManySimpleCubesDemo : IGame
         
         scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
 
+        // Load the default shader.
+        _resourcesManager.LoadShader("default", new DefaultShader(_resourcesManager));
+        
         // var cubeMaterial = new Material(
         //     _resourcesManager.LoadTexture("Textures/container2.png"),
         //     _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-        //     new DefaultShader(_resourcesManager))
+        //     _resourcesManager.GetShader("default"))
         // {
         //     OpacityLevel = 2
         // };
@@ -47,47 +50,11 @@ public class ManySimpleCubesDemo : IGame
         var cubeMaterial2 = new Material(
             _resourcesManager.LoadTexture("Textures/container2.png"),
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-            new DefaultShader(_resourcesManager));
+            _resourcesManager.GetShader("default"));
         
         // Generates 1000 cubes in a 10x10x10 grid.
-        var opacityBias = 0;
-        for (var x = -5; x < 5; x++)
-        {
-            for (var y = -5; y < 5; y++)
-            {
-                for (var z = -5; z < 5; z++)
-                {
-                    if ((x + y + z) % 2 == 0)
-                    {
-                        scene.AddChild(CreateCube(cubeMaterial2, new Vector3(x, y, z)));
-                        
-                        continue;
-                    }
-                    
-                    scene.AddChild(CreateCube(new Material(
-                        _resourcesManager.LoadTexture("Textures/container2.png"),
-                        _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-                        new DefaultShader(_resourcesManager))
-                    {
-                        OpacityLevel = 2,
-                        OpacityBias = opacityBias++
-                    }, new Vector3(x, y, z)));
-                }
-            }
-        }
-        
-        
         // for (var x = -5; x < 5; x++)
         // {
-        //     var cubeMaterial = new Material(
-        //         _resourcesManager.LoadTexture("Textures/container2.png"),
-        //         _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-        //         new DefaultShader(_resourcesManager))
-        //     {
-        //         OpacityLevel = 2,
-        //         OpacityBias = x * 5
-        //     };
-        //     
         //     for (var y = -5; y < 5; y++)
         //     {
         //         for (var z = -5; z < 5; z++)
@@ -104,6 +71,37 @@ public class ManySimpleCubesDemo : IGame
         //     }
         // }
         
+        var opacityBias = 1;
+        for (var x = -5; x < 5; x++)
+        {
+            for (var y = -5; y < 5; y++)
+            {
+                for (var z = -5; z < 5; z++)
+                {
+                    if ((x + y + z) % 2 == 0)
+                    {
+                        scene.AddChild(CreateCube(cubeMaterial2, new Vector3(x, y, z)));
+                        
+                        continue;
+                    }
+                    
+                    scene.AddChild(CreateCube(new Material(
+                        _resourcesManager.LoadTexture("Textures/container2.png"),
+                        _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+                        _resourcesManager.GetShader("default"))
+                    {
+                        OpacityLevel = 2,
+                        OpacityBias = opacityBias + 1
+                    }, new Vector3(x, y, z)));
+                    
+                    // This will alternate the opacity bias.
+                    // Half of the cubes will have the opacity bias set to 1, the other half to 0.
+                    // Cubes with the same bias wont be visible through each other.
+                    // Cubes with different bias will be visible through each other.
+                    opacityBias = 1 - opacityBias;
+                }
+            }
+        }
         
         scene.AddLight(new DirectionalLight(scene.Lights.Count)
         {
