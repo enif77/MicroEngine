@@ -185,10 +185,7 @@ public class ResourcesManager : IResourcesManager
     
     public bool HasShader(string name)
     {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException("A shader name expected.");
-        }
+        CheckShaderName(name);
 
         return _shaders.ContainsKey(name);
     }
@@ -196,10 +193,7 @@ public class ResourcesManager : IResourcesManager
     
     public IShader GetShader(string name)
     {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException("A shader name expected.");
-        }
+        CheckShaderName(name);
 
         return _shaders.GetValueOrDefault(name, _nullShader);
     }
@@ -207,14 +201,19 @@ public class ResourcesManager : IResourcesManager
     
     public bool LoadShader(string name, IShader shader)
     {
+        CheckShaderName(name);
+        ArgumentNullException.ThrowIfNull(shader);
+
+        return _shaders.TryAdd(name, shader);
+    }
+    
+    
+    private static void CheckShaderName(string name)
+    {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentException("A shader name expected.");
         }
-
-        ArgumentNullException.ThrowIfNull(shader);
-
-        return _shaders.TryAdd(name, shader);
     }
     
     #endregion
