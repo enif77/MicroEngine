@@ -211,19 +211,21 @@ public sealed class GlslShader : IDisposable
 
     private void Dispose(bool disposing)
     {
-        if (!_disposedValue)
+        if (_disposedValue)
         {
-            GL.DeleteProgram(_handle);
-
-            _disposedValue = true;
+            return;
         }
+
+        GL.DeleteProgram(_handle);
+
+        _disposedValue = true;
     }
 
     ~GlslShader()
     {
         if (_disposedValue == false)
         {
-            Console.WriteLine("GPU Resource leak! Did you forget to call Dispose()?");
+            Console.WriteLine("GlslShader: GPU Resource leak! Did you forget to call Dispose()?");
         }
     }
 

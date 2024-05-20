@@ -8,7 +8,7 @@ using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
 
 // A helper class, much like Shader, meant to simplify loading textures.
-public class Texture : ITexture
+public class Texture : ITexture, IDisposable
 {
     public readonly int Handle;
 
@@ -92,5 +92,36 @@ public class Texture : ITexture
     {
         GL.ActiveTexture(unit);
         GL.BindTexture(TextureTarget.Texture2D, Handle);
+    }
+    
+    
+    private bool _disposedValue = false;
+
+    private void Dispose(bool disposing)
+    {
+        if (_disposedValue)
+        {
+            return;
+        }
+
+        GL.DeleteTexture(Handle);
+
+        _disposedValue = true;
+    }
+
+    
+    ~Texture()
+    {
+        if (_disposedValue == false)
+        {
+            Console.WriteLine("Texture: GPU Resource leak! Did you forget to call Dispose()?");
+        }
+    }
+
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }
