@@ -9,7 +9,7 @@ using MicroEngine.Geometries;
 
 /// <summary>
 /// An axis-aligned boundary box, that is not automatically changing its size.
-/// Its similar to the SceneObjectsGroup (hac no geometry etc.), but it is ignoring its rotation and its parent rotation.
+/// Its similar to the SceneObjectsGroup (has no geometry etc.), but it is ignoring its rotation and its parent rotation.
 /// </summary>
 public class StaticAxisAlignedBoundaryBox : RenderableSceneObject, IAxisAlignedBoundaryBox
 {
