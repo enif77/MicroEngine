@@ -53,6 +53,7 @@ internal static class Program
         
         var games = new Dictionary<string, IGame>()
         {
+            { "game", new MinimalGameDemo(ResourcesManager.Instance) },
             { "game-with-cubes", new Game(ResourcesManager.Instance) },
             { "rotating-cube-demo", new RotatingCubeDemo(ResourcesManager.Instance) },
             { "minimal-rotating-cube-demo", new MinimalRotatingCubeDemo(ResourcesManager.Instance) },
