@@ -122,7 +122,7 @@ public static class Renderer
     public static void EnableFaceCulling()
     {
         GL.Enable(EnableCap.CullFace);
-        GL.CullFace(CullFaceMode.Back);
+        GL.CullFace(TriangleFace.Back);
         GL.FrontFace(FrontFaceDirection.Ccw);
     }
     
