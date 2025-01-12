@@ -19,7 +19,7 @@ public class Game5 : IGame
     private readonly ResourcesManager _resourcesManager;
     
     private Scene? _scene;
-    private readonly SceneObjectController _cubeController = new();
+    private readonly SceneObjectController _rocketController = new();
     private readonly SceneObjectController _cameraController = new();
 
     public string Name => "game-with-cubes5";
@@ -65,10 +65,10 @@ public class Game5 : IGame
         
         if (keyboardState.IsKeyDown(Keys.Space))
         {
-            _cubeController.Position = Vector3.Zero;
-            _cubeController.Rotation = Vector3.Zero;
+            _rocketController.Position = Vector3.Zero;
+            _rocketController.Rotation = Vector3.Zero;
             
-            _cubeController.UpdateAxes();
+            _rocketController.UpdateAxes();
             
             var camera = (FpsCamera)_scene.Camera;
             
@@ -80,105 +80,105 @@ public class Game5 : IGame
         // Forward/backward movement.
         if (keyboardState.IsKeyDown(Keys.W))
         {
-            _cubeController.Advance(MovementSpeed * deltaTime);    
+            _rocketController.Advance(MovementSpeed * deltaTime);    
         }
         
         if (keyboardState.IsKeyDown(Keys.S))
         {
-            _cubeController.Advance(-MovementSpeed * deltaTime);    
+            _rocketController.Advance(-MovementSpeed * deltaTime);    
         }
        
         // Left/right movement.
         if (keyboardState.IsKeyDown(Keys.A))
         {
-            _cubeController.Strafe(MovementSpeed * deltaTime);    
+            _rocketController.Strafe(-MovementSpeed * deltaTime);    
         }
         
         if (keyboardState.IsKeyDown(Keys.D))
         {
-            _cubeController.Strafe(-MovementSpeed * deltaTime);    
+            _rocketController.Strafe(MovementSpeed * deltaTime);    
         }
        
         // Up/down movement.
         if (keyboardState.IsKeyDown(Keys.LeftControl))
         {
-            _cubeController.Ascend(MovementSpeed * deltaTime);    
+            _rocketController.Ascend(-MovementSpeed * deltaTime);    
         }
         
         if (keyboardState.IsKeyDown(Keys.LeftShift))
         {
-            _cubeController.Ascend(-MovementSpeed * deltaTime);    
+            _rocketController.Ascend(MovementSpeed * deltaTime);    
         }
 
         
         // Yaw rotation.
         if (keyboardState.IsKeyDown(Keys.Q))
         {
-            _cubeController.Yaw(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
+            _rocketController.Yaw(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
         }
         
         if (keyboardState.IsKeyDown(Keys.E))
         {
-            _cubeController.Yaw(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
+            _rocketController.Yaw(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
         }
         
         // Roll rotation.
         if (keyboardState.IsKeyDown(Keys.Left))
         {
-            _cubeController.Roll(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
+            _rocketController.Roll(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
         }
         
         if (keyboardState.IsKeyDown(Keys.Right))
         {
-            _cubeController.Roll(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
+            _rocketController.Roll(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
         }
         
         // Pitch rotation.
         if (keyboardState.IsKeyDown(Keys.Up))
         {
-            _cubeController.Pitch(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
+            _rocketController.Pitch(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
         }
         
         if (keyboardState.IsKeyDown(Keys.Down))
         {
-            _cubeController.Pitch(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
+            _rocketController.Pitch(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
         }
         
         
         if (keyboardState.IsKeyDown(Keys.I))
         {
-            _cubeController.SetRotationX( _cubeController.Rotation.X + MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));
-            _cubeController.UpdateAxes();
+            _rocketController.SetRotationX( _rocketController.Rotation.X + MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));
+            _rocketController.UpdateAxes();
         }
         
         if (keyboardState.IsKeyDown(Keys.K))
         {
-            _cubeController.SetRotationX(_cubeController.Rotation.X + MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
-            _cubeController.UpdateAxes();
+            _rocketController.SetRotationX(_rocketController.Rotation.X + MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
+            _rocketController.UpdateAxes();
         }
         
         if (keyboardState.IsKeyDown(Keys.J))
         {
-            _cubeController.SetRotationY(_cubeController.Rotation.Y + MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
-            _cubeController.UpdateAxes();
+            _rocketController.SetRotationY(_rocketController.Rotation.Y + MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
+            _rocketController.UpdateAxes();
         }
         
         if (keyboardState.IsKeyDown(Keys.L))
         {
-            _cubeController.SetRotationY(_cubeController.Rotation.Y + MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));
-            _cubeController.UpdateAxes();
+            _rocketController.SetRotationY(_rocketController.Rotation.Y + MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));
+            _rocketController.UpdateAxes();
         }
         
         if (keyboardState.IsKeyDown(Keys.U))
         {
-            _cubeController.SetRotationZ(_cubeController.Rotation.Z + MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));
-            _cubeController.UpdateAxes();
+            _rocketController.SetRotationZ(_rocketController.Rotation.Z + MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));
+            _rocketController.UpdateAxes();
         }
         
         if (keyboardState.IsKeyDown(Keys.O))
         {
-            _cubeController.SetRotationZ(_cubeController.Rotation.Z + MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
-            _cubeController.UpdateAxes();
+            _rocketController.SetRotationZ(_rocketController.Rotation.Z + MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
+            _rocketController.UpdateAxes();
         }
         
         
@@ -289,48 +289,33 @@ public class Game5 : IGame
     
     private void CreateScene()
     {
-        //var scene = new Scene(new FlyByCamera(width / (float)height));
-        var scene = new Scene();
-        
-        scene.SetCamera(new FpsCamera()
-        {
-            Position = new Vector3(0f, -1f, 1f)
-        });
-        
-        // Skybox
-        
-        scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
-        
-        // Cubes
-        
-        scene.AddChild(_cubeController);
-        
+        // Materials
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Textures/container2.png"),
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
             new DefaultShader(_resourcesManager));
 
-        var cube1 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
+        // Scene
+        var scene = new Scene();
         
-        _cubeController.AddChild(cube1);
-
-        var cube2 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, -2.0f));
-        cube2.Scale = 0.5f;
+        // Camera. We want to add a camera to the scene, but we will place it as a child of a cube/rocket.
+        scene.SetCamera(new FpsCamera(), false);
         
-        cube1.AddChild(cube2);
+        // Skybox
+        scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
         
-        var cube3 = CreateCube(cubeMaterial, new Vector3(2.0f, 0.0f, 0f));
-        cube3.Scale = 0.5f;
+        // The rocket made of cubes.
+        scene.AddChild(_rocketController);
         
-        cube1.AddChild(cube3);
+        var rocket = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
         
-        var cube4 = CreateCube(cubeMaterial, new Vector3(-2.0f, 0.0f, 0f));
-        cube4.Scale = 0.5f;
+        rocket.AddChild(CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, -2.0f), 0.5f));
+        rocket.AddChild(CreateCube(cubeMaterial, new Vector3(2.0f, 0.0f, 0f), 0.5f));
+        rocket.AddChild(CreateCube(cubeMaterial, new Vector3(-2.0f, 0.0f, 0f), 0.5f));
         
-        cube1.AddChild(cube4);
-       
+        _rocketController.AddChild(rocket);
         
-        // Generates 1000 cubes in a 10x10x10 grid.
+        // Generates M cubes in a NxNxN grid.
         for (var x = -2; x < 2; x++)
         {
             for (var y = -2; y < 2; y++)
@@ -344,51 +329,45 @@ public class Game5 : IGame
                 }
             }
         }
-
-
-        //_cameraController.Position = new Vector3(0, -1.0f, 1.1f);
-        //cube1.AddChild(_cameraController);
-        //
-        //scene.RemoveChild(scene.Camera);
-        //_cameraController.AddChild(scene.Camera);
+       
+        // Put the camera on the first cube, so it appears as if the camera is attached to the cube.
+        rocket.AddChild(scene.Camera);
         
-        scene.RemoveChild(scene.Camera);
-        cube1.AddChild(scene.Camera);
+        // Set the camera position and initial rotation relative to the cube.
+        scene.Camera.Position = new Vector3(0f, -1f, 1.0f);
+        ((FpsCamera)scene.Camera).Yaw = -90.0f;
+        ((FpsCamera)scene.Camera).Pitch = 0.0f;
         
-        
+        // Add some more cubes.
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 10.0f, 0.0f)));
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(5.0f, 10.0f, 5.0f)));
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(10.0f, 5.0f, 0.0f)));
+        
+        // Plane
+        var plane = TexturedPlaneGenerator.Generate(
+            cubeMaterial,
+            10.0f);
+        plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
+        plane.Scale = 50.0f;
+        plane.BuildGeometry();
+        scene.AddChild(plane);
        
         // Lights
-        
         scene.AddLight(new DirectionalLight(scene.Lights.Count)
         {
             Ambient = new Vector3(0.65f)
         });
         
-        // Plane
-       
-        var plane = TexturedPlaneGenerator.Generate(
-            cubeMaterial,
-            10.0f);
-        
-        plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
-        plane.Scale = 50.0f;
-        
-        plane.BuildGeometry();
-        
-        scene.AddChild(plane);
-       
         _scene = scene;
     }
 
     
-    private ISceneObject CreateCube(IMaterial material, Vector3 position)
+    private ISceneObject CreateCube(IMaterial material, Vector3 position, float scale = 1.0f)
     {
         var cube = TexturedCubeGenerator.Generate(material);
 
         cube.Position = position;
+        cube.Scale = scale;
        
         cube.BuildGeometry();
        

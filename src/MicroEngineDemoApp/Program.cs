@@ -53,16 +53,17 @@ internal static class Program
         
         var games = new Dictionary<string, IGame>()
         {
-            { "game", new MinimalGameDemo(ResourcesManager.Instance) },
-            { "game-with-cubes", new Game(ResourcesManager.Instance) },
+            { "game", new MinimalGameDemo(ResourcesManager.Instance) },  // This is the default game.
+            { "many-simple-cubes-demo", new ManySimpleCubesDemo(ResourcesManager.Instance) },
+            { "game-with-cubes5", new Game5(ResourcesManager.Instance) },
+            
+            { "game-with-cubes", new Game(ResourcesManager.Instance) },  // Y-axis is inverted.
             { "rotating-cube-demo", new RotatingCubeDemo(ResourcesManager.Instance) },
             { "minimal-rotating-cube-demo", new MinimalRotatingCubeDemo(ResourcesManager.Instance) },
-            { "rotating-cube-demo-multitex-skybox", new RotatingCubeWithMultiTextureSkyboxDemo(ResourcesManager.Instance) },
-            { "many-simple-cubes-demo", new ManySimpleCubesDemo(ResourcesManager.Instance) },
-            { "game-with-cubes2", new Game2(ResourcesManager.Instance) },
-            { "game-with-cubes3", new Game3(ResourcesManager.Instance) },
-            { "game-with-cubes4", new Game4(ResourcesManager.Instance) },
-            { "game-with-cubes5", new Game5(ResourcesManager.Instance) },
+            { "rotating-cube-demo-multitex-skybox", new RotatingCubeWithMultiTextureSkyboxDemo(ResourcesManager.Instance) },  // Inverted axes.
+            { "game-with-cubes3", new Game3(ResourcesManager.Instance) },  // Inverted axes.
+            { "game-with-cubes4", new Game4(ResourcesManager.Instance) },  // Rotations too fast.
+            //{ "game-with-cubes2", new Game2(ResourcesManager.Instance) },  // Missing map data.
         };
         
         var nativeWindowSettings = new NativeWindowSettings()
