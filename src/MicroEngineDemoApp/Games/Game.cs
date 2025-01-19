@@ -19,11 +19,10 @@ public class Game : IGame
     private readonly ResourcesManager _resourcesManager;
     
     private Scene? _scene;
+    private readonly SceneObjectController _rocketController = new();
     private readonly List<ISceneObject> _cubes = new();
 
     public string Name => "game-with-cubes";
-
-    public ICamera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
 
     
     public Game(ResourcesManager resourcesManager)
@@ -34,94 +33,10 @@ public class Game : IGame
     
     public bool Initialize()
     {
-        var scene = new Scene();
+        CreateScene();
+        //CreateMinimalScene();
         
-        scene.SetCamera(CreateCamera(Program.Settings.WindowWidth, Program.Settings.WindowHeight));
-        
-        
-        #region Skybox
-        
-        scene.AddSkybox(CreateSkybox());
-        
-        #endregion
-        
-        
-        #region Cubes
-        
-        // TODO: Create the first cube and then clone it with setting position to cube clones.
-        
-        var cubeMaterial = new Material(
-            _resourcesManager.LoadTexture("Textures/container2.png"),
-            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-            new DefaultShader(_resourcesManager));
-        
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(2.0f, 5.0f, -15.0f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.5f, -2.2f, -2.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-3.8f, -2.0f, -12.3f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(2.4f, -0.4f, -3.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.7f, 3.0f, -7.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(1.3f, -2.0f, -2.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(1.5f, 2.0f, -2.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(1.5f, 0.2f, -1.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.3f, 1.0f, -1.5f)));
-        
-        _cubes[1].Scale = 2.5f;
-        
-        #endregion
-        
-        
-        scene.AddLight(new DirectionalLight(scene.Lights.Count));
-        
-        
-        #region Lamps
-        
-        CreateLamps(scene);
-        
-        #endregion
-        
-        
-        #region spot light
-        
-        var spotLight = CreateSpotLight(scene, new Vector3(0.7f, 0.2f, 2.0f));
-        scene.AddLight(spotLight, scene.Camera);
-        
-        #endregion
-        
-        
-        #region sub-cubes
-       
-        //CreateSubCubes(_cubes[1]);
-        CreateSubCubes2(_cubes[1]);
-        
-        #endregion
-
-        
-        #region plane
-
-        // var plane = TexturedPlaneGenerator.Generate(
-        //     new SimpleTextureMaterial(
-        //         Texture.LoadFromFile("Textures/container2.png"),
-        //         new SimpleTextureShader()),
-        //     10.0f);
-        
-        var plane = TexturedPlaneGenerator.Generate(
-            cubeMaterial,
-            10.0f);
-        
-        plane.BuildGeometry();
-        
-        plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
-        plane.Scale = 50.0f;
-        
-        scene.AddChild(plane);
-        
-        #endregion
-        
-        
-        _scene = scene;
-        
-        InputManager.Instance.MouseWheel += e => ((FpsCamera)_scene.Camera).Fov -= e.OffsetY;
+        InputManager.Instance.MouseWheel += e => ((FpsCamera)_scene!.Camera).Fov -= e.OffsetY;
         
         Renderer.EnableFaceCulling();
         
@@ -167,29 +82,7 @@ public class Game : IGame
         // Forward/backward movement.
         if (keyboardState.IsKeyDown(Keys.W))
         {
-            _cameraForwardSpeed += 0.01f * deltaTime; // Forward
-            if (_cameraForwardSpeed > 0.5f)
-            {
-                _cameraForwardSpeed = 0.5f;
-            }
-            
-            _cameraMovementVector += ((FpsCamera)_scene.Camera).FrontVector * (_cameraForwardSpeed * deltaTime);
-        }
-        else
-        {
-            if (_cameraForwardSpeed > 0.0f)
-            {
-                _cameraForwardSpeed -= 0.01f * deltaTime;
-                if (_cameraForwardSpeed < 0.0f)
-                {
-                    _cameraForwardSpeed = 0.0f;
-                }    
-            }
-        }
-        
-        if (keyboardState.IsKeyDown(Keys.S))
-        {
-            _cameraForwardSpeed -= 0.01f * deltaTime; // Backwards
+            _cameraForwardSpeed -= 0.01f * deltaTime; // Forward
             if (_cameraForwardSpeed < -0.5f)
             {
                 _cameraForwardSpeed = -0.5f;
@@ -209,31 +102,31 @@ public class Game : IGame
             }
         }
         
-        
-        // Left/right movement.
-        if (keyboardState.IsKeyDown(Keys.A))
+        if (keyboardState.IsKeyDown(Keys.S))
         {
-            _cameraSideSpeed -= 0.01f * deltaTime;
-            if (_cameraSideSpeed < -0.5f)
+            _cameraForwardSpeed += 0.01f * deltaTime; // Backwards
+            if (_cameraForwardSpeed > 0.5f)
             {
-                _cameraSideSpeed = -0.5f;
+                _cameraForwardSpeed = 0.5f;
             }
             
-            _cameraMovementVector += ((FpsCamera)_scene.Camera).RightVector * (_cameraSideSpeed * deltaTime);
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).FrontVector * (_cameraForwardSpeed * deltaTime);
         }
         else
         {
-            if (_cameraSideSpeed < 0.0f)
+            if (_cameraForwardSpeed > 0.0f)
             {
-                _cameraSideSpeed += 0.01f * deltaTime;
-                if (_cameraSideSpeed > 0.0f)
+                _cameraForwardSpeed -= 0.01f * deltaTime;
+                if (_cameraForwardSpeed < 0.0f)
                 {
-                    _cameraSideSpeed = 0.0f;
+                    _cameraForwardSpeed = 0.0f;
                 }    
             }
         }
         
-        if (keyboardState.IsKeyDown(Keys.D))
+        
+        // Left/right movement.
+        if (keyboardState.IsKeyDown(Keys.A))
         {
             _cameraSideSpeed += 0.01f * deltaTime;
             if (_cameraSideSpeed > 0.5f)
@@ -249,6 +142,28 @@ public class Game : IGame
             {
                 _cameraSideSpeed -= 0.01f * deltaTime;
                 if (_cameraSideSpeed < 0.0f)
+                {
+                    _cameraSideSpeed = 0.0f;
+                }    
+            }
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.D))
+        {
+            _cameraSideSpeed -= 0.01f * deltaTime;
+            if (_cameraSideSpeed < -0.5f)
+            {
+                _cameraSideSpeed = -0.5f;
+            }
+            
+            _cameraMovementVector += ((FpsCamera)_scene.Camera).RightVector * (_cameraSideSpeed * deltaTime);
+        }
+        else
+        {
+            if (_cameraSideSpeed < 0.0f)
+            {
+                _cameraSideSpeed += 0.01f * deltaTime;
+                if (_cameraSideSpeed > 0.0f)
                 {
                     _cameraSideSpeed = 0.0f;
                 }    
@@ -319,7 +234,7 @@ public class Game : IGame
             _lastPos = new Vector2(mouseState.X, mouseState.Y);
 
             ((FpsCamera)_scene.Camera).Yaw += deltaX * sensitivity;
-            ((FpsCamera)_scene.Camera).Pitch -= deltaY * sensitivity;
+            ((FpsCamera)_scene.Camera).Pitch += deltaY * sensitivity;
         }
 
         
@@ -342,36 +257,125 @@ public class Game : IGame
     
     #region creators and generators
 
-    private FpsCamera CreateCamera(int windowWidth, int windowHeight)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
+    // private void CreateMinimalScene()
+    // {
+    //     var scene = new Scene();
+    //     
+    //     // scene.SetCamera(new FpsCamera()
+    //     // {
+    //     //     Position = Vector3.UnitZ * 3,
+    //     // });
+    //     scene.SetCamera(new FpsCamera(), false);
+    //     
+    //     scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
+    //     
+    //     scene.AddChild(_rocketController);
+    //     
+    //     var cubeMaterial = new Material(
+    //         _resourcesManager.LoadTexture("Textures/container2.png"),
+    //         _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+    //         new DefaultShader(_resourcesManager));
+    //     
+    //     var rocket = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
+    //     _rocketController.AddChild(rocket);
+    //     rocket.AddChild(scene.Camera);
+    //     scene.Camera.Position = new Vector3(0f, 1f, 1.0f);
+    //     ((FpsCamera)scene.Camera).Yaw = 90.0f;
+    //     ((FpsCamera)scene.Camera).Pitch = 0.0f;
+    //     
+    //     var plane = TexturedPlaneGenerator.Generate(
+    //         cubeMaterial,
+    //         10.0f);
+    //     plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
+    //     plane.Scale = 50.0f;
+    //     plane.BuildGeometry();
+    //     scene.AddChild(plane);
+    //     
+    //     scene.AddLight(new DirectionalLight(scene.Lights.Count)
+    //     {
+    //         Ambient = new Vector3(0.65f)
+    //     });
+    //     
+    //     _scene = scene;
+    // }
 
-        return new FpsCamera()
+    
+    private void CreateScene()
+    {
+        var scene = new Scene();
+        
+        scene.SetCamera(new FpsCamera()
         {
             Position = Vector3.UnitZ * 3,
-        };
-    }
-    
-    
-    private ISceneObject CreateSkybox()
-    {
-        // var skybox = new MultiTextureSkyboxWithIndices(new MultiTextureMaterial(
-        //     [
-        //         Texture.LoadFromFile($"Textures/Skyboxes/TestSkybox/pz.jpg", TextureWrapMode.ClampToEdge),
-        //         Texture.LoadFromFile($"Textures/Skyboxes/TestSkybox/px.jpg", TextureWrapMode.ClampToEdge),
-        //         Texture.LoadFromFile($"Textures/Skyboxes/TestSkybox/nz.jpg", TextureWrapMode.ClampToEdge),
-        //         Texture.LoadFromFile($"Textures/Skyboxes/TestSkybox/nx.jpg", TextureWrapMode.ClampToEdge),
-        //         Texture.LoadFromFile($"Textures/Skyboxes/TestSkybox/py.jpg", TextureWrapMode.ClampToEdge),
-        //         Texture.LoadFromFile($"Textures/Skyboxes/TestSkybox/ny.jpg", TextureWrapMode.ClampToEdge)
-        //     ],
-        //     new MultiTextureShader()));
-        //
-        // skybox.GenerateGeometry();
-        //
-        // return skybox;
+        });
         
-        return SimpleStarsSkyboxGenerator.Generate(_resourcesManager);
+        scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
+        
+        
+        #region Cubes
+        
+        // TODO: Create the first cube and then clone it with setting position to cube clones.
+        
+        var cubeMaterial = new Material(
+            _resourcesManager.LoadTexture("Textures/container2.png"),
+            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+            new DefaultShader(_resourcesManager));
+        
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(2.0f, 5.0f, -15.0f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.5f, -2.2f, -2.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-3.8f, -2.0f, -12.3f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(2.4f, -0.4f, -3.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.7f, 3.0f, -7.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(1.3f, -2.0f, -2.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(1.5f, 2.0f, -2.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(1.5f, 0.2f, -1.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.3f, 1.0f, -1.5f)));
+        
+        _cubes[1].Scale = 2.5f;
+        
+        #endregion
+        
+        
+        scene.AddLight(new DirectionalLight(scene.Lights.Count));
+        
+        
+        #region Lamps
+        
+        CreateLamps(scene);
+        
+        #endregion
+        
+        
+        #region spot light
+        
+        var spotLight = CreateSpotLight(scene, new Vector3(0.7f, 0.2f, 2.0f));
+        scene.AddLight(spotLight, scene.Camera);
+        
+        #endregion
+        
+        
+        #region sub-cubes
+       
+        //CreateSubCubes(_cubes[1]);
+        CreateSubCubes2(_cubes[1]);
+        
+        #endregion
+
+        
+        #region plane
+
+        var plane = TexturedPlaneGenerator.Generate(
+            cubeMaterial,
+            10.0f);
+        plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
+        plane.Scale = 50.0f;
+        plane.BuildGeometry();
+        scene.AddChild(plane);
+        
+        #endregion
+        
+        _scene = scene;
     }
     
 

@@ -56,8 +56,8 @@ internal static class Program
             { "game", new MinimalGameDemo(ResourcesManager.Instance) },  // This is the default game.
             { "many-simple-cubes-demo", new ManySimpleCubesDemo(ResourcesManager.Instance) },
             { "game-with-cubes5", new Game5(ResourcesManager.Instance) },
+            { "game-with-cubes", new Game(ResourcesManager.Instance) },
             
-            { "game-with-cubes", new Game(ResourcesManager.Instance) },  // Y-axis is inverted.
             { "rotating-cube-demo", new RotatingCubeDemo(ResourcesManager.Instance) },
             { "minimal-rotating-cube-demo", new MinimalRotatingCubeDemo(ResourcesManager.Instance) },
             { "rotating-cube-demo-multitex-skybox", new RotatingCubeWithMultiTextureSkyboxDemo(ResourcesManager.Instance) },  // Inverted axes.

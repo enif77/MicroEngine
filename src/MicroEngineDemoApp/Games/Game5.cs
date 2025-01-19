@@ -20,7 +20,6 @@ public class Game5 : IGame
     
     private Scene? _scene;
     private readonly SceneObjectController _rocketController = new();
-    private readonly SceneObjectController _cameraController = new();
 
     public string Name => "game-with-cubes5";
 
@@ -241,14 +240,14 @@ public class Game5 : IGame
             var deltaY = mouseState.Y - _lastPos.Y;
             _lastPos = new Vector2(mouseState.X, mouseState.Y);
             
-            var cameraYaw = ((FpsCamera)_scene.Camera).Yaw + -deltaX * MouseSensitivity;
-            if (cameraYaw < -205.0f)
+            var cameraYaw = ((FpsCamera)_scene.Camera).Yaw + deltaX * MouseSensitivity;
+            if (cameraYaw < -25.0f)
             {
-                cameraYaw = -205.0f;
+                cameraYaw = -25.0f;
             }
-            else if (cameraYaw > 25.0f)
+            else if (cameraYaw > 205.0f)
             {
-                cameraYaw = 25.0f;
+                cameraYaw = 205.0f;
             }
             
             ((FpsCamera)_scene.Camera).Yaw = cameraYaw;
@@ -309,9 +308,9 @@ public class Game5 : IGame
         
         var rocket = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
         
-        rocket.AddChild(CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, -2.0f), 0.5f));
-        rocket.AddChild(CreateCube(cubeMaterial, new Vector3(2.0f, 0.0f, 0f), 0.5f));
-        rocket.AddChild(CreateCube(cubeMaterial, new Vector3(-2.0f, 0.0f, 0f), 0.5f));
+        rocket.AddChild(CreateCube(cubeMaterial, new Vector3( 0.0f, 0.0f, -2.0f), 0.5f));
+        rocket.AddChild(CreateCube(cubeMaterial, new Vector3( 2.0f, 0.0f,  0f), 0.5f));
+        rocket.AddChild(CreateCube(cubeMaterial, new Vector3(-2.0f, 0.0f,  0f), 0.5f));
         
         _rocketController.AddChild(rocket);
         
@@ -334,8 +333,8 @@ public class Game5 : IGame
         rocket.AddChild(scene.Camera);
         
         // Set the camera position and initial rotation relative to the cube.
-        scene.Camera.Position = new Vector3(0f, -1f, 1.0f);
-        ((FpsCamera)scene.Camera).Yaw = -90.0f;
+        scene.Camera.Position = new Vector3(0f, 1f, 1.0f);
+        ((FpsCamera)scene.Camera).Yaw =  90.0f;
         ((FpsCamera)scene.Camera).Pitch = 0.0f;
         
         // Add some more cubes.

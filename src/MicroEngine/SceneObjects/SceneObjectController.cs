@@ -117,14 +117,14 @@ public class SceneObjectController : SceneObjectBase
             var modelMatrix = Matrix4.CreateScale(Scale);
            
             // right   = glm::vec3(matrix[0][0], matrix[0][1], matrix[0][2]);
-            modelMatrix.M11 = -RightVector.X;
-            modelMatrix.M12 = -RightVector.Y;
-            modelMatrix.M13 = -RightVector.Z;
+            modelMatrix.M11 = RightVector.X;
+            modelMatrix.M12 = RightVector.Y;
+            modelMatrix.M13 = RightVector.Z;
 
             // up      = glm::vec3(matrix[1][0], matrix[1][1], matrix[1][2]);
-            modelMatrix.M21 = -UpVector.X;
-            modelMatrix.M22 = -UpVector.Y;
-            modelMatrix.M23 = -UpVector.Z;
+            modelMatrix.M21 = UpVector.X;
+            modelMatrix.M22 = UpVector.Y;
+            modelMatrix.M23 = UpVector.Z;
 
             // forward = glm::vec3(matrix[2][0], matrix[2][1], matrix[2][2]);
             modelMatrix.M31 = -FrontVector.X;
