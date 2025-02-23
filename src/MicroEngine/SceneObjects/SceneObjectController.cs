@@ -14,7 +14,7 @@ using MicroEngine.Extensions;
 public class SceneObjectController : SceneObjectBase
 {
     protected Vector3 FrontVector = -Vector3.UnitZ;
-    protected Vector3 UpVector = Vector3.UnitY;
+    protected Vector3 UpVector = -Vector3.UnitY;
     protected Vector3 RightVector = Vector3.UnitX;
     
     
@@ -32,7 +32,7 @@ public class SceneObjectController : SceneObjectBase
         
         // Reset the axes.
         FrontVector = -Vector3.UnitZ;
-        UpVector = Vector3.UnitY;
+        UpVector = -Vector3.UnitY;
         RightVector = Vector3.UnitX;
         
         Roll(thisRotation.Z);
@@ -116,21 +116,21 @@ public class SceneObjectController : SceneObjectBase
         {
             var modelMatrix = Matrix4.CreateScale(Scale);
            
-            // right   = glm::vec3(matrix[0][0], matrix[0][1], matrix[0][2]);
-            modelMatrix.M11 = -RightVector.X;
-            modelMatrix.M12 = -RightVector.Y;
-            modelMatrix.M13 = -RightVector.Z;
-
+            // forward = glm::vec3(matrix[2][0], matrix[2][1], matrix[2][2]);
+            modelMatrix.M31 = -FrontVector.X;
+            modelMatrix.M32 = -FrontVector.Y;
+            modelMatrix.M33 = -FrontVector.Z;
+            
             // up      = glm::vec3(matrix[1][0], matrix[1][1], matrix[1][2]);
             modelMatrix.M21 = -UpVector.X;
             modelMatrix.M22 = -UpVector.Y;
             modelMatrix.M23 = -UpVector.Z;
 
-            // forward = glm::vec3(matrix[2][0], matrix[2][1], matrix[2][2]);
-            modelMatrix.M31 = -FrontVector.X;
-            modelMatrix.M32 = -FrontVector.Y;
-            modelMatrix.M33 = -FrontVector.Z;
-
+            // right   = glm::vec3(matrix[0][0], matrix[0][1], matrix[0][2]);
+            modelMatrix.M11 = RightVector.X;
+            modelMatrix.M12 = RightVector.Y;
+            modelMatrix.M13 = RightVector.Z;
+            
             modelMatrix *= Matrix4.CreateTranslation(Position);
         
             ModelMatrix = modelMatrix;
