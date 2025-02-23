@@ -17,7 +17,7 @@ public class FpsCamera : SceneObjectBase, ICamera
 {
     // Those vectors are directions pointing outwards from the camera to define how it rotated.
     private Vector3 _frontVector = -Vector3.UnitZ;
-    private Vector3 _upVector = Vector3.UnitY;
+    private Vector3 _upVector = -Vector3.UnitY;
     private Vector3 _rightVector = Vector3.UnitX;
     
     
@@ -32,7 +32,7 @@ public class FpsCamera : SceneObjectBase, ICamera
     public FpsCamera()
     {
         Position = Vector3.Zero;
-        Rotation = new Vector3(0f, -MathHelper.PiOver2, 0f);
+        Rotation = Vector3.Zero;
     }
     
     
@@ -95,11 +95,9 @@ public class FpsCamera : SceneObjectBase, ICamera
     {
         var position = ModelMatrix.ExtractTranslation();
         var front = Vector3.TransformVector(-Vector3.UnitZ, ModelMatrix);
-        var up = Vector3.TransformVector(Vector3.UnitY, ModelMatrix);
+        var up = Vector3.TransformVector(-Vector3.UnitY, ModelMatrix);
         
         return Matrix4.LookAt(position, position + front, up);
-        
-        //return Matrix4.LookAt(Position, Position + _frontVector, _upVector);
     }
     
 
