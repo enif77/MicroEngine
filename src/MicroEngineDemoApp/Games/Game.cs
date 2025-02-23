@@ -23,7 +23,7 @@ public class Game : IGame
 
     public string Name => "game-with-cubes";
 
-    public ICamera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
+    //public ICamera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
 
     
     public Game(ResourcesManager resourcesManager)
@@ -36,15 +36,12 @@ public class Game : IGame
     {
         var scene = new Scene();
         
-        scene.SetCamera(CreateCamera(Program.Settings.WindowWidth, Program.Settings.WindowHeight));
-        
-        
-        #region Skybox
+        scene.SetCamera(new FpsCamera()
+            {
+                Position = Vector3.UnitZ * 3,
+            });
         
         scene.AddSkybox(CreateSkybox());
-        
-        #endregion
-        
         
         #region Cubes
         
@@ -55,16 +52,16 @@ public class Game : IGame
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
             new DefaultShader(_resourcesManager));
         
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(2.0f, 5.0f, -15.0f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.5f, -2.2f, -2.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3( 0.0f,  0.0f,   0.0f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3( 2.0f,  5.0f, -15.0f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.5f, -2.2f,  -2.5f)));
         scene.AddChild(CreateCube(cubeMaterial, new Vector3(-3.8f, -2.0f, -12.3f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(2.4f, -0.4f, -3.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.7f, 3.0f, -7.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(1.3f, -2.0f, -2.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(1.5f, 2.0f, -2.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(1.5f, 0.2f, -1.5f)));
-        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.3f, 1.0f, -1.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3( 2.4f, -0.4f,  -3.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.7f,  3.0f,  -7.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3( 1.3f, -2.0f,  -2.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3( 1.5f,  2.0f,  -2.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3( 1.5f,  0.2f,  -1.5f)));
+        scene.AddChild(CreateCube(cubeMaterial, new Vector3(-1.3f,  1.0f,  -1.5f)));
         
         _cubes[1].Scale = 2.5f;
         
@@ -99,20 +96,12 @@ public class Game : IGame
         
         #region plane
 
-        // var plane = TexturedPlaneGenerator.Generate(
-        //     new SimpleTextureMaterial(
-        //         Texture.LoadFromFile("Textures/container2.png"),
-        //         new SimpleTextureShader()),
-        //     10.0f);
-        
         var plane = TexturedPlaneGenerator.Generate(
             cubeMaterial,
             10.0f);
-        
-        plane.BuildGeometry();
-        
         plane.Position = new Vector3(0.0f, -3.0f, 0.0f);
         plane.Scale = 50.0f;
+        plane.BuildGeometry();
         
         scene.AddChild(plane);
         
@@ -342,16 +331,16 @@ public class Game : IGame
     
     #region creators and generators
 
-    private FpsCamera CreateCamera(int windowWidth, int windowHeight)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
-
-        return new FpsCamera()
-        {
-            Position = Vector3.UnitZ * 3,
-        };
-    }
+    // private FpsCamera CreateCamera(int windowWidth, int windowHeight)
+    // {
+    //     ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
+    //     ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
+    //
+    //     return new FpsCamera()
+    //     {
+    //         Position = Vector3.UnitZ * 3,
+    //     };
+    // }
     
     
     private ISceneObject CreateSkybox()

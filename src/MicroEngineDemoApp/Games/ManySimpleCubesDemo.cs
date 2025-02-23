@@ -216,8 +216,8 @@ public class ManySimpleCubesDemo : IGame
             var deltaY = mouse.Y - _lastPos.Y;
             _lastPos = new Vector2(mouse.X, mouse.Y);
 
-            camera.Yaw -= deltaX * sensitivity;
-            camera.Pitch += deltaY * sensitivity;
+            camera.Yaw += deltaX * sensitivity;
+            camera.Pitch -= deltaY * sensitivity;
         }
 
         _scene.Update(deltaTime);

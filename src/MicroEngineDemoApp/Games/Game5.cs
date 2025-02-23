@@ -20,7 +20,6 @@ public class Game5 : IGame
     
     private Scene? _scene;
     private readonly SceneObjectController _rocketController = new();
-    private readonly SceneObjectController _cameraController = new();
 
     public string Name => "game-with-cubes5";
 
@@ -66,13 +65,13 @@ public class Game5 : IGame
         if (keyboardState.IsKeyDown(Keys.Space))
         {
             _rocketController.Position = Vector3.Zero;
-            _rocketController.Rotation = Vector3.Zero;
+            _rocketController.Rotation = new Vector3(0f, 0f, 0f);
             
             _rocketController.UpdateAxes();
             
             var camera = (FpsCamera)_scene.Camera;
             
-            camera.Yaw = -90.0f;  // TODO: Yaw 0 should be forward.
+            camera.Yaw = 90.0f;  // TODO: Yaw 0 should be forward.
             camera.Pitch = 0.0f;
         }
         
@@ -114,12 +113,12 @@ public class Game5 : IGame
         // Yaw rotation.
         if (keyboardState.IsKeyDown(Keys.Q))
         {
-            _rocketController.Yaw(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));    
+            _rocketController.Yaw(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
         }
         
         if (keyboardState.IsKeyDown(Keys.E))
         {
-            _rocketController.Yaw(MathHelper.DegreesToRadians(-RotationSpeed * deltaTime));    
+            _rocketController.Yaw(MathHelper.DegreesToRadians(RotationSpeed * deltaTime));
         }
         
         // Roll rotation.
@@ -237,11 +236,13 @@ public class Game5 : IGame
         }
         else
         {
+            var camera = (FpsCamera)_scene.Camera;
+            
             var deltaX = mouseState.X - _lastPos.X;
             var deltaY = mouseState.Y - _lastPos.Y;
             _lastPos = new Vector2(mouseState.X, mouseState.Y);
             
-            var cameraYaw = ((FpsCamera)_scene.Camera).Yaw + -deltaX * MouseSensitivity;
+            var cameraYaw = camera.Yaw + deltaX * MouseSensitivity;
             if (cameraYaw < -205.0f)
             {
                 cameraYaw = -205.0f;
@@ -251,10 +252,10 @@ public class Game5 : IGame
                 cameraYaw = 25.0f;
             }
             
-            ((FpsCamera)_scene.Camera).Yaw = cameraYaw;
+            camera.Yaw = cameraYaw;
             
             
-            var cameraPitch = ((FpsCamera)_scene.Camera).Pitch + deltaY * MouseSensitivity;
+            var cameraPitch = camera.Pitch + -deltaY * MouseSensitivity;
             if (cameraPitch < -45.0f)
             {
                 cameraPitch = -45.0f;
@@ -264,7 +265,7 @@ public class Game5 : IGame
                 cameraPitch = 45.0f;
             }
             
-            ((FpsCamera)_scene.Camera).Pitch = cameraPitch;
+            camera.Pitch = cameraPitch;
         }
         
         
@@ -334,8 +335,8 @@ public class Game5 : IGame
         rocket.AddChild(scene.Camera);
         
         // Set the camera position and initial rotation relative to the cube.
-        scene.Camera.Position = new Vector3(0f, -1f, 1.0f);
-        ((FpsCamera)scene.Camera).Yaw = -90.0f;
+        scene.Camera.Position = new Vector3(0f, 1f, 1.0f);
+        ((FpsCamera)scene.Camera).Yaw = 90.0f;
         ((FpsCamera)scene.Camera).Pitch = 0.0f;
         
         // Add some more cubes.
