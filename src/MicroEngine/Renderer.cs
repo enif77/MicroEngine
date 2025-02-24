@@ -72,20 +72,20 @@ public static class Renderer
     /// <summary>
     /// Creates a perspective projection matrix.  
     /// </summary>
-    /// <param name="fovy">Angle of the field of view in the y direction (in radians).</param>
+    /// <param name="fovY">Angle of the field of view in the y direction (in radians).</param>
     /// <returns></returns>
     /// <exception cref="T:System.ArgumentOutOfRangeException">
     /// Thrown under the following conditions:
     ///  <list type="bullet">
-    ///  <item>fovy is zero, less than zero or larger than Math.PI</item>
+    ///  <item>fovY is zero, less than zero or larger than Math.PI</item>
     ///  </list>
     /// </exception>
-    public static Matrix4 CreatePerspectiveProjectionMatrix(float fovy)
+    public static Matrix4 CreatePerspectiveProjectionMatrix(float fovY)
     {
-        if (fovy <= 0.0 || fovy > Math.PI) throw new ArgumentOutOfRangeException(nameof (fovy));
+        if (fovY <= 0.0 || fovY > Math.PI) throw new ArgumentOutOfRangeException(nameof (fovY));
         ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(_aspectRatio, 0.0f);
 
-        return Matrix4.CreatePerspectiveFieldOfView(fovy, _aspectRatio, _nearClipPlaneDepth, _farClipPlaneDepth);
+        return Matrix4.CreatePerspectiveFieldOfView(fovY, _aspectRatio, _nearClipPlaneDepth, _farClipPlaneDepth);
     }
 
     /// <summary>

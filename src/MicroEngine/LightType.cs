@@ -18,7 +18,7 @@ public enum LightType
     Point = 2,
     
     /// <summary>
-    /// Spot light.
+    /// Spotlight.
     /// </summary>
     Spot = 3
 }

@@ -15,7 +15,7 @@ public interface IShader
     int GetAttributeLocation(string name);
     
     /// <summary>
-    /// Activates sets up this shader for further rendering..
+    /// Activates sets up this shader for further rendering.
     /// </summary>
     /// <param name="scene">A scene to be used for retrieving values required by this shader.
     /// A camera position and direction for example.</param>
