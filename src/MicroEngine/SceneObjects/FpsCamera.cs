@@ -163,7 +163,7 @@ public class FpsCamera : SceneObjectBase, ICamera
 
         // Calculate both the right and the up vector using cross product.
         // Note that we are calculating the right from the global up; this behaviour might
-        // not be what you need for all cameras so keep this in mind if you do not want a FPS camera.
+        // not be what you need for all cameras so keep this in mind if you do not want an FPS camera.
         _rightVector = Vector3.Normalize(Vector3.Cross(_frontVector, Vector3.UnitY));
         _upVector = Vector3.Normalize(Vector3.Cross(_rightVector, _frontVector));
         
