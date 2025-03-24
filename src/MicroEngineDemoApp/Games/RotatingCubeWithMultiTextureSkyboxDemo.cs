@@ -15,6 +15,7 @@ using MicroEngine.Materials;
 using MicroEngine.SceneObjects;
 using MicroEngine.Shaders;
 
+
 public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
 {
     private readonly ResourcesManager _resourcesManager;
@@ -36,7 +37,11 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
     {
         var scene = new Scene();
         
-        scene.SetCamera(CreateCamera(Program.Settings.WindowWidth, Program.Settings.WindowHeight));
+        scene.SetCamera(new FpsCamera()
+        {
+            Position = new Vector3(0.0f, 0.0f, 3.0f),
+            Yaw = -90.0f,
+        });
         
         scene.AddSkybox(CreateSkybox());
 
@@ -63,8 +68,8 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
     private bool _firstMove = true;
     private Vector2 _lastPos;
     
-    private float _angleX = 0.0f;
-    private float _angleY = 0.0f;
+    private float _angleX;
+    private float _angleY;
     
     public bool Update(float deltaTime)
     {
@@ -82,48 +87,66 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
         }
         
         
-        const float cameraSpeed = 1.5f;
+        const float cameraMovementSpeed = 2.0f;
+        const float cameraRotationSpeed = 90f;
         const float sensitivity = 0.2f;
         
         var camera = ((FpsCamera)_scene.Camera);
         
         if (keyboardState.IsKeyDown(Keys.W))
         {
-            _scene.Camera.Position += camera.FrontVector * cameraSpeed * deltaTime; // Forward
+            _scene.Camera.Position += camera.FrontVector * cameraMovementSpeed * deltaTime; // Forward
         }
         if (keyboardState.IsKeyDown(Keys.S))
         {
-            _scene.Camera.Position -= camera.FrontVector * cameraSpeed * deltaTime; // Backwards
+            _scene.Camera.Position -= camera.FrontVector * cameraMovementSpeed * deltaTime; // Backwards
         }
         if (keyboardState.IsKeyDown(Keys.A))
         {
-            _scene.Camera.Position -= camera.RightVector * cameraSpeed * deltaTime; // Left
+            _scene.Camera.Position -= camera.RightVector * cameraMovementSpeed * deltaTime; // Left
         }
         if (keyboardState.IsKeyDown(Keys.D))
         {
-            _scene.Camera.Position += camera.RightVector * cameraSpeed * deltaTime; // Right
+            _scene.Camera.Position += camera.RightVector * cameraMovementSpeed * deltaTime; // Right
         }
-        if (keyboardState.IsKeyDown(Keys.Space))
+        if (keyboardState.IsKeyDown(Keys.Q))
         {
-            _scene.Camera.Position += camera.UpVector * cameraSpeed * deltaTime; // Up
+            _scene.Camera.Position += camera.UpVector * cameraMovementSpeed * deltaTime; // Up
         }
-        if (keyboardState.IsKeyDown(Keys.LeftShift))
+        if (keyboardState.IsKeyDown(Keys.E))
         {
-            _scene.Camera.Position -= camera.UpVector * cameraSpeed * deltaTime; // Down
+            _scene.Camera.Position -= camera.UpVector * cameraMovementSpeed * deltaTime; // Down
         }
-
-        var mouse = mouseState;
-
+        
+        if (keyboardState.IsKeyDown(Keys.Left))
+        {
+            camera.Yaw -= cameraRotationSpeed * deltaTime;      // Turn left
+        }
+        if (keyboardState.IsKeyDown(Keys.Right))
+        {
+            camera.Yaw += cameraRotationSpeed * deltaTime;      // Turn right
+        }
+        if (keyboardState.IsKeyDown(Keys.Up))
+        {
+            camera.Pitch -= cameraRotationSpeed * deltaTime;    // Turn down
+        }
+        if (keyboardState.IsKeyDown(Keys.Down))
+        {
+            camera.Pitch += cameraRotationSpeed * deltaTime;    // Turn up
+        }
+        
+        
         if (_firstMove)
         {
-            _lastPos = new Vector2(mouse.X, mouse.Y);
+            _lastPos = new Vector2(mouseState.X, mouseState.Y);
             _firstMove = false;
         }
         else
         {
-            var deltaX = mouse.X - _lastPos.X;
-            var deltaY = mouse.Y - _lastPos.Y;
-            _lastPos = new Vector2(mouse.X, mouse.Y);
+            var deltaX = mouseState.X - _lastPos.X;
+            var deltaY = mouseState.Y - _lastPos.Y;
+            
+            _lastPos = new Vector2(mouseState.X, mouseState.Y);
 
             camera.Yaw += deltaX * sensitivity;
             camera.Pitch -= deltaY * sensitivity;
@@ -162,18 +185,6 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
     
     
     #region creators and generators
-
-    private FpsCamera CreateCamera(int windowWidth, int windowHeight)
-    {
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowWidth);
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(windowHeight);
-
-        return new FpsCamera()
-        {
-            Position = Vector3.UnitZ * 3
-        };
-    }
-    
     
     private ISceneObject CreateSkybox()
     {
