@@ -4,8 +4,6 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Extensions;
-
 // This is the camera class as it could be set up after the tutorials on the website.
 // It is important to note there are a few ways you could have set up this camera.
 // For example, you could have also managed the player input inside the camera class,
@@ -56,7 +54,7 @@ public class FpsCamera : SceneObjectBase, ICamera
             // of weird "bugs" when you are using euler angles for rotation.
             // If you want to read more about this you can try researching a topic called gimbal lock
             var angle = MathHelper.Clamp(value, -89f, 89f);
-            this.SetRotationX(MathHelper.DegreesToRadians(angle));
+            SetRotationX(MathHelper.DegreesToRadians(angle));
             UpdateVectors();
         }
     }
@@ -67,7 +65,7 @@ public class FpsCamera : SceneObjectBase, ICamera
         get => MathHelper.RadiansToDegrees(Rotation.Y);
         set
         {
-            this.SetRotationY(MathHelper.DegreesToRadians(value));
+            SetRotationY(MathHelper.DegreesToRadians(value));
             UpdateVectors();
         }
     }
@@ -78,7 +76,7 @@ public class FpsCamera : SceneObjectBase, ICamera
         get => MathHelper.RadiansToDegrees(Rotation.Z);
         set
         {
-            this.SetRotationZ(MathHelper.DegreesToRadians(value));
+            SetRotationZ(MathHelper.DegreesToRadians(value));
             UpdateVectors();
         }
     }

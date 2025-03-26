@@ -4,8 +4,6 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
-using MicroEngine.Extensions;
-
 /// <summary>
 /// A geometry with a single texture and indices. No normals.
 /// </summary>
@@ -34,14 +32,14 @@ public class SingleTextureIndexedGeometry : GeometryBase
         GL.BindVertexArray(VertexArrayObject);
         
         // Vertex buffer object.
-        this.GenerateVertexBufferObject();
+        GenerateVertexBufferObject();
         
         // Element buffer object.
-        this.GenerateElementBufferObject();
+        GenerateElementBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
-        this.GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 3);
+        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 3);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

@@ -4,8 +4,6 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
-using MicroEngine.Extensions;
-
 /// <summary>
 /// A geometry with multiple textures. No lights.
 /// </summary>
@@ -40,12 +38,12 @@ public class MultiTextureGeometry : GeometryBase
         GL.BindVertexArray(VertexArrayObject);
         
         // Vertex buffer object.
-        this.GenerateVertexBufferObject();
+        GenerateVertexBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
-        this.GenerateVertexAttribPointerForTextureId(forShader, VertexDataStride, 3);
-        this.GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 4);
+        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerForTextureId(forShader, VertexDataStride, 3);
+        GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 4);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

@@ -5,8 +5,6 @@ namespace MicroEngine.SceneObjects;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-using MicroEngine.Extensions;
-
 /// <summary>
 /// Generic skybox.
 /// </summary>
@@ -27,7 +25,7 @@ public class GenericSkybox : SceneObjectBase
             return;
         }
         
-        _scene ??= this.GetScene();
+        _scene ??= GetScene();
 
         // Skybox should be rendered at the camera position.
         ModelMatrix = Matrix4.CreateTranslation(_scene.Camera.ModelMatrix.ExtractTranslation()); 

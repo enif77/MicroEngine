@@ -4,8 +4,6 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
-using MicroEngine.Extensions;
-
 /// <summary>
 /// A geometry with a single texture. No lights.
 /// </summary>
@@ -40,11 +38,11 @@ public class SingleTextureGeometry : GeometryBase
         GL.BindVertexArray(VertexArrayObject);
         
         // Vertex buffer object.
-        this.GenerateVertexBufferObject();
+        GenerateVertexBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
-        this.GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 3);
+        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 3);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

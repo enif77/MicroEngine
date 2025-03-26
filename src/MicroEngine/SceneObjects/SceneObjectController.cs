@@ -5,7 +5,6 @@ namespace MicroEngine.SceneObjects;
 using OpenTK.Mathematics;
 
 using MicroEngine;
-using MicroEngine.Extensions;
 
 /// <summary>
 /// Adds Yaw/Pitch/Roll/Advance/Ascend/Strafe methods to the SceneObjectBase class.
@@ -46,7 +45,7 @@ public class SceneObjectController : SceneObjectBase
     /// <param name="angle">The amount of degrees in radians this camera should turn left or right.</param>
     public void Yaw(float angle)
     {
-        this.SetRotationY(Rotation.Y + angle);
+        SetRotationY(Rotation.Y + angle);
         
         var m = Matrix4.CreateFromAxisAngle(UpVector, angle);
         
@@ -60,7 +59,7 @@ public class SceneObjectController : SceneObjectBase
     /// <param name="angle">The amount of degrees in radians this camera should turn left or right.</param>
     public void Pitch(float angle)
     {
-        this.SetRotationX(Rotation.X + angle);
+        SetRotationX(Rotation.X + angle);
         
         var m = Matrix4.CreateFromAxisAngle(RightVector, angle);
         
@@ -74,7 +73,7 @@ public class SceneObjectController : SceneObjectBase
     /// <param name="angle">The amount of degrees in radians this camera should roll left or right.</param>
     public void Roll(float angle)
     {
-        this.SetRotationZ(Rotation.Z + angle);
+        SetRotationZ(Rotation.Z + angle);
         
         var m = Matrix4.CreateFromAxisAngle(FrontVector, angle); 
         

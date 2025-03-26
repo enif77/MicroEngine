@@ -115,4 +115,56 @@ public abstract class SceneObjectBase : ISceneObject
             child.Render();
         }
     }
+    
+    
+    #region Helper methods
+    
+    /// <summary>
+    /// Sets rotation around X axis.
+    /// </summary>
+    /// <param name="angle">An angle in radians.</param>
+    public void SetRotationX(float angle)
+    {
+        Rotation = new Vector3(angle, Rotation.Y, Rotation.Z);
+    }
+    
+    /// <summary>
+    /// Sets rotation around Y axis.
+    /// </summary>
+    /// <param name="angle">An angle in radians.</param>
+    public void SetRotationY(float angle)
+    {
+        Rotation = new Vector3(Rotation.X, angle, Rotation.Z);
+    }
+    
+    /// <summary>
+    /// Sets rotation around Z axis.
+    /// </summary>
+    /// <param name="angle">An angle in radians.</param>
+    public void SetRotationZ(float angle)
+    {
+        Rotation = new Vector3(Rotation.X, Rotation.Y, angle);
+    }
+    
+    /// <summary>
+    /// Try to get a scene from a scene object.
+    /// </summary>
+    /// <returns>A Scene instance a scene object belongs to.</returns>
+    /// <exception cref="InvalidOperationException">When no scene object was found as a parent of a game object.</exception>
+    public Scene GetScene()
+    {
+        var sceneObject = (ISceneObject)this;
+        
+        while (true)
+        {
+            if (sceneObject is Scene scene)
+            {
+                return scene;
+            }
+
+            sceneObject = sceneObject.Parent ?? throw new InvalidOperationException("Scene not found.");
+        }
+    }
+    
+    #endregion
 }

@@ -4,8 +4,6 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
-using MicroEngine.Extensions;
-
 /// <summary>
 /// Geometry with normals and texture.
 /// </summary>
@@ -34,15 +32,15 @@ public class DefaultIndexedGeometry : GeometryBase
         GL.BindVertexArray(VertexArrayObject);
         
         // Vertex buffer object.
-        this.GenerateVertexBufferObject();
+        GenerateVertexBufferObject();
         
         // Element buffer object.
-        this.GenerateElementBufferObject();
+        GenerateElementBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
-        this.GenerateVertexAttribPointerForNormals(forShader, VertexDataStride, 3);
-        this.GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 6);
+        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerForNormals(forShader, VertexDataStride, 3);
+        GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 6);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

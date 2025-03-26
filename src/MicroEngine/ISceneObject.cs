@@ -59,4 +59,30 @@ public interface ISceneObject : IUpdatable, IRenderable
     /// Should be updated before rendering.
     /// </summary>
     Matrix4 ModelMatrix { get; }
+
+
+    /// <summary>
+    /// Sets rotation around X axis.
+    /// </summary>
+    /// <param name="angle">An angle in radians.</param>
+    void SetRotationX(float angle);
+
+    /// <summary>
+    /// Sets rotation around Y axis.
+    /// </summary>
+    /// <param name="angle">An angle in radians.</param>
+    void SetRotationY(float angle);
+
+    /// <summary>
+    /// Sets rotation around Z axis.
+    /// </summary>
+    /// <param name="angle">An angle in radians.</param>
+    void SetRotationZ(float angle);
+
+    /// <summary>
+    /// Try to get a scene from a scene object.
+    /// </summary>
+    /// <returns>A Scene instance a scene object belongs to.</returns>
+    /// <exception cref="InvalidOperationException">When no scene object was found as a parent of a game object.</exception>
+    Scene GetScene();
 }

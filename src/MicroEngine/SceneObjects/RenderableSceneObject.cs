@@ -2,8 +2,6 @@
 
 namespace MicroEngine.SceneObjects;
 
-using MicroEngine.Extensions;
-
 /// <summary>
 /// A renderable scene object.
 /// </summary>
@@ -29,7 +27,7 @@ public class RenderableSceneObject : SceneObjectBase
             return;
         }
         
-        _scene ??= this.GetScene();
+        _scene ??= GetScene();
         
         Material.Shader.Use(_scene, this);
         Geometry.Render();

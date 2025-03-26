@@ -4,8 +4,6 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
-using MicroEngine.Extensions;
-
 /// <summary>
 /// A geometry with vertexes and indices.
 /// </summary>
@@ -22,13 +20,13 @@ public class SimpleIndexedGeometry(float[] vertexData, uint[] indices, bool isDy
         GL.BindVertexArray(VertexArrayObject);
         
         // Vertex buffer object.
-        this.GenerateVertexBufferObject();
+        GenerateVertexBufferObject();
         
         // Element buffer object.
-        this.GenerateElementBufferObject();
+        GenerateElementBufferObject();
         
         // Vertex attributes.
-        this.GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

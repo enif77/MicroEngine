@@ -16,6 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\MicroEngine.Extensions\MicroEngine.Extensions.csproj" />
         <ProjectReference Include="..\MicroEngine\MicroEngine.csproj" />
     </ItemGroup>
     

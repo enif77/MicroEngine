@@ -4,7 +4,6 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Extensions;
 using MicroEngine.Geometries;
 
 /// <summary>
