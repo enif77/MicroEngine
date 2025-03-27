@@ -1,6 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.SceneObjects;
+namespace MicroEngine.SceneObjects.Cameras;
 
 using OpenTK.Mathematics;
 

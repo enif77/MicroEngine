@@ -10,7 +10,7 @@ using MicroEngine.Extensions;
 using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Managers;
 using MicroEngine.Materials;
-using MicroEngine.SceneObjects;
+using MicroEngine.SceneObjects.Cameras;
 using MicroEngine.Shaders;
 
 public class MinimalRotatingCubeDemo : IGame
