@@ -62,7 +62,7 @@ public static class SimpleStarsSkyboxGenerator
         }
         
         // RGBA texture
-        var texture = new MicroEngine.Graphics.Texture(textureSizePixels, textureSizePixels);
+        var texture = new MicroEngine.Graphics.Image(textureSizePixels, textureSizePixels);
         
         //var rand = new Random(5728);
         var rand = new Random();

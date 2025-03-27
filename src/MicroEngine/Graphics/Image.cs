@@ -3,22 +3,22 @@
 namespace MicroEngine.Graphics;
 
 /// <summary>
-/// Texture in RGBA format.
+/// Image in RGBA format.
 /// </summary>
-public class Texture
+public class Image
 {
     /// <summary>
-    /// Pixels of this texture in RGBA format.
+    /// Pixels of this image in RGBA format.
     /// </summary>
     public byte[] Pixels { get; }
 
     /// <summary>
-    /// The height of this texture.
+    /// The height of this image.
     /// </summary>
     public int Height { get; }
 
     /// <summary>
-    /// The width of this texture.
+    /// The width of this image.
     /// </summary>
     public int Width { get; }
     
@@ -26,10 +26,10 @@ public class Texture
     /// <summary>
     /// Constructor.
     /// </summary>
-    /// <param name="width">The width of this texture.</param>
-    /// <param name="height">The height of this texture.</param>
+    /// <param name="width">The width of this image.</param>
+    /// <param name="height">The height of this image.</param>
     /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public Texture(int width, int height)
+    public Image(int width, int height)
     {
         if (width < 1)
         {
@@ -48,10 +48,10 @@ public class Texture
 
 
     /// <summary>
-    /// Gets a pixel at the specified position or 0, if the given coords are outside of this texture dimensions.
+    /// Gets a pixel at the specified position or 0, if the given coords are outside of this image dimensions.
     /// </summary>
-    /// <param name="x">A X of the pixel'S coords to get.</param>
-    /// <param name="y">A Y of the pixel'S coords to get.</param>
+    /// <param name="x">A X of the pixel's coords to get.</param>
+    /// <param name="y">A Y of the pixel's coords to get.</param>
     /// <returns></returns>
     public uint GetPixel(int x, int y)
     {
@@ -71,7 +71,7 @@ public class Texture
     }
     
     /// <summary>
-    /// Writes a pixel at the specified position or does nothing, if the given coords are outside of this texture dimensions.
+    /// Writes a pixel at the specified position or does nothing, if the given coords are outside of this image dimensions.
     /// </summary>
     /// <param name="x">The X of the pixel's coors to be written.</param>
     /// <param name="y">The Y of the pixel's coors to be written.</param>
@@ -100,7 +100,7 @@ public class Texture
     }
     
     /// <summary>
-    /// Writes a pixel at the specified position or does nothing, if the given coords are outside of this texture dimensions.
+    /// Writes a pixel at the specified position or does nothing, if the given coords are outside of this image dimensions.
     /// </summary>
     /// <param name="x">The X of the pixel's coors to be written.</param>
     /// <param name="y">The Y of the pixel's coors to be written.</param>
@@ -228,7 +228,7 @@ public class Texture
     }
 
     /// <summary>
-    /// Fills this texture with a color.
+    /// Fills this image with a color.
     /// </summary>
     /// <param name="r">The red part of the color.</param>
     /// <param name="g">The green part of the color.</param>
@@ -247,7 +247,7 @@ public class Texture
     }
     
     /// <summary>
-    /// Clears this texture. Sets all its pixels to 0.
+    /// Clears this image. Sets all its pixels to 0.
     /// </summary>
     public void Clear()
     {
