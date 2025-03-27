@@ -4,7 +4,7 @@ namespace MicroEngine.Materials;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Graphics;
+using MicroEngine.Core;
 using MicroEngine.Shaders;
 
 /// <summary>

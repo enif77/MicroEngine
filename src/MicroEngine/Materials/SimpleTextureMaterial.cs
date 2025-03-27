@@ -4,7 +4,7 @@ namespace MicroEngine.Materials;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Graphics;
+using MicroEngine.Core;
 
 /// <summary>
 /// A material that uses a single texture with no lighting. 
