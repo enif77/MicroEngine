@@ -29,7 +29,7 @@ public static class SceneExtensions
     /// <param name="parent">An optional parent of the light.</param>
     /// <returns>A newly created point light.</returns>
     /// <exception cref="InvalidOperationException">If the MaxPointLights point lights are already in this scene.</exception>
-    public static void AddLight(this Scene scene, ILight light, ISceneObject? parent = default)
+    public static void AddLight(this Scene scene, ILight light, ISceneObject? parent = null)
     {
         ArgumentNullException.ThrowIfNull(light);
         
