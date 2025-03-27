@@ -8,9 +8,9 @@ using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Core;
 using MicroEngine.Geometries;
+using MicroEngine.Graphics;
 using MicroEngine.Materials;
 using MicroEngine.Shaders;
-using MicroEngine.Textures;
 
 /// <summary>
 /// Manages resources.
@@ -104,7 +104,7 @@ public class ResourcesManager : IResourcesManager
             return value;
         }
 
-        var texture = Texture.LoadFromFile(GetFullPath(path), wrapMode);
+        var texture = GlTexture.LoadFromFile(GetFullPath(path), wrapMode);
         _textures.Add(path, texture);
         
         return texture;
@@ -125,7 +125,7 @@ public class ResourcesManager : IResourcesManager
             return value;
         }
 
-        var texture = Texture.LoadFromRgbaBytes(pixels, width, height, wrapMode);
+        var texture = GlTexture.LoadFromRgbaBytes(pixels, width, height, wrapMode);
         _textures.Add(name, texture);
         
         return texture;

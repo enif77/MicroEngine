@@ -8,12 +8,12 @@ using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using StbImageSharp;
 
 // A helper class, much like Shader, meant to simplify loading textures.
-public class Texture : ITexture, IDisposable
+public class GlTexture : ITexture, IDisposable
 {
     public readonly int Handle;
 
 
-    public static Texture LoadFromRgbaBytes(byte[] bytes, int width, int height, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+    public static GlTexture LoadFromRgbaBytes(byte[] bytes, int width, int height, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
     {
         var handle = GL.GenTexture();
 
@@ -58,11 +58,11 @@ public class Texture : ITexture, IDisposable
         // Here is an example of mips in action https://en.wikipedia.org/wiki/File:Mipmap_Aliasing_Comparison.png
         GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
-        return new Texture(handle);
+        return new GlTexture(handle);
     }
 
     
-    public static Texture LoadFromFile(string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+    public static GlTexture LoadFromFile(string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
     {
         // OpenGL has it's texture origin in the lower left corner instead of the top left corner,
         // so we tell StbImageSharp to flip the image when loading.
@@ -78,7 +78,7 @@ public class Texture : ITexture, IDisposable
     }
 
 
-    private Texture(int glHandle)
+    private GlTexture(int glHandle)
     {
         Handle = glHandle;
     }
@@ -110,7 +110,7 @@ public class Texture : ITexture, IDisposable
     }
 
     
-    ~Texture()
+    ~GlTexture()
     {
         if (_disposedValue == false)
         {

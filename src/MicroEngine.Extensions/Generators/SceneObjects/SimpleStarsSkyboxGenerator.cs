@@ -106,7 +106,7 @@ public static class SimpleStarsSkyboxGenerator
                 }
             }
 
-            textures[t] = Texture.LoadFromRgbaBytes(texture.Pixels, textureSizePixels, textureSizePixels, TextureWrapMode.ClampToEdge);
+            textures[t] = GlTexture.LoadFromRgbaBytes(texture.Pixels, textureSizePixels, textureSizePixels, TextureWrapMode.ClampToEdge);
         }
         
         var skybox = SkyboxGenerator.Generate(new MultiTextureMaterial(

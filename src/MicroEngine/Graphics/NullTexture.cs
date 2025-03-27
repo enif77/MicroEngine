@@ -1,6 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.Textures;
+namespace MicroEngine.Graphics;
 
 using OpenTK.Graphics.OpenGL4;
 

@@ -4,8 +4,8 @@ namespace MicroEngine.Materials;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.Graphics;
 using MicroEngine.Shaders;
-using MicroEngine.Textures;
 
 /// <summary>
 /// A material that does nothing. 
