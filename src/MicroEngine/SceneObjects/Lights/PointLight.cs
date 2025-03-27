@@ -1,6 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.Lights;
+namespace MicroEngine.SceneObjects.Lights;
 
 using OpenTK.Mathematics;
 
