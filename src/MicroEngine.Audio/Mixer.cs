@@ -8,6 +8,7 @@ namespace MicroEngine.Audio;
 public sealed class Mixer : IDisposable
 {
     private bool _isInitialized;
+    
     private ALDevice _device = ALDevice.Null;
     private ALContext _context = ALContext.Null;
     
@@ -27,18 +28,40 @@ public sealed class Mixer : IDisposable
     /// <summary>
     /// Initializes the audio mixer.
     /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="InvalidOperationException">Thrown when failed to initialize.</exception>
     public void Initialize()
     {
         if (_isInitialized)    
         {
-            throw new InvalidOperationException("The audio mixer was already initialized.");
+            return;
         }
         
         _device = ALC.OpenDevice(null);
+        if (_device == ALDevice.Null)
+        {
+            throw new InvalidOperationException("Failed to open audio device.");
+        }
+        
         _context = ALC.CreateContext(_device, new ALContextAttributes());
+        if (_context == ALContext.Null)
+        {
+            ALC.CloseDevice(_device);
+            _device = ALDevice.Null;
+            
+            throw new InvalidOperationException("Failed to create audio context.");
+        }
 
-        ALC.MakeContextCurrent(_context);
+        var makeContextCurrentResult = ALC.MakeContextCurrent(_context);
+        if (!makeContextCurrentResult)
+        {
+            ALC.DestroyContext(_context);
+            _context = ALContext.Null;
+            
+            ALC.CloseDevice(_device);
+            _device = ALDevice.Null;
+            
+            throw new InvalidOperationException("Failed to make audio context current.");
+        }
         
         _isInitialized = true;
     }
@@ -55,10 +78,6 @@ public sealed class Mixer : IDisposable
             throw new InvalidOperationException("The audio mixer was not initialized.");
         }
         
-        // Close audio sources.
-        // Close audio buffers.
-        // ...
-        
         ReleaseUnmanagedResources();
         
         _isInitialized = false;
@@ -71,6 +90,10 @@ public sealed class Mixer : IDisposable
         {
             return;
         }
+        
+        // Close opened audio sources.
+        // Close allocated audio buffers.
+        // ...
         
         if (_context != ALContext.Null) {
             ALC.MakeContextCurrent(ALContext.Null);
