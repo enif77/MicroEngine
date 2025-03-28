@@ -4,7 +4,6 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
-
 /// <summary>
 /// Null camera represents an initial scene camera that forces a real camera to be set.
 /// </summary>

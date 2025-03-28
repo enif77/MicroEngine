@@ -1,10 +1,9 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine;
+namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
-
 
 /// <summary>
 /// The Base of geometry implementations.

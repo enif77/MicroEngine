@@ -4,8 +4,6 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
-using MicroEngine;
-
 /// <summary>
 /// Adds Yaw/Pitch/Roll/Advance/Ascend/Strafe methods to the SceneObjectBase class.
 /// Can be used to control a camera or any other scene object.
