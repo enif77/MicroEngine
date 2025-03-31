@@ -1,4 +1,6 @@
-﻿namespace MicroEngine.Audio;
+﻿/* Copyright (C) Premysl Fara and Contributors */
+
+namespace MicroEngine.Audio;
 
 /// <summary>
 /// Represents playable sound.

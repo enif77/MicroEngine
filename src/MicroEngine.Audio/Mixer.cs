@@ -1,6 +1,8 @@
-using OpenTK.Audio.OpenAL;
+/* Copyright (C) Premysl Fara and Contributors */
 
 namespace MicroEngine.Audio;
+
+using OpenTK.Audio.OpenAL;
 
 /// <summary>
 /// The general audio mixer.
