@@ -71,13 +71,14 @@ public sealed class Mixer : IDisposable
     
     /// <summary>
     /// Cleans up the audio mixer.
+    /// The mixer can be re-initialized later.
+    /// This method can be called multiple times.
     /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
     public void Shutdown()
     {
         if (!_isInitialized)
         {
-            throw new InvalidOperationException("The audio mixer was not initialized.");
+            return;
         }
         
         ReleaseUnmanagedResources();
