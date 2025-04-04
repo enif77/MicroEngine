@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Audio", "Audio", "{12EEBA60
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.Audio.MixerDemo", "MicroEngine.Demos.Audio.MixerDemo\MicroEngine.Demos.Audio.MixerDemo.csproj", "{2E81DDFE-178F-44FF-9A30-93C41F8FE42B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.Audio.SimpleSoundDemo", "MicroEngine.Demos.Audio.SimpleSoundDemo\MicroEngine.Demos.Audio.SimpleSoundDemo.csproj", "{EC88383F-B221-4BDF-94CC-EA77889BB7FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,10 +42,15 @@ Global
 		{2E81DDFE-178F-44FF-9A30-93C41F8FE42B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E81DDFE-178F-44FF-9A30-93C41F8FE42B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E81DDFE-178F-44FF-9A30-93C41F8FE42B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC88383F-B221-4BDF-94CC-EA77889BB7FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC88383F-B221-4BDF-94CC-EA77889BB7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC88383F-B221-4BDF-94CC-EA77889BB7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC88383F-B221-4BDF-94CC-EA77889BB7FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{12EEBA60-33E1-42FA-ABCC-D12389392CE4} = {2FADF165-1C66-48F1-8C63-6EDA0403B8AD}
 		{2E81DDFE-178F-44FF-9A30-93C41F8FE42B} = {12EEBA60-33E1-42FA-ABCC-D12389392CE4}
 		{BE32C527-7262-4408-A6E8-06B50486E441} = {2FADF165-1C66-48F1-8C63-6EDA0403B8AD}
+		{EC88383F-B221-4BDF-94CC-EA77889BB7FF} = {12EEBA60-33E1-42FA-ABCC-D12389392CE4}
 	EndGlobalSection
 EndGlobal

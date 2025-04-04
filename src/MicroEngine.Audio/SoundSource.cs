@@ -4,60 +4,48 @@ namespace MicroEngine.Audio;
 
 using OpenTK.Audio.OpenAL;
 
-public sealed class SoundSource : IDisposable
+/// <summary>
+/// Represents a sound source.
+/// </summary>
+internal sealed class SoundSource : ISoundSource
 {
     private bool _isInitialized;
     
-    /// <summary>
-    /// Is the OpenAL source initialized?
-    /// </summary>
+
     public bool IsInitialized => _isInitialized;
-
-    /// <summary>
-    /// The OpenAL source ID.
-    /// </summary>
-    public int SourceId { get; private set; }
-
-    /// <summary>
-    /// Indicates whether this sound source is looping.
-    /// </summary>
-    /// <exception cref="InvalidOperationException">When this sound source is not initialized yet.</exception>
+    
+    public int ALSourceId { get; private set; }
+    
     public bool IsLooping
     {
-        get => IsInitialized && AL.GetSource(SourceId, ALSourceb.Looping);
+        get
+        {
+            CheckInitialized();    
+            
+            return AL.GetSource(ALSourceId, ALSourceb.Looping);
+        }
         
         set
         {
             CheckInitialized();
             
-            AL.Source(SourceId, ALSourceb.Looping, value);
+            AL.Source(ALSourceId, ALSourceb.Looping, value);
         }
     }
     
-    /// <summary>
-    /// Gets the state of the OpenAL source.
-    /// </summary>
-    /// <exception cref="InvalidOperationException">When this sound source is not initialized yet.</exception>
     public ALSourceState State
     {
         get
         {
-            if (!IsInitialized)
-            {
-                return ALSourceState.Initial;
-            }
+            CheckInitialized();
             
-            AL.GetSource(SourceId, ALGetSourcei.SourceState, out var state);
+            AL.GetSource(ALSourceId, ALGetSourcei.SourceState, out var state);
             
             return (ALSourceState)state;
         }
     }
     
-
-    /// <summary>
-    /// Initializes the OpenAL source.
-    /// </summary>
-    /// <exception cref="InvalidOperationException">If the AL source cannot be created.</exception>
+    
     public void Initialize()
     {
         if (_isInitialized)
@@ -65,38 +53,69 @@ public sealed class SoundSource : IDisposable
             return;
         }
         
-        SourceId = AL.GenSource();
-        if (SourceId == 0)
+        ALSourceId = AL.GenSource();
+        if (ALSourceId == 0)
         {
             throw new InvalidOperationException("Failed to create OpenAL source.");
         }
         
         // Set the source to not loop.
-        AL.Source(SourceId, ALSourceb.Looping, false);
+        AL.Source(ALSourceId, ALSourceb.Looping, false);
         
         _isInitialized = true;
     }
-
-    /// <summary>
-    /// This function plays, replays or resumes a source. The playing source will have it's state changed
-    /// to ALSourceState.Playing. When called on a source which is already playing, the source will restart
-    /// at the beginning. When the attached buffer(s) are done playing, the source will progress to the
-    /// ALSourceState.Stopped state.
-    /// </summary>
-    /// <exception cref="InvalidOperationException">When this sound source is not initialized.</exception>
+    
+    
+    public void AttachSoundBuffer(ISoundBuffer soundBuffer)
+    {
+        CheckInitialized();
+        
+        if (soundBuffer == null)
+        {
+            throw new ArgumentNullException(nameof(soundBuffer), "Sound buffer cannot be null.");
+        }
+        
+        if (!soundBuffer.IsInitialized)
+        {
+            throw new InvalidOperationException("Cannot attach uninitialized sound buffer.");
+        }
+        
+        AL.Source(ALSourceId, ALSourcei.Buffer, soundBuffer.ALBufferId);
+    }
+    
+    
     public void Play()
     {
         CheckInitialized();
         
-        AL.SourcePlay(SourceId);
+        AL.SourcePlay(ALSourceId);
     }
     
+
+    public void Pause()
+    {
+        CheckInitialized();
+        
+        AL.SourcePause(ALSourceId);
+    }
     
-    /// <summary>
-    /// Releases the OpenAL source and stops playback.
-    /// This source can be re-initialized later.
-    /// This method can be called multiple times.
-    /// </summary>
+
+    public void Stop()
+    {
+        CheckInitialized();
+        
+        AL.SourceStop(ALSourceId);
+    }
+    
+
+    public void Rewind()
+    {
+        CheckInitialized();
+        
+        AL.SourceRewind(ALSourceId);
+    }
+    
+
     public void Destroy()
     {
         if (!_isInitialized)
@@ -121,19 +140,16 @@ public sealed class SoundSource : IDisposable
     
     private void ReleaseUnmanagedResources()
     {
-        if (!_isInitialized || SourceId == 0)
+        if (!_isInitialized || ALSourceId == 0)
         {
             return;
         }
         
-        // Detach the buffer from the source and stop the source.
-        AL.Source(SourceId, ALSourcei.Buffer, 0);
-        AL.SourceStop(SourceId);
+        AL.SourceStop(ALSourceId);
+        AL.Source(ALSourceId, ALSourcei.Buffer, 0);
+        AL.DeleteSource(ALSourceId);
         
-        // Delete the source.
-        AL.DeleteSource(SourceId);
-        
-        SourceId = 0;
+        ALSourceId = 0;
     }
 
     

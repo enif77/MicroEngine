@@ -14,6 +14,9 @@ public sealed class Mixer : IDisposable
     private ALDevice _device = ALDevice.Null;
     private ALContext _context = ALContext.Null;
     
+    private readonly IDictionary<int, ISoundSource> _soundSources = new Dictionary<int, ISoundSource>();
+    private readonly IDictionary<int, ISoundBuffer> _soundBuffers = new Dictionary<int, ISoundBuffer>();
+    
     public static string GetAudioContextInfoJson()
     {
         var audioContextInfo = new AudioContextInfo
@@ -68,6 +71,87 @@ public sealed class Mixer : IDisposable
         _isInitialized = true;
     }
     
+    /// <summary>
+    /// Creates a new initialized sound source.
+    /// </summary>
+    /// <returns>An initialized sound source.</returns>
+    public ISoundSource CreateSoundSource()
+    {
+        CheckInitialized();
+        
+        var soundSource = new SoundSource();
+        
+        soundSource.Initialize();
+        
+        _soundSources.Add(soundSource.ALSourceId, soundSource);
+        
+        return soundSource;
+    }
+    
+    /// <summary>
+    /// Destroys a sound source created by this mixer.
+    /// </summary>
+    /// <param name="soundSource">A sound source.</param>
+    /// <exception cref="ArgumentNullException">When the soundSource parameter is null.</exception>
+    /// <exception cref="InvalidOperationException">When the given sound source is not created by this mixer.</exception>
+    public void DestroySoundSource(ISoundSource soundSource)
+    {
+        CheckInitialized();
+        
+        if (soundSource == null)
+        {
+            throw new ArgumentNullException(nameof(soundSource));
+        }
+
+        if (!_soundSources.ContainsKey(soundSource.ALSourceId))
+        {
+            throw new InvalidOperationException($"The sound source with ID {soundSource.ALSourceId} is not managed by this mixer.");
+        }
+        
+        soundSource.Destroy();
+        _soundSources.Remove(soundSource.ALSourceId);
+    }
+    
+    /// <summary>
+    /// Creates a new initialized sound buffer.
+    /// </summary>
+    /// <returns>An initialized sound buffer.</returns>
+    public ISoundBuffer CreateSoundBuffer()
+    {
+        CheckInitialized();
+        
+        var soundBuffer = new SoundBuffer();
+        
+        soundBuffer.Initialize();
+        
+        _soundBuffers.Add(soundBuffer.ALBufferId, soundBuffer);
+        
+        return soundBuffer;
+    }
+    
+    /// <summary>
+    /// Destroys a sound buffer created by this mixer.
+    /// </summary>
+    /// <param name="soundBuffer">A sound buffer.</param>
+    /// <exception cref="ArgumentNullException">When the soundBuffer parameter is null.</exception>
+    /// <exception cref="InvalidOperationException">When the given sound buffer is not created by this mixer.</exception>
+    public void DestroySoundBuffer(ISoundBuffer soundBuffer)
+    {
+        CheckInitialized();
+        
+        if (soundBuffer == null)
+        {
+            throw new ArgumentNullException(nameof(soundBuffer));
+        }
+
+        if (!_soundBuffers.ContainsKey(soundBuffer.ALBufferId))
+        {
+            throw new InvalidOperationException($"The sound buffer with ID {soundBuffer.ALBufferId} is not managed by this mixer.");
+        }
+        
+        soundBuffer.Destroy();
+        _soundBuffers.Remove(soundBuffer.ALBufferId);
+    }
     
     /// <summary>
     /// Cleans up the audio mixer.
@@ -86,7 +170,16 @@ public sealed class Mixer : IDisposable
         _isInitialized = false;
     }
     
-
+    
+    private void CheckInitialized()
+    {
+        if (!_isInitialized)
+        {
+            throw new InvalidOperationException("The OpenAL source is not initialized.");
+        }
+    }
+    
+    
     private void ReleaseUnmanagedResources()
     {
         if (!_isInitialized)
@@ -95,8 +188,18 @@ public sealed class Mixer : IDisposable
         }
         
         // Close opened audio sources.
+        foreach (var soundSource in _soundSources.Values)
+        {
+            soundSource.Destroy();
+        }
+        _soundSources.Clear();
+        
         // Close allocated audio buffers.
-        // ...
+        foreach (var soundBuffer in _soundBuffers.Values)
+        {
+            soundBuffer.Destroy();
+        }
+        _soundBuffers.Clear();
         
         if (_context != ALContext.Null) {
             ALC.MakeContextCurrent(ALContext.Null);
@@ -110,12 +213,14 @@ public sealed class Mixer : IDisposable
         _device = ALDevice.Null;
     }
 
+    
     public void Dispose()
     {
         ReleaseUnmanagedResources();
         GC.SuppressFinalize(this);
     }
 
+    
     ~Mixer()
     {
         ReleaseUnmanagedResources();
