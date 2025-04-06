@@ -84,6 +84,15 @@ internal sealed class SoundSource : ISoundSource
     }
     
     
+    public void DetachSoundBuffer()
+    {
+        CheckInitialized();
+        
+        AL.SourceStop(ALSourceId);
+        AL.Source(ALSourceId, ALSourcei.Buffer, 0);
+    }
+    
+    
     public void Play()
     {
         CheckInitialized();

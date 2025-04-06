@@ -47,6 +47,11 @@ public interface ISoundSource : IDisposable
     void AttachSoundBuffer(ISoundBuffer soundBuffer);
 
     /// <summary>
+    /// Stops the playback of the sound buffer attached to this source and detaches it.
+    /// </summary>
+    void DetachSoundBuffer();
+    
+    /// <summary>
     /// This function plays, replays or resumes a source. The playing source will have it's state changed
     /// to ALSourceState.Playing. When called on a source which is already playing, the source will restart
     /// at the beginning. When the attached buffer(s) are done playing, the source will progress to the
