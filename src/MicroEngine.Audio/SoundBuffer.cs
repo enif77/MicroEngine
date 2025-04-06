@@ -34,7 +34,7 @@ internal sealed class SoundBuffer : ISoundBuffer
     }
     
 
-    public void AttachSound(Sound sound)
+    public void LoadData(Sound sound)
     {
         CheckInitialized();
         

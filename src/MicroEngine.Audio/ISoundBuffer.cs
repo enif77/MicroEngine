@@ -28,7 +28,7 @@ public interface ISoundBuffer : IDisposable
     /// </summary>
     /// <param name="sound">A sound.</param>
     /// <exception cref="ArgumentNullException">If the sound parameter is null</exception>
-    void AttachSound(Sound sound);
+    void LoadData(Sound sound);
 
     /// <summary>
     /// Releases the OpenAL buffer.

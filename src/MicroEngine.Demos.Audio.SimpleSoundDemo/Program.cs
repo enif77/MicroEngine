@@ -34,7 +34,7 @@ internal static class Program
             
             // Create a sound buffer and attach the sound to it.
             var buffer = mixer.CreateSoundBuffer();
-            buffer.AttachSound(sound440);
+            buffer.LoadData(sound440);
             
             // Create a sound source and attach the sound buffer to it.
             var source = mixer.CreateSoundSource();
