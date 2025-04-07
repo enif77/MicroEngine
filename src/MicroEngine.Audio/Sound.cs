@@ -10,32 +10,33 @@ public sealed class Sound
     /// <summary>
     /// The number of samples in the sound.
     /// </summary>
-    public int Count => Samples.Length;
+    public int Length => Samples.Length;
     
     /// <summary>
     /// How many samples per second.
     /// </summary>
-    public int SamplesPerSecond { get; init; }
-    
+    public int SamplesPerSecond { get; private init; }
+
     /// <summary>
-    /// Frequency of this sound.
+    /// The number of channels - 1 for mono, 2 for stereo.
     /// </summary>
-    public double Frequency { get; init; }
-    
+    public int Channels { get; }
+
     /// <summary>
-    /// Amplitude of the sound - how loud it will be.
+    /// The number of bits per channel - 8 or 16.
     /// </summary>
-    public double Amplitude { get; init; }
-    
+    public int BitsPerChannel => 16;
+
     /// <summary>
     /// Actual sound samples.
     /// </summary>
     public short[] Samples { get; }
     
     
-    private Sound(int samplesCount)
+    private Sound(int channels, int samplesCount)
     {
-        Samples = new short[samplesCount];
+        Channels = channels;
+        Samples = new short[channels * samplesCount];
     }
     
     
@@ -43,22 +44,60 @@ public sealed class Sound
     /// Create a sound based on 16 bit mono sound samples and the specified parameters.
     /// </summary>
     /// <param name="samplesCount">How many sound samples will the created sound contain.</param>
-    /// <param name="sampleFreq">How many samples per second.</param>
-    /// <param name="frequency">Frequency of the sound.</param>
-    /// <param name="amplitude">Amplitude of the sound - how loud it will be.</param>
+    /// <param name="samplesPerSecond">How many samples per second.</param>
     /// <returns>A Sound containing sound samples.</returns>
-    public static Sound Create16BitMonoSound(int samplesCount, int sampleFreq, double frequency, double amplitude)
+    public static Sound Create16BitMonoSound(int samplesCount, int samplesPerSecond)
     {
         if (samplesCount <= 0)
         {
             throw new ArgumentOutOfRangeException(nameof(samplesCount), "Samples count must be greater than zero.");
         }
         
-        if (sampleFreq <= 0)
+        if (samplesPerSecond <= 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(sampleFreq), "Sample frequency must be greater than zero.");
+            throw new ArgumentOutOfRangeException(nameof(samplesPerSecond), "Sample frequency must be greater than zero.");
         }
         
+        return new Sound(1, samplesCount)
+        {
+            SamplesPerSecond = samplesPerSecond
+        };
+    }
+    
+    /// <summary>
+    /// Create a sound based on 16 bit stereo sound samples and the specified parameters.
+    /// </summary>
+    /// <param name="samplesCount">How many sound samples will the created sound contain.</param>
+    /// <param name="samplesPerSecond">How many samples per second.</param>
+    /// <returns>A Sound containing sound samples.</returns>
+    public static Sound Create16BitStereoSound(int samplesCount, int samplesPerSecond)
+    {
+        if (samplesCount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(samplesCount), "Samples count must be greater than zero.");
+        }
+        
+        if (samplesPerSecond <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(samplesPerSecond), "Sample frequency must be greater than zero.");
+        }
+        
+        return new Sound(2, samplesCount)
+        {
+            SamplesPerSecond = samplesPerSecond
+        };
+    }
+    
+    /// <summary>
+    /// Generates a sine wave based sound using the specified parameters.
+    /// </summary>
+    /// <param name="samplesCount">How many samples to generate.</param>
+    /// <param name="samplesPerSecond">How many samples per second.</param>
+    /// <param name="frequency">Frequency of the sound.</param>
+    /// <param name="amplitude">Amplitude of the sound - how loud it will be.</param>
+    /// <returns>A a buffer containing the samplesCount of 16 bit mono sound samples.</returns>
+    public static Sound Generate16BitSineWaveMonoSound(int samplesCount, int samplesPerSecond, double frequency, double amplitude)
+    {
         if (frequency <= 0)
         {
             throw new ArgumentOutOfRangeException(nameof(frequency), "Frequency must be greater than zero.");
@@ -69,27 +108,9 @@ public sealed class Sound
             throw new ArgumentOutOfRangeException(nameof(amplitude), "Amplitude must be between 0 and 1.");
         }
         
-        return new Sound(samplesCount)
-        {
-            SamplesPerSecond = sampleFreq,
-            Frequency = frequency,
-            Amplitude = amplitude
-        };
-    }
-    
-    /// <summary>
-    /// Generates a sine wave based sound using the specified parameters.
-    /// </summary>
-    /// <param name="samplesCount">How many samples to generate.</param>
-    /// <param name="sampleFreq">How many samples per second.</param>
-    /// <param name="frequency">Frequency of the sound.</param>
-    /// <param name="amplitude">Amplitude of the sound - how loud it will be.</param>
-    /// <returns>A a buffer containing the samplesCount of 16 bit mono sound samples.</returns>
-    public static Sound Generate16BitSineWaveMonoSound(int samplesCount, int sampleFreq, double frequency, double amplitude)
-    {
-        var sound = Create16BitMonoSound(samplesCount, sampleFreq, frequency, amplitude);
+        var sound = Create16BitMonoSound(samplesCount, samplesPerSecond);
         
-        var deltaTime = 2 * Math.PI / sampleFreq;
+        var deltaTime = 2 * Math.PI / samplesPerSecond;
         var samples = sound.Samples;
         
         for (var i = 0; i < samples.Length; ++i)
