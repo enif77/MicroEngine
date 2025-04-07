@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.Audio.Sim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.Audio.SoundBufferWithChangingDataDemo", "MicroEngine.Demos.Audio.SoundBufferWithChangingDataDemo\MicroEngine.Demos.Audio.SoundBufferWithChangingDataDemo.csproj", "{EC16AADC-B46C-4E30-A96E-E9AC74665D2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.Audio.WaveLoaderDemo", "MicroEngine.Demos.Audio.WaveLoaderDemo\MicroEngine.Demos.Audio.WaveLoaderDemo.csproj", "{37299F00-F0F1-4E0F-BDCE-229B3B506F69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{EC16AADC-B46C-4E30-A96E-E9AC74665D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC16AADC-B46C-4E30-A96E-E9AC74665D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC16AADC-B46C-4E30-A96E-E9AC74665D2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37299F00-F0F1-4E0F-BDCE-229B3B506F69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37299F00-F0F1-4E0F-BDCE-229B3B506F69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37299F00-F0F1-4E0F-BDCE-229B3B506F69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37299F00-F0F1-4E0F-BDCE-229B3B506F69}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{12EEBA60-33E1-42FA-ABCC-D12389392CE4} = {2FADF165-1C66-48F1-8C63-6EDA0403B8AD}
@@ -59,5 +65,6 @@ Global
 		{BE32C527-7262-4408-A6E8-06B50486E441} = {2FADF165-1C66-48F1-8C63-6EDA0403B8AD}
 		{EC88383F-B221-4BDF-94CC-EA77889BB7FF} = {12EEBA60-33E1-42FA-ABCC-D12389392CE4}
 		{EC16AADC-B46C-4E30-A96E-E9AC74665D2C} = {12EEBA60-33E1-42FA-ABCC-D12389392CE4}
+		{37299F00-F0F1-4E0F-BDCE-229B3B506F69} = {12EEBA60-33E1-42FA-ABCC-D12389392CE4}
 	EndGlobalSection
 EndGlobal
