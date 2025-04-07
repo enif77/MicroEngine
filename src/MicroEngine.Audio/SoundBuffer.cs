@@ -43,7 +43,7 @@ internal sealed class SoundBuffer : ISoundBuffer
             throw new ArgumentNullException(nameof(sound), "Sound cannot be null.");
         }
         
-        AL.BufferData(ALBufferId, ALFormat.Mono16, sound.Samples, sound.SamplesPerSecond);
+        AL.BufferData(ALBufferId, GetSoundFormat(sound.Channels, sound.BitsPerChannel), sound.Samples, sound.SamplesPerSecond);
     }
     
     
@@ -65,6 +65,25 @@ internal sealed class SoundBuffer : ISoundBuffer
         if (!_isInitialized)
         {
             throw new InvalidOperationException("The OpenAL buffer is not initialized.");
+        }
+    }
+    
+    
+    private static ALFormat GetSoundFormat(int channels, int bits)
+    {
+        switch (channels)
+        {
+            case 1:
+                return bits == 8
+                    ? ALFormat.Mono8
+                    : ALFormat.Mono16;
+            
+            case 2: 
+                return bits == 8
+                    ? ALFormat.Stereo8
+                    : ALFormat.Stereo16;
+            
+            default: throw new NotSupportedException("The specified sound format is not supported.");
         }
     }
     
