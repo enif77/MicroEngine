@@ -1,12 +1,11 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine.Audio.Loaders;
-
 namespace MicroEngine.Demos.Audio.WaveLoaderDemo;
 
 using OpenTK.Audio.OpenAL;
 
 using MicroEngine.Audio;
+using MicroEngine.Audio.Loaders;
 
 /// <summary>
 /// Demonstrates the use of the WAVE sound file loader.
