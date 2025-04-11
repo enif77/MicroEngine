@@ -21,6 +21,7 @@ internal static class Program
         // Load the WAVE sound file.
         Sound? loadedSound;
         using (var stream = File.OpenRead("Resources/Audio/test_16bit-mono.wav"))
+        //using (var stream = File.OpenRead("Resources/Audio/test_16bit-stereo.wav"))    
         {
             loadedSound = new WaveLoader().Load(stream);
         }
