@@ -52,6 +52,30 @@ public interface ISoundSource : IDisposable
     void DetachSoundBuffer();
     
     /// <summary>
+    /// Adds a sound buffer to the queue of this source.
+    /// </summary>
+    /// <param name="soundBuffer">A sound buffer to be added to this sound source's queue.</param>
+    void QueueSoundBuffer(ISoundBuffer soundBuffer);
+    
+    /// <summary>
+    /// Gets the count of sound buffers attached to this source.
+    /// </summary>
+    /// <returns>The count of sound buffers attached to this source.</returns>
+    int GetQueuedSoundBuffersCount();
+    
+    /// <summary>
+    /// Gets the count of sound buffers that have been processed by this source.
+    /// </summary>
+    /// <returns>The count of sound buffers that have been processed by this source.</returns>
+    int GetProcessedSoundBuffersCount();
+    
+    /// <summary>
+    /// Removes the first processed sound buffer from the queue of this source.
+    /// </summary>
+    /// <returns>The first processed sound buffer from the queue of this source or null.</returns>
+    ISoundBuffer? UnqueueSoundBuffer();
+    
+    /// <summary>
     /// This function plays, replays or resumes a source. The playing source will have it's state changed
     /// to ALSourceState.Playing. When called on a source which is already playing, the source will restart
     /// at the beginning. When the attached buffer(s) are done playing, the source will progress to the
