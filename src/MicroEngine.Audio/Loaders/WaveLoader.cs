@@ -5,9 +5,9 @@ namespace MicroEngine.Audio.Loaders;
 /// <summary>
 /// Loads a WAVE file into a Sound instance.
 /// </summary>
-public class WaveLoader
+public class WaveLoader : ISoundLoader
 {
-    public static Sound Load(Stream stream)
+    public Sound Load(Stream stream)
     {
         if (stream == null)
         {

@@ -22,7 +22,7 @@ internal static class Program
         Sound? loadedSound;
         using (var stream = File.OpenRead("Resources/Audio/test_16bit-mono.wav"))
         {
-            loadedSound = WaveLoader.Load(stream);
+            loadedSound = new WaveLoader().Load(stream);
         }
         
         // Create the mixer.
