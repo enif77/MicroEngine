@@ -45,6 +45,8 @@ internal static class Program
                 var haveNextSoundData = soundGenerator.GenerateSound(sound.Samples);
                 if (!haveNextSoundData)
                 {
+                    // The sound generator finished generating the sound.
+                    // This should not happen, because we should be able to generate more than 4 segments of music.
                     throw new InvalidOperationException("Failed to generate initial sound data.");
                 }
                 
@@ -91,7 +93,9 @@ internal static class Program
                 var soundBuffer = source.UnqueueSoundBuffer();
                 if (soundBuffer == null)
                 {
-                    throw new InvalidOperationException("Failed to unqueue sound buffer.");
+                    // We know that there is at least one sound buffer processed.
+                    // So this should not happen.
+                    throw new InvalidOperationException("Failed to dequeue a sound buffer.");
                 }
                 
                 Console.WriteLine("  >> Buffer {0} dequeued.", soundBuffer.ALBufferId);
@@ -111,7 +115,7 @@ internal static class Program
                 }
             }
             
-            Console.WriteLine(" >>Waiting for the source to finish playing...");
+            Console.WriteLine(" >> Waiting for the source to finish playing...");
             
             // Wait for the source to finish playing.
             while (source.State == ALSourceState.Playing)
