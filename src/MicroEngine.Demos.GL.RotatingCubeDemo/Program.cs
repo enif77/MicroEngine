@@ -1,6 +1,6 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngineDemoApp;
+namespace MicroEngine.Demos.GL.RotatingCubeDemo;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
@@ -10,10 +10,7 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
-using MicroEngine;
 using MicroEngine.Managers;
-
-using MicroEngineDemoApp.Games;
 
 internal static class Program
 {
@@ -23,7 +20,7 @@ internal static class Program
     public static Settings Settings { get; private set; } = Settings.DefaultSettings;
     
     
-    public static void Main(string[] args)
+    static void Main(string[] args)
     {
         Configure();
 
@@ -51,19 +48,6 @@ internal static class Program
         
         ResourcesManager.Instance.RootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
         
-        var games = new Dictionary<string, IGame>()
-        {
-            { "game", new MinimalGameDemo(ResourcesManager.Instance) },  // This is the default game.
-            { "many-simple-cubes-demo", new ManySimpleCubesDemo(ResourcesManager.Instance) },
-            { "game-with-cubes", new Game(ResourcesManager.Instance) },
-            { "rotating-cube-demo-multitex-skybox", new RotatingCubeWithMultiTextureSkyboxDemo(ResourcesManager.Instance) },
-            { "game-with-cubes3", new Game3(ResourcesManager.Instance) }, 
-            { "game-with-cubes4", new Game4(ResourcesManager.Instance) },  // Rotations too fast.
-            { "rotating-cube-demo", new RotatingCubeDemo(ResourcesManager.Instance) },
-            { "game-with-cubes5", new Game5(ResourcesManager.Instance) },  // Inverted axes when FpsCamera is connected to a scene object.
-            //{ "game-with-cubes2", new Game2(ResourcesManager.Instance) },  // Missing map data.
-        };
-        
         var nativeWindowSettings = new NativeWindowSettings()
         {
             ClientSize = Settings.EnableFullscreen
@@ -85,20 +69,19 @@ internal static class Program
                 ? WindowState.Fullscreen
                 : WindowState.Normal
         };
-
-        using (var gameWindow = new GameWindow(
+        
+        using (var gameWindow = new Window(
+                   Settings,
                    GameWindowSettings.Default,
                    nativeWindowSettings,
-                   games[Settings.Game]
-                   ))
+                   new Game()))
         {
             // An example of how to set the update frequency.
             gameWindow.UpdateFrequency = 60.0;
             
+            // Run the game...
             gameWindow.Run();
         }
-        
-        //MicroEngine.App.Run();
     }
     
     
