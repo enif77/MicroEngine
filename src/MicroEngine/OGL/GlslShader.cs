@@ -1,6 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.Core;
+namespace MicroEngine.OGL;
 
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;

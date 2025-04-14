@@ -2,7 +2,7 @@
 
 namespace MicroEngine;
 
-using MicroEngine.Core;
+using MicroEngine.OGL;
 
 /// <summary>
 /// Generic interface for all lights.

@@ -4,8 +4,8 @@ namespace MicroEngine.Shaders;
 
 using OpenTK.Graphics.OpenGL4;
 
-using MicroEngine.Core;
 using MicroEngine.Materials;
+using MicroEngine.OGL;
 
 /// <summary>
 /// A base for all shaders, that use multiple textures.

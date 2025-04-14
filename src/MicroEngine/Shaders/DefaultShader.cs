@@ -4,7 +4,7 @@ namespace MicroEngine.Shaders;
 
 using OpenTK.Graphics.OpenGL4;
 
-using MicroEngine.Core;
+using MicroEngine.OGL;
 
 public class DefaultShader : IShader
 {

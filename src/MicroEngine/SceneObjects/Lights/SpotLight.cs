@@ -4,7 +4,7 @@ namespace MicroEngine.SceneObjects.Lights;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Core;
+using MicroEngine.OGL;
 
 public class SpotLight : PointLight
 {

@@ -2,7 +2,7 @@
 
 namespace MicroEngine.Shaders;
 
-using MicroEngine.Core;
+using MicroEngine.OGL;
 
 public class MultiTextureSkyboxShader : MultiTextureShaderBase
 {

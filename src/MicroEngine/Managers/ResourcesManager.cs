@@ -8,8 +8,8 @@ using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Core;
 using MicroEngine.Geometries;
-using MicroEngine.Graphics;
 using MicroEngine.Materials;
+using MicroEngine.OGL;
 using MicroEngine.Shaders;
 
 /// <summary>
