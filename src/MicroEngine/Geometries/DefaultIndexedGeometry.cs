@@ -4,6 +4,8 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
+using MicroEngine.OGL;
+
 /// <summary>
 /// Geometry with normals and texture.
 /// </summary>
@@ -50,7 +52,7 @@ public class DefaultIndexedGeometry : GeometryBase
 
     protected override void RenderImpl()
     {
-        Renderer.DrawIndexedTriangles(this);
+        GlRenderer.DrawIndexedTriangles(this);
     }
 }
 

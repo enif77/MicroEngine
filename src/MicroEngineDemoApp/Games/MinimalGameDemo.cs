@@ -10,6 +10,7 @@ using MicroEngine.Extensions;
 using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Managers;
 using MicroEngine.Materials;
+using MicroEngine.OGL;
 using MicroEngine.SceneObjects.Cameras;
 using MicroEngine.Shaders;
 
@@ -49,7 +50,7 @@ public class MinimalGameDemo : IGame
         
         _scene = scene;
         
-        Renderer.EnableFaceCulling();
+        GlRenderer.EnableFaceCulling();
         
         return true;
     }

@@ -4,6 +4,8 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
+using MicroEngine.OGL;
+
 /// <summary>
 /// A geometry with vertexes and indices.
 /// </summary>
@@ -36,7 +38,7 @@ public class SimpleIndexedGeometry(float[] vertexData, uint[] indices, bool isDy
     
     protected override void RenderImpl()
     {
-        Renderer.DrawIndexedTriangles(this);
+        GlRenderer.DrawIndexedTriangles(this);
     }
 }
 

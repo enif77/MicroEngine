@@ -4,6 +4,8 @@ namespace MicroEngine.SceneObjects.Cameras;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.OGL;
+
 public class FlyByCamera : SceneObjectBase, ICamera
 {
     private readonly Matrix4 _modelMatrixBase;
@@ -74,7 +76,7 @@ public class FlyByCamera : SceneObjectBase, ICamera
     /// <returns>The projection matrix.</returns>
     public Matrix4 GetProjectionMatrix()
     {
-        return Renderer.CreatePerspectiveProjectionMatrix(_fov);
+        return GlRenderer.CreatePerspectiveProjectionMatrix(_fov);
     }
     
     

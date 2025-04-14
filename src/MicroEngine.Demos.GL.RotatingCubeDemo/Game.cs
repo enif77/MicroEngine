@@ -12,6 +12,7 @@ using MicroEngine.Extensions.Generators.Textures;
 using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Managers;
 using MicroEngine.Materials;
+using MicroEngine.OGL;
 using MicroEngine.SceneObjects.Cameras;
 using MicroEngine.Shaders;
 
@@ -27,7 +28,7 @@ public class Game : IGame
     public bool Initialize()
     {
         // We do not want to see back faces of the cube.
-        Renderer.EnableFaceCulling();
+        GlRenderer.EnableFaceCulling();
         
         // The scene is the root of the scene graph.
         var scene = new Scene();

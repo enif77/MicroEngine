@@ -4,6 +4,8 @@ namespace MicroEngine.SceneObjects.Cameras;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.OGL;
+
 // This is the camera class as it could be set up after the tutorials on the website.
 // It is important to note there are a few ways you could have set up this camera.
 // For example, you could have also managed the player input inside the camera class,
@@ -101,7 +103,7 @@ public class FpsCamera : SceneObjectBase, ICamera
 
     public Matrix4 GetProjectionMatrix()
     {
-        return Renderer.CreatePerspectiveProjectionMatrix(_fov);
+        return GlRenderer.CreatePerspectiveProjectionMatrix(_fov);
     }
 
     

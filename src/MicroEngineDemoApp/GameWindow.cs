@@ -10,6 +10,7 @@ using OpenTK.Windowing.Desktop;
 
 using MicroEngine;
 using MicroEngine.Managers;
+using MicroEngine.OGL;
 
 public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
 {
@@ -52,8 +53,8 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
 
         #endif
         
-        Renderer.SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        Renderer.EnableDepthTest();
+        GlRenderer.SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        GlRenderer.EnableDepthTest();
         
         CursorState = CursorState.Grabbed;
     }
@@ -67,10 +68,10 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
         // FramebufferSize returns correct values, only Cocoa visual render size is halved.
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && _viewportSizeScaleFactor > 1)
         {
-            Renderer.SetViewport(0, 0, ClientSize.X * _viewportSizeScaleFactor, ClientSize.Y * _viewportSizeScaleFactor);
+            GlRenderer.SetViewport(0, 0, ClientSize.X * _viewportSizeScaleFactor, ClientSize.Y * _viewportSizeScaleFactor);
         }
         
-        Renderer.ClearScreen();
+        GlRenderer.ClearScreen();
         
         _game.Render();
 
@@ -106,7 +107,7 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
     {
         base.OnResize(e);
         
-        Renderer.SetViewport(0, 0, ClientSize.X, ClientSize.Y);
+        GlRenderer.SetViewport(0, 0, ClientSize.X, ClientSize.Y);
     }
     
     

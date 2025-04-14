@@ -4,6 +4,8 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
+using MicroEngine.OGL;
+
 /// <summary>
 /// Default geometry with normals and texture.
 /// </summary>
@@ -52,7 +54,7 @@ public class DefaultGeometry : GeometryBase
     
     protected override void RenderImpl()
     {
-        Renderer.DrawTriangles(this);
+        GlRenderer.DrawTriangles(this);
     }
 }
 

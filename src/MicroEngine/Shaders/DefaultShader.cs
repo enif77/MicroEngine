@@ -256,11 +256,11 @@ public class DefaultShader : IShader
 
         if (material.OpacityLevel > 1)
         {
-            Renderer.DisableFaceCulling();    
+            GlRenderer.DisableFaceCulling();    
         }
         else
         {
-            Renderer.EnableFaceCulling();
+            GlRenderer.EnableFaceCulling();
         }
         
         material.DiffuseMap.Use(TextureUnit.Texture0);

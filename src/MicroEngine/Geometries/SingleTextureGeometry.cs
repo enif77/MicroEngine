@@ -4,6 +4,8 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
+using MicroEngine.OGL;
+
 /// <summary>
 /// A geometry with a single texture. No lights.
 /// </summary>
@@ -52,7 +54,7 @@ public class SingleTextureGeometry : GeometryBase
     
     protected override void RenderImpl()
     {
-        Renderer.DrawTriangles(this);
+        GlRenderer.DrawTriangles(this);
     }
 }
 

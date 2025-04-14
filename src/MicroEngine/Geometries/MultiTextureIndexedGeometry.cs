@@ -4,6 +4,8 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
+using MicroEngine.OGL;
+
 /// <summary>
 /// A geometry with multiple textures and indices. No lights.
 /// </summary>
@@ -50,7 +52,7 @@ public class MultiTextureIndexedGeometry : GeometryBase
     
     protected override void RenderImpl()
     {
-        Renderer.DrawIndexedTriangles(this);
+        GlRenderer.DrawIndexedTriangles(this);
     }
 }
 

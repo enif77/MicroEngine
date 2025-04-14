@@ -4,6 +4,8 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
+using MicroEngine.OGL;
+
 /// <summary>
 /// A geometry with a single texture and indices. No normals.
 /// </summary>
@@ -49,7 +51,7 @@ public class SingleTextureIndexedGeometry : GeometryBase
     
     protected override void RenderImpl()
     {
-        Renderer.DrawIndexedTriangles(this);
+        GlRenderer.DrawIndexedTriangles(this);
     }
 }
 

@@ -4,6 +4,8 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
+using MicroEngine.OGL;
+
 /// <summary>
 /// A geometry with multiple textures. No lights.
 /// </summary>
@@ -53,7 +55,7 @@ public class MultiTextureGeometry : GeometryBase
     
     protected override void RenderImpl()
     {
-        Renderer.DrawTriangles(this);
+        GlRenderer.DrawTriangles(this);
     }
 }
 

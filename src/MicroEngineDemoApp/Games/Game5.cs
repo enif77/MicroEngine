@@ -10,6 +10,7 @@ using MicroEngine.Extensions;
 using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Managers;
 using MicroEngine.Materials;
+using MicroEngine.OGL;
 using MicroEngine.SceneObjects;
 using MicroEngine.SceneObjects.Cameras;
 using MicroEngine.SceneObjects.Lights;
@@ -35,7 +36,7 @@ public class Game5 : IGame
     {
         CreateScene();
         
-        Renderer.EnableFaceCulling();
+        GlRenderer.EnableFaceCulling();
         
         return true;
     }

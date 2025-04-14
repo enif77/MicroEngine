@@ -1,6 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine;
+namespace MicroEngine.OGL;
 
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
@@ -8,7 +8,7 @@ using OpenTK.Mathematics;
 /// <summary>
 /// General rendering related tools.
 /// </summary>
-public static class Renderer
+public static class GlRenderer
 {
     public static readonly float DefaultAspectRatio = 16.0f / 9.0f;
     public static readonly float DefaultNearClipPlaneDepth = 0.01f;
@@ -18,7 +18,7 @@ public static class Renderer
     /// <summary>
     /// Constructor.
     /// </summary>
-    static Renderer()
+    static GlRenderer()
     {
         _aspectRatio = DefaultAspectRatio;
         SetClipPlanes(DefaultNearClipPlaneDepth, DefaultFarClipPlaneDepth);

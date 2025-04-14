@@ -4,6 +4,8 @@ namespace MicroEngine.Geometries;
 
 using OpenTK.Graphics.OpenGL4;
 
+using MicroEngine.OGL;
+
 /// <summary>
 /// A geometry with vertexes and indices, used for rendering lines.
 /// </summary>
@@ -43,7 +45,7 @@ public class SimpleIndexedLinesGeometry : GeometryBase
     
     protected override void RenderImpl()
     {
-        Renderer.DrawIndexedLines(this);
+        GlRenderer.DrawIndexedLines(this);
     }
 }
 
