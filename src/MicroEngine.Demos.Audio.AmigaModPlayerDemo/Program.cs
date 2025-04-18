@@ -30,6 +30,9 @@ internal static class Program
             return;
         }
         
+        // Print the module information.
+        soundGenerator.PrintModuleInfo();
+        
         // Create the audio mixer.
         using (var mixer = new Mixer())
         {
@@ -53,6 +56,7 @@ internal static class Program
 
                 // Generate initial sound data.
                 var haveNextSoundData = soundGenerator.GenerateSound(sound.Samples);
+                //var haveNextSoundData = soundGenerator.GenerateSoundSimple(sound.Samples);
                 if (!haveNextSoundData)
                 {
                     // The sound generator finished generating the sound.
@@ -66,7 +70,7 @@ internal static class Program
                 // Queue the buffer to the source.
                 source.QueueSoundBuffer(soundBuffers[i]);
                 
-                Console.WriteLine("  >> Buffer {0} queued.", i);
+                //Console.WriteLine("  >> Buffer {0} queued.", i);
             }
             
             source.Play();
@@ -108,7 +112,7 @@ internal static class Program
                     throw new InvalidOperationException("Failed to dequeue a sound buffer.");
                 }
                 
-                Console.WriteLine("  >> Buffer {0} dequeued.", soundBuffer.ALBufferId);
+                //Console.WriteLine("  >> Buffer {0} dequeued.", soundBuffer.ALBufferId);
                 
                 // Load the new sound data into the sound buffer.
                 soundBuffer.LoadData(sound);
@@ -116,7 +120,7 @@ internal static class Program
                 // Queue the buffer to the source.
                 source.QueueSoundBuffer(soundBuffer);
                 
-                Console.WriteLine("  >> Buffer {0} queued.", soundBuffer.ALBufferId);
+                //Console.WriteLine("  >> Buffer {0} queued.", soundBuffer.ALBufferId);
                 
                 // Keep source playing.
                 if (source.State != ALSourceState.Playing)
@@ -133,7 +137,7 @@ internal static class Program
                 Thread.Sleep(100);
             }
             
-            Console.WriteLine("  >> Source finished playing.");
+            //Console.WriteLine("  >> Source finished playing.");
             
             // Stop and destroy the source.
             source.Stop();

@@ -136,38 +136,47 @@ public class ProTrackerModulePlayer
     }
 
 
-    // public bool GenerateSoundSimple(short[] soundData)
-    // {
-    //     if (_module == null)
-    //     {
-    //         return false;
-    //     }
-    //
-    //     if (_audioGenerator == null)
-    //     {
-    //         return false;
-    //     }
-    //
-    //     if (!_audioGenerator.SongStillActive())
-    //     {
-    //         return false;
-    //     }
-    //
-    //     var nextSoundData = _audioGenerator.GenerateNextSamples(soundData.Length);
-    //     
-    //     for (var i = 0; i < soundData.Length; i++)
-    //     {
-    //         soundData[i] = (i >= nextSoundData.Count)
-    //             ? (short)0 
-    //             : nextSoundData[i];
-    //     }
-    //
-    //     return true;
-    // }
-
-
-    private static void PrintModuleInfo(ProTrackerModule module)
+    public bool GenerateSoundSimple(short[] soundData)
     {
+        if (_module == null)
+        {
+            return false;
+        }
+    
+        if (_audioGenerator == null)
+        {
+            return false;
+        }
+    
+        if (!_audioGenerator.SongStillActive())
+        {
+            return false;
+        }
+    
+        var nextSoundData = _audioGenerator.GenerateNextSamples(soundData.Length);
+        
+        for (var i = 0; i < soundData.Length; i++)
+        {
+            soundData[i] = (i >= nextSoundData.Count)
+                ? (short)0 
+                : nextSoundData[i];
+        }
+    
+        return true;
+    }
+
+
+    public void PrintModuleInfo()
+    {
+        if (_module == null)
+        {
+            Console.WriteLine("Module is not loaded.");
+            
+            return;
+        }
+        
+        var module = _module;
+        
         Console.WriteLine($"Module Title: {module.Title}");
 
         Console.WriteLine($"Instruments:");
