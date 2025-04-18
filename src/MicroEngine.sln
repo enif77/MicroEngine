@@ -26,6 +26,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GL", "GL", "{1B8EB950-75C8-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.GL.RotatingCubeDemo", "MicroEngine.Demos.GL.RotatingCubeDemo\MicroEngine.Demos.GL.RotatingCubeDemo.csproj", "{A3038F10-E6BB-4F7E-A78A-9AE5E78F38A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.Audio.AmigaModPlayerDemo", "MicroEngine.Demos.Audio.AmigaModPlayerDemo\MicroEngine.Demos.Audio.AmigaModPlayerDemo.csproj", "{BCC45CAA-7948-4318-BC91-6DDBE44D11AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{A3038F10-E6BB-4F7E-A78A-9AE5E78F38A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3038F10-E6BB-4F7E-A78A-9AE5E78F38A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3038F10-E6BB-4F7E-A78A-9AE5E78F38A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCC45CAA-7948-4318-BC91-6DDBE44D11AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCC45CAA-7948-4318-BC91-6DDBE44D11AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCC45CAA-7948-4318-BC91-6DDBE44D11AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCC45CAA-7948-4318-BC91-6DDBE44D11AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{12EEBA60-33E1-42FA-ABCC-D12389392CE4} = {2FADF165-1C66-48F1-8C63-6EDA0403B8AD}
@@ -83,5 +89,6 @@ Global
 		{7F072D3A-67AB-4FC6-BC5A-36D1ACE8D452} = {12EEBA60-33E1-42FA-ABCC-D12389392CE4}
 		{1B8EB950-75C8-49D6-8936-15491340DD84} = {2FADF165-1C66-48F1-8C63-6EDA0403B8AD}
 		{A3038F10-E6BB-4F7E-A78A-9AE5E78F38A4} = {1B8EB950-75C8-49D6-8936-15491340DD84}
+		{BCC45CAA-7948-4318-BC91-6DDBE44D11AD} = {12EEBA60-33E1-42FA-ABCC-D12389392CE4}
 	EndGlobalSection
 EndGlobal
