@@ -22,6 +22,15 @@ internal static class Program
         // This sound is a 1 second long sine wave at 440 Hz.
         // Sounds are simple objects that can be deleted anytime once they are no more needed.
         var sound440 = SoundsGenerator.Generate16BitSineWaveMonoSound(44100, 44100, 440, 0.5);
+        var whiteNoiseSound = SoundsGenerator.Generate16BitWhiteNoiseMonoSound(
+            44100, 
+            44100,
+            0.7,
+            100,
+            1200.0,
+            0.7,
+            false,
+            0);
         
         // Create the audio mixer.
         // This will not initialize the audio mixer.
@@ -36,6 +45,7 @@ internal static class Program
             // Create a sound buffer and attach the sound to it.
             var buffer = mixer.CreateSoundBuffer();
             buffer.LoadData(sound440);
+            //buffer.LoadData(whiteNoiseSound);
             
             // Create a sound source and attach the sound buffer to it.
             var source = mixer.CreateSoundSource();
