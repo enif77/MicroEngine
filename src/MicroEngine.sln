@@ -28,6 +28,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.GL.Rotati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.Audio.AmigaModPlayerDemo", "MicroEngine.Demos.Audio.AmigaModPlayerDemo\MicroEngine.Demos.Audio.AmigaModPlayerDemo.csproj", "{BCC45CAA-7948-4318-BC91-6DDBE44D11AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Extensions.Audio", "MicroEngine.Extensions.Audio\MicroEngine.Extensions.Audio.csproj", "{2F757501-C020-4BBE-8AFB-32F30EB3AD70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +80,10 @@ Global
 		{BCC45CAA-7948-4318-BC91-6DDBE44D11AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCC45CAA-7948-4318-BC91-6DDBE44D11AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCC45CAA-7948-4318-BC91-6DDBE44D11AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F757501-C020-4BBE-8AFB-32F30EB3AD70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F757501-C020-4BBE-8AFB-32F30EB3AD70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F757501-C020-4BBE-8AFB-32F30EB3AD70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F757501-C020-4BBE-8AFB-32F30EB3AD70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{12EEBA60-33E1-42FA-ABCC-D12389392CE4} = {2FADF165-1C66-48F1-8C63-6EDA0403B8AD}

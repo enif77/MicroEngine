@@ -5,6 +5,7 @@ namespace MicroEngine.Demos.Audio.SoundBufferWithChangingDataDemo;
 using OpenTK.Audio.OpenAL;
 
 using MicroEngine.Audio;
+using MicroEngine.Extensions.Audio.Generators;
 
 /// <summary>
 /// Demonstrates that data of a sound buffer can be changed over time.
@@ -32,7 +33,7 @@ internal static class Program
             for (int freq = 440; freq < 2000; freq += 100)
             {
                 // One second of sound (44100 samples, 44100 samples per second, some frequency, amplitude/volume 0.5).
-                var sound = Sound.Generate16BitSineWaveMonoSound(44100, 44100, freq, 0.5);
+                var sound = SoundsGenerator.Generate16BitSineWaveMonoSound(44100, 44100, freq, 0.5);
                 
                 // Load the sound data into the buffer.
                 buffer.LoadData(sound);    

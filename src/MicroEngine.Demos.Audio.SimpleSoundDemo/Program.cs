@@ -5,6 +5,7 @@ namespace MicroEngine.Demos.Audio.SimpleSoundDemo;
 using OpenTK.Audio.OpenAL;
 
 using MicroEngine.Audio;
+using MicroEngine.Extensions.Audio.Generators;
 
 /// <summary>
 /// Demonstrates the use of the MicroEngine Audio library.
@@ -20,7 +21,7 @@ internal static class Program
         // Create a sound.
         // This sound is a 1 second long sine wave at 440 Hz.
         // Sounds are simple objects that can be deleted anytime once they are no more needed.
-        var sound440 = Sound.Generate16BitSineWaveMonoSound(44100, 44100, 440, 0.5);
+        var sound440 = SoundsGenerator.Generate16BitSineWaveMonoSound(44100, 44100, 440, 0.5);
         
         // Create the audio mixer.
         // This will not initialize the audio mixer.

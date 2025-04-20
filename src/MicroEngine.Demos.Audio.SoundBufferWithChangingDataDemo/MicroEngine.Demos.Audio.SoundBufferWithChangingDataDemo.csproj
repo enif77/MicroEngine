@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MicroEngine.Audio\MicroEngine.Audio.csproj" />
+      <ProjectReference Include="..\MicroEngine.Extensions.Audio\MicroEngine.Extensions.Audio.csproj" />
     </ItemGroup>
 
 </Project>
