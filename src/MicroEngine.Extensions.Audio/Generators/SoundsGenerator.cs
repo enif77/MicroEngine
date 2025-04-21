@@ -162,27 +162,4 @@ public static class SoundsGenerator
                 ? max
                 : value;
     }
-    
-
-    // public static Sound Generate16BitWhiteNoiseWithExponentialFadeOutMonoSound(int samplesCount, int samplesPerSecond, int seed = 0)
-    // {
-    //     var rand = (seed == 0)
-    //         ? new Random()
-    //         : new Random(seed);
-    //
-    //     var sound = Sound.Create16BitMonoSound(samplesCount, samplesPerSecond);
-    //     
-    //     var samples = sound.Samples;
-    //     
-    //     for (var i = 0; i < samples.Length; i++)
-    //     {
-    //         var t = (double)i / samples.Length;
-    //         var envelope = Math.Exp(-6 * t); // rychlý útlum
-    //         var whiteNoise = 2 * rand.NextDouble() - 1;
-    //         samples[i] = (short)(whiteNoise * envelope * short.MaxValue * 0.6); // 60% hlasitosti
-    //     }
-    //     
-    //     return sound;
-    // }
-
 }
