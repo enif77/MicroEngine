@@ -106,6 +106,22 @@ public class SceneObjectController : SceneObjectBase
         Position += RightVector * distance;
     }
     
+    /// <summary>
+    /// Applies the given velocity to the camera.
+    /// </summary>
+    /// <param name="velocity"></param>
+    public void ApplyVelocity(Vector3 velocity)
+    {
+        // Calculate the displacement vector based on the velocity and the orientation vectors.
+        var displacement =
+            FrontVector * velocity.Z +
+            UpVector * velocity.Y +
+            RightVector * velocity.X;
+
+        // Update the position.
+        Position += displacement;
+    }
+    
     
     public override void Update(float deltaTime)
     {
