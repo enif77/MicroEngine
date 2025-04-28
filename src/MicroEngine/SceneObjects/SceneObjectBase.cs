@@ -51,6 +51,32 @@ public abstract class SceneObjectBase : ISceneObject
         }
     }
     
+    
+    private bool _useOrientation;
+    public bool UseOrientation
+    {
+        get => _useOrientation;
+
+        set
+        {
+            _useOrientation = value;
+            NeedsModelMatrixUpdate = true;
+        }
+    }
+    
+    private Quaternion _orientation = Quaternion.Identity;
+    public Quaternion Orientation
+    {
+        get => _orientation;
+
+        set
+        {
+            _orientation = value;
+            NeedsModelMatrixUpdate = true;
+        }
+    }
+    
+    
     private bool _needsModelMatrixUpdate = true;
     public bool NeedsModelMatrixUpdate
     {
@@ -82,9 +108,16 @@ public abstract class SceneObjectBase : ISceneObject
         {
             ModelMatrix = Matrix4.CreateScale(Scale);
         
-            ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
-            ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
-            ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
+            if (UseOrientation)
+            {
+                ModelMatrix *= Matrix4.CreateFromQuaternion(Orientation);
+            }
+            else
+            {
+                ModelMatrix *= Matrix4.CreateRotationZ(Rotation.Z);
+                ModelMatrix *= Matrix4.CreateRotationX(Rotation.X);
+                ModelMatrix *= Matrix4.CreateRotationY(Rotation.Y);
+            }
 
             ModelMatrix *= Matrix4.CreateTranslation(Position);
         

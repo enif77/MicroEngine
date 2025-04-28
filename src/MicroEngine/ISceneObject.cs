@@ -44,6 +44,18 @@ public interface ISceneObject : IUpdatable, IRenderable
     /// </summary>
     Vector3 Rotation { get; set; }
     
+    
+    /// <summary>
+    /// If true, this scene object uses orientation instead of rotation.
+    /// </summary>
+    bool UseOrientation { get; set; }
+    
+    /// <summary>
+    /// Orientation of this scene object.
+    /// </summary>
+    Quaternion Orientation { get; set; }
+    
+    
     /// <summary>
     /// True, if this object needs model matrix update.
     /// </summary>
