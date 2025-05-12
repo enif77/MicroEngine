@@ -168,6 +168,133 @@ public static class SoundsGenerator
         return newSound;
     }
     
+    /// <summary>
+    /// Adds a reverb effect to the sound.
+    /// </summary>
+    /// <param name="originalSound">The original sound.</param>
+    /// <param name="delayMs">How many milliseconds should the delay be.</param>
+    /// <param name="decayFactor">How much the sound should decay. 0.0 = no decay, 1.0 = full decay.</param>
+    /// <param name="echoCount">How many echoes should be added.</param>
+    /// <param name="createNewSound">If true a copy of the original sound is returned. The original sound is not changed.</param>
+    /// <returns>A sound with the reverb effect applied.</returns>
+    /// <exception cref="ArgumentException">Thrown when the delay is less or equal to zero, the decay factor is not between 0 and 1, or the echo count is less or equal to zero.</exception>
+    public static Sound AddReverb(Sound originalSound, int delayMs, double decayFactor, int echoCount, bool createNewSound = true)
+    {
+        if (delayMs <= 0)
+        {
+            throw new ArgumentException("Delay must be greater than zero.");
+        }
+        
+        if (decayFactor <= 0 || decayFactor >= 1)
+        {
+            throw new ArgumentException("Decay factor must be between 0 and 1.");
+        }
+        
+        if (echoCount <= 0)
+        {
+            throw new ArgumentException("Echo count must be greater than zero.");
+        }
+
+        var samples = originalSound.Samples;
+        var sampleRate = originalSound.SamplesPerSecond;
+        var delaySamples = (int)(sampleRate * (delayMs / 1000.0));
+
+        // Create a new sound if requested.
+        Sound newSound;
+        if (createNewSound)
+        {
+            // Create a new sound with the same sample rate and length.
+            newSound = Sound.Create16BitMonoSound(samples.Length, sampleRate);
+            
+            // Copy the original samples to the new sound.
+            Array.Copy(samples, newSound.Samples, samples.Length);
+        }
+        else
+        {
+            // Reuse the original sound.
+            newSound = originalSound;
+        }
+
+        // Add the reverb effect.
+        var newSamples = newSound.Samples;
+        for (var echo = 1; echo <= echoCount; echo++)
+        {
+            var echoDelay = echo * delaySamples;
+            var echoAmplitude = Math.Pow(decayFactor, echo);
+
+            for (var i = echoDelay; i < newSamples.Length; i++)
+            {
+                var echoSample = ConvertToDouble(newSamples[i - echoDelay]) * echoAmplitude;
+                newSamples[i] = ConvertTo16Bit(ConvertToDouble(newSamples[i]) + echoSample);
+            }
+        }
+
+        return newSound;
+    }
+    
+    /// <summary>
+    /// Adds an echo effect to the sound.
+    /// </summary>
+    /// <param name="originalSound">The original sound.</param>
+    /// <param name="delayMs">Delay in milliseconds.</param>
+    /// <param name="decayFactor">>Decay factor (0.0 - 1.0).</param>
+    /// <param name="echoCount">>Number of echoes.</param>
+    /// <param name="createNewSound">>True if a new sound should be created; false if the original sound should be modified.</param>
+    /// <returns>>A sound with the echo effect applied.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when the delay is less than or equal to zero, the decay factor is not between 0 and 1, or the echo count is less than or equal to zero.</exception>
+    public static Sound AddEcho(Sound originalSound, int delayMs, double decayFactor, int echoCount, bool createNewSound = true)
+    {
+        if (delayMs <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(delayMs), "Delay must be greater than zero.");
+        }
+
+        if (decayFactor <= 0 || decayFactor >= 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(decayFactor), "Decay factor must be between 0 and 1.");
+        }
+
+        if (echoCount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(echoCount), "Echo count must be greater than zero.");
+        }
+
+        var samples = originalSound.Samples;
+        var sampleRate = originalSound.SamplesPerSecond;
+
+        // Počet vzorků odpovídající zpoždění.
+        var delaySamples = (int)(sampleRate * (delayMs / 1000.0));
+
+        // Vytvoření nového zvuku, pokud je požadováno.
+        Sound newSound;
+        if (createNewSound)
+        {
+            newSound = Sound.Create16BitMonoSound(samples.Length, sampleRate);
+            Array.Copy(samples, newSound.Samples, samples.Length);
+        }
+        else
+        {
+            newSound = originalSound;
+        }
+
+        var newSamples = newSound.Samples;
+
+        // Přidání ozvěny.
+        for (var echo = 1; echo <= echoCount; echo++)
+        {
+            var echoDelay = echo * delaySamples;
+            var echoAmplitude = Math.Pow(decayFactor, echo);
+
+            for (var i = echoDelay; i < newSamples.Length; i++)
+            {
+                var echoSample = ConvertToDouble(newSamples[i - echoDelay]) * echoAmplitude;
+                newSamples[i] = ConvertTo16Bit(ConvertToDouble(newSamples[i]) + echoSample);
+            }
+        }
+
+        return newSound;
+    }
+    
     
     static void ApplyResonantLowPass(short[] buffer, int sampleRate, double cutoffFrequency, double resonance)
     {
