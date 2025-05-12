@@ -16,7 +16,7 @@ public static class SoundsGenerator
     /// <param name="samplesPerSecond">How many samples per second.</param>
     /// <param name="frequency">Frequency of the sound.</param>
     /// <param name="amplitude">Amplitude of the sound - how loud it will be.</param>
-    /// <returns>A a buffer containing the samplesCount of 16 bit mono sound samples.</returns>
+    /// <returns>A buffer containing the samplesCount of 16 bit mono sound samples.</returns>
     public static Sound Generate16BitSineWaveMonoSound(int samplesCount, int samplesPerSecond, double frequency, double amplitude)
     {
         if (frequency <= 0)
@@ -113,6 +113,59 @@ public static class SoundsGenerator
         }
         
         return sound;
+    }
+    
+    /// <summary>
+    /// Adds a fade-out effect to the sound.
+    /// </summary>
+    /// <param name="originalSound">The original sound.</param>
+    /// <param name="fadeOutDurationMs">How many milliseconds should the fade-out long.</param>
+    /// <param name="createNewSound">If true a copy of the original sound is returned. The original sound is not changed.</param>
+    /// <returns>A sound with the fadeout effect applied.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">If the fade-out duration is less or equal to zero.</exception>
+    /// <exception cref="ArgumentException">If the fade-out duration is longer than the original sound.</exception>
+    public static Sound AddFadeOut(Sound originalSound, int fadeOutDurationMs, bool createNewSound = true)
+    {
+        if (fadeOutDurationMs <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(fadeOutDurationMs), "Fade-out duration must be greater than zero.");
+        }
+
+        var samples = originalSound.Samples;
+        var sampleRate = originalSound.SamplesPerSecond;
+
+        // The number of samples to fade out.
+        var fadeOutSamplesCount = (int)(sampleRate * (fadeOutDurationMs / 1000.0));
+        if (fadeOutSamplesCount > samples.Length)
+        {
+            throw new ArgumentException("Fade-out duration is longer than the sound duration.");
+        }
+        
+        // Create a new sound if requested.
+        Sound newSound;
+        if (createNewSound)
+        {
+            // Create a new sound with the same sample rate and length.
+            newSound = Sound.Create16BitMonoSound(samples.Length, sampleRate);
+            
+            // Copy the original samples to the new sound.
+            Array.Copy(samples, newSound.Samples, samples.Length);
+        }
+        else
+        {
+            // Reuse the original sound.
+            newSound = originalSound;
+        }
+        
+        // Add the fade-out effect.
+        var newSamples = newSound.Samples;
+        for (var i = samples.Length - fadeOutSamplesCount; i < samples.Length; i++)
+        {
+            var fadeFactor = 1.0 - ((i - (samples.Length - fadeOutSamplesCount)) / (double)fadeOutSamplesCount);
+            newSamples[i] = ConvertTo16Bit(ConvertToDouble(samples[i]) * fadeFactor);
+        }
+
+        return newSound;
     }
     
     
