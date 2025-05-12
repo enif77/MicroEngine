@@ -37,7 +37,7 @@ public class ManySimpleCubesDemo : IGame
         scene.AddSkybox(SimpleStarsSkyboxGenerator.Generate(_resourcesManager));
 
         // Load the default shader.
-        _resourcesManager.LoadShader("default", new DefaultShader(_resourcesManager));
+        _resourcesManager.LoadShader("default", new DefaultShader());
         
         // var cubeMaterial = new Material(
         //     _resourcesManager.LoadTexture("Textures/container2.png"),

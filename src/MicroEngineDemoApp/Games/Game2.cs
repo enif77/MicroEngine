@@ -52,7 +52,7 @@ public class Game2 : IGame
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Textures/container2.png"),
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-            new DefaultShader(_resourcesManager));
+            new DefaultShader());
         
         var lampShader = new SimpleColorShader(_resourcesManager);
         

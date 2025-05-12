@@ -10,10 +10,8 @@ public class DefaultShader : IShader
 {
     private readonly GlslShader _glslShader;
     
-    public DefaultShader(IResourcesManager resourcesManager)
+    public DefaultShader()
     {
-        ArgumentNullException.ThrowIfNull(resourcesManager);
-        
         _glslShader = new GlslShader(
             /*language=glsl*/
             """

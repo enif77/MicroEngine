@@ -51,7 +51,7 @@ public class Game : IGame
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Textures/container2.png"),
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-            new DefaultShader(_resourcesManager));
+            new DefaultShader());
         
         scene.AddChild(CreateCube(cubeMaterial, new Vector3( 0.0f,  0.0f,   0.0f)));
         scene.AddChild(CreateCube(cubeMaterial, new Vector3( 2.0f,  5.0f, -15.0f)));

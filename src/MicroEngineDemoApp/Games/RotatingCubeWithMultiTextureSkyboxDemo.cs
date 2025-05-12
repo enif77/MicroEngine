@@ -50,7 +50,7 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
             new Material(
                 _resourcesManager.LoadTexture("Textures/container2.png"),
                 _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-                new DefaultShader(_resourcesManager)),
+                new DefaultShader()),
             new Vector3(0.0f, 0.0f, 0.0f)));
         
         scene.AddLight(new DirectionalLight(scene.Lights.Count)
