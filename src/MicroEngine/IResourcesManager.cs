@@ -31,6 +31,13 @@ public interface IResourcesManager
     /// <returns>A string representing the contents of the requested file.</returns>
     string LoadTextFile(string path);
     
+    /// <summary>
+    /// Loads a binary file from the given path.
+    /// </summary>
+    /// <param name="path">A file path.</param>
+    /// <returns>An array of bytes representing the contents of the requested file.</returns>
+    byte[] LoadBinaryFile(string path);
+    
     #endregion
 
 

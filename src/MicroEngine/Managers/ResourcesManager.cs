@@ -61,6 +61,17 @@ public class ResourcesManager : IResourcesManager
         return File.ReadAllText(GetFullPath(path));
     }
     
+    
+    public byte[] LoadBinaryFile(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentException("A path to a text file expected.");
+        }
+
+        return File.ReadAllBytes(GetFullPath(path));
+    }
+    
     #endregion
     
     
