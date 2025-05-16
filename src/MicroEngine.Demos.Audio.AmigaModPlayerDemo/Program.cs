@@ -1,12 +1,12 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine.Demos.Audio.AmigaModPlayerDemo.Player;
-
 namespace MicroEngine.Demos.Audio.AmigaModPlayerDemo;
 
 using OpenTK.Audio.OpenAL;
 
 using MicroEngine.Audio;
+
+using MicroEngine.Demos.Audio.AmigaModPlayerDemo.Player;
 
 /// <summary>
 /// Demonstrates that sound data can be streamed from a complicated generator ProTracker MOD file.
