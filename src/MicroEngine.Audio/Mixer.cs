@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using OpenTK.Mathematics;
+
 namespace MicroEngine.Audio;
 
 using OpenTK.Audio.OpenAL;
@@ -29,6 +31,164 @@ public sealed class Mixer : IDisposable
         return System.Text.Json.JsonSerializer.Serialize(audioContextInfo);
     }
 
+    
+    /// <summary>
+    /// Gets or sets the master volume.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">If an OpenAL error occurs.</exception>
+    public float ListenerVolume
+    {
+        get
+        {
+            CheckInitialized();
+
+            _ = AL.GetError();
+            
+            var masterVolume = AL.GetListener(ALListenerf.Gain);
+            
+            var error = AL.GetError();
+            if (error != ALError.NoError)
+            {
+                throw new InvalidOperationException($"Failed to get master volume. OpenAL error: {error}");
+            }
+            
+            return masterVolume;
+        }
+        
+        set
+        {
+            CheckInitialized();
+
+            _ = AL.GetError();
+            
+            AL.Listener(ALListenerf.Gain, value);
+            
+            var error = AL.GetError();
+            if (error != ALError.NoError)
+            {
+                throw new InvalidOperationException($"Failed to set master volume. OpenAL error: {error}");
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Position of the listener in 3D space.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">If an OpenAL error occurs.</exception>
+    public Vector3 ListenerPosition
+    {
+        get
+        {
+            CheckInitialized();
+
+            _ = AL.GetError();
+            
+            var position = AL.GetListener(ALListener3f.Position);
+            
+            var error = AL.GetError();
+            if (error != ALError.NoError)
+            {
+                throw new InvalidOperationException($"Failed to get listener position. OpenAL error: {error}");
+            }
+            
+            return position;
+        }
+        
+        set
+        {
+            CheckInitialized();
+
+            _ = AL.GetError();
+            
+            AL.Listener(ALListener3f.Position, value.X, value.Y, value.Z);
+            
+            var error = AL.GetError();
+            if (error != ALError.NoError)
+            {
+                throw new InvalidOperationException($"Failed to set listener position. OpenAL error: {error}");
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Velocity of the listener in 3D space.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">If an OpenAL error occurs.</exception>
+    public Vector3 ListenerVelocity
+    {
+        get
+        {
+            CheckInitialized();
+
+            _ = AL.GetError();
+            
+            var velocity = AL.GetListener(ALListener3f.Velocity);
+            
+            var error = AL.GetError();
+            if (error != ALError.NoError)
+            {
+                throw new InvalidOperationException($"Failed to get listener velocity. OpenAL error: {error}");
+            }
+            
+            return velocity;
+        }
+        
+        set
+        {
+            CheckInitialized();
+
+            _ = AL.GetError();
+            
+            AL.Listener(ALListener3f.Velocity, value.X, value.Y, value.Z);
+            
+            var error = AL.GetError();
+            if (error != ALError.NoError)
+            {
+                throw new InvalidOperationException($"Failed to set listener velocity. OpenAL error: {error}");
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Gets or sets the listener orientation.
+    /// The value is a tuple of two vectors: at (the direction the listener is facing) and up (the up direction of the listener).
+    /// </summary>
+    /// <exception cref="InvalidOperationException">Thrown if an OpenAL error occurs.</exception>
+    public (Vector3, Vector3) ListenerOrientation
+    {
+        get
+        {
+            CheckInitialized();
+
+            _ = AL.GetError();
+            
+            AL.GetListener(ALListenerfv.Orientation, out var at, out var up);
+            
+            var error = AL.GetError();
+            if (error != ALError.NoError)
+            {
+                throw new InvalidOperationException($"Failed to get listener orientation. OpenAL error: {error}");
+            }
+            
+            return (at, up);
+        }
+        
+        set
+        {
+            CheckInitialized();
+
+            _ = AL.GetError();
+            
+            AL.Listener(ALListenerfv.Orientation, ref value.Item1, ref value.Item2);
+            
+            var error = AL.GetError();
+            if (error != ALError.NoError)
+            {
+                throw new InvalidOperationException($"Failed to set listener orientation. OpenAL error: {error}");
+            }
+        }
+    }
+    
     
     /// <summary>
     /// Initializes the audio mixer.
