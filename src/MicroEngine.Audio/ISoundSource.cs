@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using OpenTK.Mathematics;
+
 namespace MicroEngine.Audio;
 
 using OpenTK.Audio.OpenAL;
@@ -19,6 +21,16 @@ public interface ISoundSource : IDisposable
     /// </summary>
     int ALSourceId { get; }
 
+    /// <summary>
+    /// Gets or sets the position of this sound source.
+    /// </summary>
+    Vector3 Position { get; set; }
+    
+    /// <summary>
+    /// Gets or sets the volume (gain) of this sound source.
+    /// </summary>
+    float Volume { get; set; }
+    
     /// <summary>
     /// Indicates whether this sound source is looping.
     /// </summary>
