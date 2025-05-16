@@ -22,7 +22,7 @@ scene management, and more. Below is an overview of the key classes and interfac
 
 ## Todo
 
-- Skybox should use a cubemap.
+- Skybox should use a cube map.
 - Replace IGame.SetCameraAspectRatio().
 - Logging using ILogger.
 - Write documentation. :-)
