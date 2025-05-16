@@ -40,6 +40,11 @@ public interface ISceneObject : IUpdatable, IRenderable
     Vector3 Position { get; set; }
     
     /// <summary>
+    /// Position of this scene object in world coordinates.
+    /// </summary>
+    Vector3 WorldPosition { get; }
+    
+    /// <summary>
     /// Rotation of this scene object in counter-clockwise angles in radians.
     /// </summary>
     Vector3 Rotation { get; set; }

@@ -39,6 +39,11 @@ public abstract class SceneObjectBase : ISceneObject
         }
     }
     
+    
+    public Vector3 WorldPosition
+        => Vector3.TransformPosition(Position, ModelMatrix);
+    
+    
     private Vector3 _rotation = Vector3.Zero;
     public Vector3 Rotation
     {
