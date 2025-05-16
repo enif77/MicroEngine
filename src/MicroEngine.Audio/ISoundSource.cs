@@ -24,23 +24,26 @@ public interface ISoundSource : IDisposable
     /// <summary>
     /// Gets or sets the position of this sound source.
     /// </summary>
+    /// <exception cref="InvalidOperationException">When this sound source is not initialized yet or na OpenAL error occurs..</exception>
     Vector3 Position { get; set; }
     
     /// <summary>
     /// Gets or sets the volume (gain) of this sound source.
     /// </summary>
+    /// <exception cref="InvalidOperationException">When this sound source is not initialized yet or na OpenAL error occurs..</exception>
     float Volume { get; set; }
     
     /// <summary>
     /// Indicates whether this sound source is looping.
     /// </summary>
-    /// <exception cref="InvalidOperationException">When this sound source is not initialized yet.</exception>
+    /// <exception cref="InvalidOperationException">When this sound source is not initialized yet or an OpenAL error occurs.</exception>
     bool IsLooping { get; set; }
 
     /// <summary>
     /// Gets the state of the OpenAL source.
     /// </summary>
     /// <exception cref="InvalidOperationException">When this sound source is not initialized yet.</exception>
+    /// <exception cref="InvalidOperationException">When an OpenAL error occurs.</exception>
     ALSourceState State { get; }
 
     /// <summary>
@@ -55,12 +58,13 @@ public interface ISoundSource : IDisposable
     /// <param name="soundBuffer"></param>
     /// <exception cref="InvalidOperationException">When this sound source is not initialized yet.</exception>
     /// <exception cref="ArgumentNullException">If the soundBuffer parameter is null</exception>
-    /// <exception cref="InvalidOperationException">When the sound buffer is not initialized.</exception>
+    /// <exception cref="InvalidOperationException">When the sound buffer is not initialized or an OpenAL error occurs.</exception>
     void AttachSoundBuffer(ISoundBuffer soundBuffer);
 
     /// <summary>
     /// Stops the playback of the sound buffer attached to this source and detaches it.
     /// </summary>
+    /// <exception cref="InvalidOperationException">When this sound source is not initialized yet or an OpenAL error occurs..</exception>
     void DetachSoundBuffer();
     
     /// <summary>
