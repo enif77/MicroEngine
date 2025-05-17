@@ -206,6 +206,9 @@ public class Game : IGame, IDisposable
             
             var soundSourcePosition = _soundSource.Position;
             Console.WriteLine($"Sound source position: {soundSourcePosition.X}, {soundSourcePosition.Y}, {soundSourcePosition.Z}");
+            
+            var listenerPosition = _mixer.ListenerPosition;
+            Console.WriteLine($"Listener position: {listenerPosition.X}, {listenerPosition.Y}, {listenerPosition.Z}");
         }
         
         
