@@ -14,7 +14,18 @@ public static class GlContext
     /// <summary>
     /// Is the OpenGL context using OpenGL ES?
     /// </summary>
-    public static bool IsGLES => GL.GetString(StringName.Version)?.Contains("OpenGL ES") == true;
+    //public static bool IsGLES => GL.GetString(StringName.Version)?.Contains("OpenGL ES") == true;
+    public static bool IsGLES
+    { 
+        get
+        {
+            var version = GL.GetString(StringName.Version);
+
+            return
+                version != null
+                && (version.Contains("OpenGL ES", StringComparison.OrdinalIgnoreCase) || version.Contains("3.1 (Core Profile) Mesa", StringComparison.OrdinalIgnoreCase));
+        }
+    }
 
     /// <summary>
     /// Gets the OpenGL version string.

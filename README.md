@@ -1,5 +1,25 @@
 # Micro Engine
 
+---
+
+## Requirements for running ME on Manjaro on Raspberry PI 5:
+
+- Install: glfw (3.4-2)
+- RPI5 GL Version: "3.1 (Core Profile) Mesa 25.1.1-arch1.1"
+
+## VS Code Notes
+
+- Running VS Code under Wayland: code --enable-features=UseOzonePlatform --ozone-platform=wayland
+    - Fix for the "Failed to load plugin 'libdecor-gtk.so': failed to init" etc.
+    - It turns out that even if system is running Wayland, VSCode defaults to using the X11 protocol.
+      To fix this, you can launch VSCode with the following command:
+
+```
+code --enable-features=UseOzonePlatform --ozone-platform=wayland
+```
+
+---
+
 The `MicroEngine` project is a lightweight game engine written in C# using OpenTK. 
 It provides a modular structure for creating 3D applications, with components for rendering, 
 scene management, and more. Below is an overview of the key classes and interfaces:

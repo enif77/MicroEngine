@@ -48,8 +48,23 @@ internal static class Program
         
         ResourcesManager.Instance.RootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
         
+        GLFWProvider.SetErrorCallback(
+            (error, description) =>
+            {
+                Console.Error.WriteLine($"GLFW Error: {error} - {description}");
+            });
+        
         var nativeWindowSettings = new NativeWindowSettings()
         {
+            // OpenGL ES 3.1
+            APIVersion = new Version(3, 1), 
+            Profile = ContextProfile.Any,
+
+            // Profile = Settings.EnableOpenGLES
+            //     ? ContextProfile.Compatability
+            //     : ContextProfile.Core,
+
+
             ClientSize = Settings.EnableFullscreen
                 ? new Vector2i(primaryMonitor.HorizontalResolution, primaryMonitor.VerticalResolution)
                 : new Vector2i(windowWidth, windowHeight),
