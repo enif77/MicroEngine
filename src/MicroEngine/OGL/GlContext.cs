@@ -1,0 +1,47 @@
+/* Copyright (C) Premysl Fara and Contributors */
+
+namespace MicroEngine.OGL;
+
+// We are using OpenTK.Graphics.OpenGL4 for OpenGL strings and capabilities,
+// but, atleast for those used, they are compatible with OpenGL ES 3.0+.
+using OpenTK.Graphics.OpenGL4;
+
+/// <summary>
+/// Gets information about the current OpenGL context.
+/// </summary>
+public static class GlContext
+{
+    /// <summary>
+    /// Is the OpenGL context using OpenGL ES?
+    /// </summary>
+    public static bool IsGLES => GL.GetString(StringName.Version)?.Contains("OpenGL ES") == true;
+
+    /// <summary>
+    /// Gets the OpenGL version string.
+    /// </summary>
+    public static string Version => GL.GetString(StringName.Version) ?? "Unknown";
+    
+    /// <summary>
+    /// Gets the GLSL version string.
+    /// </summary>
+    public static string GLSLVersion => GL.GetString(StringName.ShadingLanguageVersion) ?? "Unknown";
+    
+    /// <summary>
+    ///  Gets the vendor and renderer strings of the OpenGL context.
+    /// </summary>
+    public static string Vendor => GL.GetString(StringName.Vendor) ?? "Unknown";
+    
+    /// <summary>
+    /// Gets the renderer string of the OpenGL context.
+    /// </summary>
+    public static string Renderer => GL.GetString(StringName.Renderer) ?? "Unknown";
+    
+    
+    // public static void PrintContextInfo()
+    // {
+    //     Console.WriteLine("GL Version: " + Version);
+    //     Console.WriteLine("GLSL Version: " + GLSLVersion);
+    //     Console.WriteLine("Vendor: " + Vendor);
+    //     Console.WriteLine("Renderer: " + Renderer);
+    // }
+}

@@ -47,6 +47,8 @@ internal class Window : GameWindow
         
         #if DEBUG
 
+        PrintGlContextInfo();
+        
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) == false)
         {
             GL.DebugMessageCallback(DebugMessageDelegate, IntPtr.Zero);
@@ -117,6 +119,15 @@ internal class Window : GameWindow
     
     
     #if DEBUG
+    
+    public static void PrintGlContextInfo()
+    {
+        Console.WriteLine("GL Version: " + GlContext.Version);
+        Console.WriteLine("GLSL Version: " + GlContext.GLSLVersion);
+        Console.WriteLine("Vendor: " + GlContext.Vendor);
+        Console.WriteLine("Renderer: " + GlContext.Renderer);
+    }
+    
     
     private static readonly DebugProc DebugMessageDelegate = OnDebugMessage;
 
