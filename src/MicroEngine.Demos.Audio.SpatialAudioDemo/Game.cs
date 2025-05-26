@@ -1,8 +1,5 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine.Audio;
-using MicroEngine.Extensions.Audio.Generators;
-
 namespace MicroEngine.Demos.Audio.SpatialAudioDemo;
 
 using OpenTK.Graphics.OpenGL4;
@@ -10,7 +7,9 @@ using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 
 using MicroEngine;
+using MicroEngine.Audio;
 using MicroEngine.Extensions;
+using MicroEngine.Extensions.Audio.Generators;
 using MicroEngine.Extensions.Generators.Textures;
 using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Managers;
