@@ -1,5 +1,7 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
+using MicroEngine.OGL;
+
 namespace MicroEngine.Demos.GL.RotatingCubeDemo;
 
 using Microsoft.Extensions.Configuration;
@@ -48,6 +50,7 @@ internal static class Program
         
         ResourcesManager.Instance.RootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
         
+        // This is callback for GLFW errors.
         GLFWProvider.SetErrorCallback(
             (error, description) =>
             {
@@ -56,15 +59,6 @@ internal static class Program
         
         var nativeWindowSettings = new NativeWindowSettings()
         {
-            // OpenGL ES 3.1
-            APIVersion = new Version(3, 1), 
-            Profile = ContextProfile.Any,
-
-            // Profile = Settings.EnableOpenGLES
-            //     ? ContextProfile.Compatability
-            //     : ContextProfile.Core,
-
-
             ClientSize = Settings.EnableFullscreen
                 ? new Vector2i(primaryMonitor.HorizontalResolution, primaryMonitor.VerticalResolution)
                 : new Vector2i(windowWidth, windowHeight),
@@ -84,6 +78,17 @@ internal static class Program
                 ? WindowState.Fullscreen
                 : WindowState.Normal
         };
+        
+        // If we want to use OpenGL ES, we need to set the API.
+        // Raspberry Pi 5 supports OpenGL ES 3.1, so we can use that.
+        // If we want to use OpenGL, we can Use the default settings.
+        if (Settings.UseOpenGLES)
+        {
+            // OpenGL ES 3.1
+            nativeWindowSettings.API = ContextAPI.OpenGLES;
+            nativeWindowSettings.APIVersion = new Version(3, 1);
+            nativeWindowSettings.Profile = ContextProfile.Any;
+        }
         
         using (var gameWindow = new Window(
                    Settings,

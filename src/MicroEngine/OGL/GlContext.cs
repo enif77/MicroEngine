@@ -13,8 +13,8 @@ public static class GlContext
 {
     /// <summary>
     /// Is the OpenGL context using OpenGL ES?
+    /// Note: This is not a reliable way to detect OpenGL ES, as some desktop OpenGL implementations may report "OpenGL ES" in the version string.
     /// </summary>
-    //public static bool IsGLES => GL.GetString(StringName.Version)?.Contains("OpenGL ES") == true;
     public static bool IsGLES
     { 
         get
