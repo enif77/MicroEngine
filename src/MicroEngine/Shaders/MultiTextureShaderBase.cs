@@ -12,21 +12,35 @@ using MicroEngine.OGL;
 /// </summary>
 public abstract class MultiTextureShaderBase : IShader
 {
-    protected GlslShader GlslShader { get; }
+    private bool _wasBuilt;
     
-    
-    protected MultiTextureShaderBase(GlslShader glslShader)
-    {
-        GlslShader = glslShader ?? throw new ArgumentNullException(nameof(glslShader));
-    }
+    public bool SupportsOpenGLES => false;
+
+    protected GlslShader GlslShader { get; } = new();
     
 
     public int GetAttributeLocation(string name)
     {
         return GlslShader.GetAttribLocation(name);
     }
+
+
+    public void Build()
+    {
+        if (_wasBuilt)
+        {
+            return; // Already built, no need to build again.
+        }
+
+        BuildImpl();
+        
+        _wasBuilt = true;
+    }
     
     
+    protected abstract void BuildImpl();
+
+
     public virtual void Use(Scene scene, ISceneObject sceneObject)
     {
         var camera = scene.Camera;

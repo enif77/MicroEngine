@@ -68,6 +68,12 @@ public class Game : IGame, IDisposable
         // We are using the resources manager to keep track of the resources (the texture and the shader).
         var resourcesManager = ResourcesManager.Instance;
         
+        // Create a simple texture shader.
+        var simpleTextureShader = new SimpleTextureShader();
+        
+        // Build the shader.
+        simpleTextureShader.Build();
+        
         // Generate a cube with the texture.
         var listenerCube = TexturedCubeGenerator.Generate(
             new SimpleTextureMaterial(
@@ -77,7 +83,7 @@ public class Game : IGame, IDisposable
                     listenerCubeTexture.Width,
                     listenerCubeTexture.Height,
                     TextureWrapMode.ClampToEdge),
-                new SimpleTextureShader(resourcesManager)));
+                simpleTextureShader));
         
         // Set the listener cube's position and build its geometry.
         listenerCube.Position = new Vector3(0.0f, 0.0f, 0.0f);
@@ -93,7 +99,7 @@ public class Game : IGame, IDisposable
                     soundSourceCubeTexture.Width,
                     soundSourceCubeTexture.Height,
                     TextureWrapMode.ClampToEdge),
-                new SimpleTextureShader(resourcesManager)));
+                simpleTextureShader));
         
         // Set the sound source cube's position and build its geometry.
         soundSourceCube.Position = new Vector3(0.0f, 0.0f, -5.0f);

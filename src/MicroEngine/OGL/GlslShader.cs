@@ -5,30 +5,44 @@ namespace MicroEngine.OGL;
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
 
-// A simple class meant to help create shaders.
+/// <summary>
+/// Class representing a GLSL shader program.
+/// </summary>
 public sealed class GlslShader : IDisposable
 {
-    private readonly int _handle;
-
-    private readonly Dictionary<string, int> _uniformLocations;
-
-    // This is how you create a simple shader.
-    // Shaders are written in GLSL, which is a language very similar to C in its semantics.
-    // The GLSL source is compiled *at runtime*, so it can optimize itself for the graphics card it's currently being used on.
-    // A commented example of GLSL can be found in shader.vert.
-    public GlslShader(string vertexShaderSource, string fragmentShaderSource)
+    private readonly Dictionary<string, int> _uniformLocations = new();
+    
+    private int _handle;
+    private bool _wasBuild;
+    
+    /// <summary>
+    /// Builds the shader program.
+    /// </summary>
+    /// <param name="vertexShaderSource">The source code of the vertex shader.</param>
+    /// <param name="fragmentShaderSource">The source code of the fragment shader.</param>
+    /// <exception cref="ArgumentException">Thrown if the vertex or fragment shader source is null or whitespace.</exception>
+    /// <exception cref="InvalidOperationException">Thrown if the shader has already been built.</exception>
+    public void Build(string vertexShaderSource, string fragmentShaderSource)
     {
         if (string.IsNullOrWhiteSpace(vertexShaderSource))
         {
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(vertexShaderSource));
         }
-        
+
         if (string.IsNullOrWhiteSpace(fragmentShaderSource))
         {
             throw new ArgumentException("Value cannot be null or whitespace.", nameof(fragmentShaderSource));
         }
         
-        // There are several different types of shaders, but the only two you need for basic rendering are the vertex and fragment shaders.
+        if (_wasBuild)
+        {
+            throw new InvalidOperationException("Shader has already been built.");
+        }
+        
+        // The first thing we need to do is create the shader program.
+        // A shader program is a collection of shaders that can be used together.
+        // In OpenGL, you can have multiple shaders in a single program, but for now, we'll just use one vertex and one fragment shader.
+         // There are several different types of shaders, but the only two you need for basic rendering are the vertex and fragment shaders.
         // The vertex shader is responsible for moving around vertices, and uploading that data to the fragment shader.
         //   The vertex shader won't be too important here, but they'll be more important later.
         // The fragment shader is responsible for then converting the vertices to "fragments", which represent all the data OpenGL needs to draw a pixel.
@@ -74,10 +88,7 @@ public sealed class GlslShader : IDisposable
 
         // First, we have to get the number of active uniforms in the shader.
         GL.GetProgram(_handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
-
-        // Next, allocate the dictionary to hold the locations.
-        _uniformLocations = new Dictionary<string, int>();
-
+        
         // Loop over all the uniforms,
         for (var i = 0; i < numberOfUniforms; i++)
         {
@@ -90,50 +101,30 @@ public sealed class GlslShader : IDisposable
             // and then add it to the dictionary.
             _uniformLocations.Add(key, location);
         }
+        
+        _wasBuild = true;
     }
     
-    
-    private static void CompileShader(int shader)
-    {
-        // Try to compile the shader
-        GL.CompileShader(shader);
-
-        // Check for compilation errors
-        GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
-        if (code != (int)All.True)
-        {
-            // We can use `GL.GetShaderInfoLog(shader)` to get information about the error.
-            var infoLog = GL.GetShaderInfoLog(shader);
-            throw new Exception($"Error occurred whilst compiling Shader({shader}).\n\n{infoLog}");
-        }
-    }
-
-    private static void LinkProgram(int program)
-    {
-        // We link the program
-        GL.LinkProgram(program);
-
-        // Check for linking errors
-        GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
-        if (code != (int)All.True)
-        {
-            // We can use `GL.GetProgramInfoLog(program)` to get information about the error.
-            throw new Exception($"Error occurred whilst linking Program({program}), error({GL.GetProgramInfoLog(program)})");
-        }
-    }
-    
-    
-    // A wrapper function that enables the shader program.
+    /// <summary>
+    /// A wrapper function that enables the shader program.
+    /// </summary>
     public void Use()
     {
+        CheckWasBuilt();
+        
         GL.UseProgram(_handle);
     }
     
-    
-    // The shader sources provided with this project use hardcoded layout(location)-s. If you want to do it dynamically,
-    // you can omit the layout(location=X) lines in the vertex shader, and use this in VertexAttribPointer instead of the hardcoded values.
+    /// <summary>
+    /// The shader sources provided with this project use hardcoded layout(location)-s. If you want to do it dynamically,
+    /// you can omit the layout(location=X) lines in the vertex shader, and use this in VertexAttribPointer instead of the hardcoded values.
+    /// </summary>
+    /// <param name="attribName">An attribute name.</param>
+    /// <returns>An attribute location.</returns>
     public int GetAttribLocation(string attribName)
     {
+        CheckWasBuilt();
+        
         return GL.GetAttribLocation(_handle, attribName);
     }
 
@@ -153,6 +144,8 @@ public sealed class GlslShader : IDisposable
     /// <param name="data">The data to set</param>
     public void SetInt(string name, int data)
     {
+        CheckWasBuilt();
+        
         GL.UseProgram(_handle);
         GL.Uniform1(_uniformLocations[name], data);
     }
@@ -164,6 +157,8 @@ public sealed class GlslShader : IDisposable
     /// <param name="data">The data to set</param>
     public void SetFloat(string name, float data)
     {
+        CheckWasBuilt();
+        
         GL.UseProgram(_handle);
         GL.Uniform1(_uniformLocations[name], data);
     }
@@ -180,6 +175,8 @@ public sealed class GlslShader : IDisposable
     /// </remarks>
     public void SetMatrix4(string name, Matrix4 data)
     {
+        CheckWasBuilt();
+        
         GL.UseProgram(_handle);
         GL.UniformMatrix4(_uniformLocations[name], true, ref data);
     }
@@ -191,6 +188,8 @@ public sealed class GlslShader : IDisposable
     /// <param name="data">The data to set</param>
     public void SetVector2(string name, Vector2 data)
     {
+        CheckWasBuilt();
+        
         GL.UseProgram(_handle);
         GL.Uniform2(_uniformLocations[name], data);
     }
@@ -202,12 +201,51 @@ public sealed class GlslShader : IDisposable
     /// <param name="data">The data to set</param>
     public void SetVector3(string name, Vector3 data)
     {
+        CheckWasBuilt();
+        
         GL.UseProgram(_handle);
         GL.Uniform3(_uniformLocations[name], data);
     }
     
     
-    private bool _disposedValue = false;
+    private void CheckWasBuilt()
+    {
+        if (!_wasBuild || _handle == 0)
+        {
+            throw new InvalidOperationException("GlslShader: Shader has not been built yet. Call Build() before using the shader.");
+        }
+    }
+    
+    
+    private static void CompileShader(int shader)
+    {
+        // Try to compile the shader
+        GL.CompileShader(shader);
+
+        // Check for compilation errors
+        GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
+        if (code != (int)All.True)
+        {
+            throw new Exception($"GlslShader: Error occurred whilst compiling Shader({shader}), error({GL.GetShaderInfoLog(shader)})");
+        }
+    }
+
+    
+    private static void LinkProgram(int program)
+    {
+        // We link the program
+        GL.LinkProgram(program);
+
+        // Check for linking errors
+        GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
+        if (code != (int)All.True)
+        {
+            throw new Exception($"GlslShader: Error occurred whilst linking Program({program}), error({GL.GetProgramInfoLog(program)})");
+        }
+    }
+    
+    
+    private bool _disposedValue;
 
     private void Dispose(bool disposing)
     {
@@ -221,6 +259,7 @@ public sealed class GlslShader : IDisposable
         _disposedValue = true;
     }
 
+    
     ~GlslShader()
     {
         if (_disposedValue == false)

@@ -61,6 +61,12 @@ public class Game : IGame
         // We are using the resources manager to keep track of the resources (the texture and the shader).
         var resourcesManager = ResourcesManager.Instance;
         
+        // Create a shader for rendering the cube with the texture.
+        var shader = new SimpleTextureShader();
+        
+        // Build the shader, so it is ready to be used.
+        shader.Build();
+        
         // Generate a cube with the texture.
         var cube = TexturedCubeGenerator.Generate(
             new SimpleTextureMaterial(
@@ -70,7 +76,7 @@ public class Game : IGame
                     texture.Width,
                     texture.Height,
                     TextureWrapMode.ClampToEdge),
-                new SimpleTextureShader(resourcesManager)));
+                shader));
         
         // Set the cube's position and build its geometry.
         cube.Position = new Vector3(0.0f, 0.0f, 0.0f);

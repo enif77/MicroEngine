@@ -51,10 +51,13 @@ public class Game4 : IGame
         
         _cubeController.AddChild(scene.Camera);
         
+        var cubeShader = new DefaultShader();
+        cubeShader.Build();
+        
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Textures/container2.png"),
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-            new DefaultShader());
+            cubeShader);
 
         var cube1 = CreateCube(cubeMaterial, new Vector3(0.0f, 0.0f, 0.0f));
         

@@ -292,11 +292,14 @@ public class Game5 : IGame
     
     private void CreateScene()
     {
+        var cubeShader = new DefaultShader();
+        cubeShader.Build();
+        
         // Materials
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Textures/container2.png"),
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-            new DefaultShader());
+            cubeShader);
 
         // Scene
         var scene = new Scene();

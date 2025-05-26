@@ -8,14 +8,21 @@ using MicroEngine.OGL;
 
 public class SimpleTextureShader : IShader
 {
-    private readonly GlslShader _glslShader;
+    private readonly GlslShader _glslShader = new();
+    private bool _wasBuilt;
     
     
-    public SimpleTextureShader(IResourcesManager resourcesManager)
+    public bool SupportsOpenGLES => false;
+    
+    
+    public void Build()
     {
-        ArgumentNullException.ThrowIfNull(resourcesManager);
+        if (_wasBuilt)
+        {
+            return; // Already built, no need to build again.
+        }
         
-        _glslShader = new GlslShader(
+        _glslShader.Build(
             /*language=glsl*/
             """
             #version 330 core
@@ -57,6 +64,8 @@ public class SimpleTextureShader : IShader
                 FragColor = texColor;
             }
             """);
+        
+        _wasBuilt = true;
     }
 
     

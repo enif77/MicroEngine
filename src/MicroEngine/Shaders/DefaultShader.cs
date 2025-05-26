@@ -8,14 +8,38 @@ using MicroEngine.OGL;
 
 public class DefaultShader : IShader
 {
-    private readonly GlslShader _glslShader;
+    private readonly GlslShader _glslShader = new();
+    private bool _wasBuilt;
     
-    public DefaultShader()
+    
+    public bool SupportsOpenGLES => true;  // This shader is compatible with OpenGL ES 3.1 and higher, as it uses GLSL version 330 core.
+
+    
+    public int GetAttributeLocation(string name)
     {
-        _glslShader = new GlslShader(
+        return _glslShader.GetAttribLocation(name);
+    }
+    
+    
+    public void Build()
+    {
+        if (_wasBuilt)
+        {
+            return; // Already built, no need to build again.
+        }
+        
+        
+        // TODO: Fix the shader to work with OpenGL ES 3.1 and higher.
+        
+        
+        _glslShader.Build(
             /*language=glsl*/
             """
             #version 330 core
+            //recision mediump float;
+            precision highp float;
+            precision highp int; 
+            precision highp sampler2D;
             
             layout (location = 0) in vec3 aPos;
             layout (location = 1) in vec3 aNormal;
@@ -40,6 +64,9 @@ public class DefaultShader : IShader
             /*language=glsl*/
             """
             #version 330 core
+            precision highp float;
+            precision highp int; 
+            precision highp sampler2D;
             
             struct Material
             {
@@ -69,7 +96,7 @@ public class DefaultShader : IShader
                 float linear;
                 float quadratic;
             
-                // This propertiy of a spotlight and a directional light.
+                // This property of a spotlight and a directional light.
                 vec3  direction;
             
                 // These are the properties of a spotlight, we need the direction of the light, the cutoff and the outer cutoff.
@@ -83,7 +110,7 @@ public class DefaultShader : IShader
             uniform Light lights[NR_LIGHTS];
             
             // This is the number of point lights we have, we need this to loop through the point lights in the main function.
-            uniform int numLights;
+            // uniform int numLights;
             
             uniform Material material;
             uniform vec3 viewPos;
@@ -131,9 +158,11 @@ public class DefaultShader : IShader
                 vec3 viewDir = normalize(viewPos - FragPos);
             
                 vec3 result = vec3(0.0);
-                for (int i = 0; i < clamp(numLights, 0, NR_LIGHTS); i++)
+                //for (int i = 0; i < clamp(numLights, 0, NR_LIGHTS); i++)
+                for (int i = 0; i < NR_LIGHTS; i++)
                 {
                     Light light = lights[i];
+                    
                     if (light.lightType == LIGHT_TYPE_DIRECTIONAL)
                     {
                         result += CalcDirLight(light, norm, viewDir);
@@ -145,6 +174,11 @@ public class DefaultShader : IShader
                     else if (light.lightType == LIGHT_TYPE_SPOT)
                     {
                         result += CalcSpotLight(light, norm, FragPos, viewDir);
+                    }
+                    else
+                    {
+                        // Unknown light type = the end of the list of lights. Do not process the rest of the lights.
+                        break;
                     }
                 }
                 
@@ -238,12 +272,8 @@ public class DefaultShader : IShader
                 return (ambient + diffuse + specular);
             }
             """);
-    }
-
-    
-    public int GetAttributeLocation(string name)
-    {
-        return _glslShader.GetAttribLocation(name);
+        
+        _wasBuilt = true;
     }
     
     
@@ -284,11 +314,18 @@ public class DefaultShader : IShader
            by using 'Uniform buffer objects', but that is something we'll discuss in the 'Advanced GLSL' tutorial.
         */
         
-        _glslShader.SetInt("numLights", scene.Lights.Count);
+        //_glslShader.SetInt("numLights", scene.Lights.Count);
         
+        var lightsAdded = 0;
         foreach (var light in scene.Lights)
         {
             light.SetUniforms(_glslShader);
+            
+            lightsAdded++;
+            if (lightsAdded >= 16) // Limit to 16 lights
+            {
+                break;
+            }
         }
     }
 }

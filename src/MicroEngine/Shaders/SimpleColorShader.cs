@@ -6,13 +6,21 @@ using MicroEngine.OGL;
 
 public class SimpleColorShader : IShader
 {
-    private readonly GlslShader _glslShader;
+    private readonly GlslShader _glslShader = new();
+    private bool _wasBuilt;
     
-    public SimpleColorShader(IResourcesManager resourcesManager)
+    
+    public bool SupportsOpenGLES => false;
+    
+    
+    public void Build()
     {
-        ArgumentNullException.ThrowIfNull(resourcesManager);
+        if (_wasBuilt)
+        {
+            return; // Already built, no need to build again.
+        }
         
-        _glslShader = new GlslShader(
+        _glslShader.Build(
             /*language=glsl*/
             """
             #version 330 core
@@ -50,6 +58,8 @@ public class SimpleColorShader : IShader
                 FragColor = vec4(color, 1.0);
             }
             """);
+        
+        _wasBuilt = true;
     }
 
     

@@ -215,6 +215,8 @@ public class ResourcesManager : IResourcesManager
         CheckShaderName(name);
         ArgumentNullException.ThrowIfNull(shader);
 
+        shader.Build();
+        
         return _shaders.TryAdd(name, shader);
     }
     

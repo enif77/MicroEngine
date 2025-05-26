@@ -40,10 +40,13 @@ public class MinimalGameDemo : IGame
             Position = Vector3.UnitZ * 1.5f
         });
 
+        var shader = new SimpleTextureShader();
+        shader.Build();
+        
         _cube = CreateCube(
             new SimpleTextureMaterial(
                 _resourcesManager.LoadTexture("Textures/container2.png"),
-                new SimpleTextureShader(_resourcesManager)),
+                shader),
             new Vector3(0.0f, 0.0f, 0.0f));
         
         scene.AddChild(_cube);

@@ -48,10 +48,13 @@ public class Game : IGame
         
         // TODO: Create the first cube and then clone it with setting position to cube clones.
         
+        var cubeShader = new DefaultShader();
+        cubeShader.Build();
+        
         var cubeMaterial = new Material(
             _resourcesManager.LoadTexture("Textures/container2.png"),
             _resourcesManager.LoadTexture("Textures/container2_specular.png"),
-            new DefaultShader());
+            cubeShader);
         
         scene.AddChild(CreateCube(cubeMaterial, new Vector3( 0.0f,  0.0f,   0.0f)));
         scene.AddChild(CreateCube(cubeMaterial, new Vector3( 2.0f,  5.0f, -15.0f)));
@@ -395,7 +398,8 @@ public class Game : IGame
     
     private void CreateLamps(Scene scene)
     {
-        var lampShader = new SimpleColorShader(_resourcesManager);
+        var lampShader = new SimpleColorShader();
+        lampShader.Build();
         
         var lampMaterial = new SimpleColorMaterial(
             new Vector3(1.0f, 1.0f, 1.0f),
@@ -435,7 +439,8 @@ public class Game : IGame
     
     private void CreateSubCubes2(ISceneObject parentCube)
     {
-        var shader = new SimpleColorShader(_resourcesManager);
+        var shader = new SimpleColorShader();
+        shader.Build();
         
         var subCube = SimpleCubeGenerator.Generate(new SimpleColorMaterial(
             new Vector3(1.0f, 1.0f, 0.0f),

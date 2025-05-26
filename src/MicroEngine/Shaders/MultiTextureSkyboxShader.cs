@@ -2,12 +2,11 @@
 
 namespace MicroEngine.Shaders;
 
-using MicroEngine.OGL;
-
 public class MultiTextureSkyboxShader : MultiTextureShaderBase
 {
-    public MultiTextureSkyboxShader(IResourcesManager resourcesManager)
-        : base(new GlslShader(
+    protected override void BuildImpl()
+    {
+        GlslShader.Build(
             /*language=glsl*/
             """
             #version 330 core
@@ -59,8 +58,6 @@ public class MultiTextureSkyboxShader : MultiTextureShaderBase
                 
                 FragColor = texColor;
             }
-            """))
-    {
-        ArgumentNullException.ThrowIfNull(resourcesManager);
+            """);
     }
 }

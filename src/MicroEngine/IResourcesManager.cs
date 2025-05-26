@@ -126,7 +126,7 @@ public interface IResourcesManager
     IShader GetShader(string name);
     
     /// <summary>
-    /// Loads a shader to the resources manager.
+    /// Loads and builds a shader to this resource manager.
     /// </summary>
     /// <param name="name">A shader name.</param>
     /// <param name="shader">A shader.</param>
