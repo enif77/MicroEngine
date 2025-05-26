@@ -8,6 +8,6 @@ public class NullTexture : ITexture
 {
     public void Use(TextureUnit unit)
     {
-        // Do nothing.
+        throw new NotSupportedException("Null texture cannot be used.");
     }
 }
