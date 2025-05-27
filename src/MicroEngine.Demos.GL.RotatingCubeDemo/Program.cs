@@ -1,5 +1,7 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
+using MicroEngine.OGL;
+
 namespace MicroEngine.Demos.GL.RotatingCubeDemo;
 
 using Microsoft.Extensions.Configuration;
@@ -82,6 +84,8 @@ internal static class Program
         // If we want to use OpenGL, we can Use the default settings.
         if (Settings.UseOpenGLES)
         {
+            GlContext.ForceOpenGLES = true;
+            
             nativeWindowSettings.API = ContextAPI.OpenGLES;
             nativeWindowSettings.APIVersion = new Version(3, 1);
             nativeWindowSettings.Profile = ContextProfile.Any;

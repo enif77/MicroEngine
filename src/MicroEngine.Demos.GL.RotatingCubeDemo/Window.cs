@@ -123,7 +123,7 @@ internal class Window : GameWindow
     public static void PrintGlContextInfo()
     {
         Console.WriteLine("GL Version: " + GlContext.Version);
-        Console.WriteLine("GLSL Version: " + GlContext.GLSLVersion);
+        Console.WriteLine("GLSL Version: " + GlContext.ShadingLanguageVersion);
         Console.WriteLine("Vendor: " + GlContext.Vendor);
         Console.WriteLine("Renderer: " + GlContext.Renderer);
     }
