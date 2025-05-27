@@ -15,6 +15,7 @@ public static class Defaults
     
     public const bool DefaultEnableVSync = true;
     public const bool DefaultEnableFullscreen = false;
+    public const bool DefaultUseOpenGLES = false;
     
     public const int DefaultMaxLights = 16;
     

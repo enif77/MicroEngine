@@ -37,6 +37,12 @@ public class Settings
     /// </summary>
     public bool EnableFullscreen { get; init; } = Defaults.DefaultEnableFullscreen;
     
+    /// <summary>
+    /// Force OpenGL ES rendering.
+    /// We cannot detect it automatically, so this is a setting.
+    /// </summary>
+    public bool UseOpenGLES { get; init; } = Defaults.DefaultUseOpenGLES;
+    
     #endregion
 
     

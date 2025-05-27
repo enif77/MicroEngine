@@ -12,6 +12,7 @@ using OpenTK.Windowing.Desktop;
 
 using MicroEngine;
 using MicroEngine.Managers;
+using MicroEngine.OGL;
 
 using MicroEngineDemoApp.Games;
 
@@ -64,6 +65,13 @@ internal static class Program
             //{ "game-with-cubes2", new Game2(ResourcesManager.Instance) },  // Missing map data.
         };
         
+        // This is callback for GLFW errors.
+        GLFWProvider.SetErrorCallback(
+            (error, description) =>
+            {
+                Console.Error.WriteLine($"GLFW Error: {error} - {description}");
+            });
+        
         var nativeWindowSettings = new NativeWindowSettings()
         {
             ClientSize = Settings.EnableFullscreen
@@ -85,6 +93,18 @@ internal static class Program
                 ? WindowState.Fullscreen
                 : WindowState.Normal
         };
+        
+        // If we want to use OpenGL ES, we need to set the API.
+        // Raspberry Pi 5 supports OpenGL ES 3.1, so we can use that.
+        // If we want to use OpenGL, we can Use the default settings.
+        if (Settings.UseOpenGLES)
+        {
+            GlContext.ForceOpenGLES = true;
+            
+            nativeWindowSettings.API = ContextAPI.OpenGLES;
+            nativeWindowSettings.APIVersion = new Version(3, 1);
+            nativeWindowSettings.Profile = ContextProfile.Any;
+        }
 
         using (var gameWindow = new GameWindow(
                    GameWindowSettings.Default,

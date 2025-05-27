@@ -31,7 +31,7 @@ public class DefaultShader : IShader
         var vertexShaderSource = VertexShaderSource;
         var fragmentShaderSource = FragmentShaderSource;
         
-        // Fix the shader to work with OpenGL ES 3.1 and higher.
+        // Patch the shader to work with OpenGL ES 3.1 and higher.
         if (GlContext.IsGLES)
         {
             vertexShaderSource = vertexShaderSource.Replace(

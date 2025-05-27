@@ -1,7 +1,5 @@
 ﻿/* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine.OGL;
-
 namespace MicroEngine.Demos.GL.RotatingCubeDemo;
 
 using Microsoft.Extensions.Configuration;
@@ -13,6 +11,7 @@ using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
 using MicroEngine.Managers;
+using MicroEngine.OGL;
 
 internal static class Program
 {

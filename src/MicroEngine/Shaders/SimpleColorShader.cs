@@ -10,7 +10,7 @@ public class SimpleColorShader : IShader
     private bool _wasBuilt;
     
     
-    public bool SupportsOpenGLES => false;
+    public bool SupportsOpenGLES => true;
     
     
     public void Build()
@@ -20,44 +20,34 @@ public class SimpleColorShader : IShader
             return; // Already built, no need to build again.
         }
         
-        _glslShader.Build(
-            /*language=glsl*/
-            """
-            #version 330 core
+        var vertexShaderSource = VertexShaderSource;
+        var fragmentShaderSource = FragmentShaderSource;
+        
+        // Patch the shader to work with OpenGL ES 3.1 and higher.
+        if (GlContext.IsGLES)
+        {
+            vertexShaderSource = vertexShaderSource.Replace(
+                "#version 330 core",
+                /*language=glsl*/
+                """
+                #version 310 es
+                precision highp float;
+                precision highp int; 
+                precision highp sampler2D;
+                """);
             
-            layout (location = 0) in vec3 aPos;
-            layout (location = 1) in vec3 aNormal;
-            layout (location = 2) in vec2 aTexCoords;
-            
-            uniform mat4 model;
-            uniform mat4 view;
-            uniform mat4 projection;
-            
-            out vec3 Normal;
-            out vec3 FragPos;
-            out vec2 TexCoords;
-            
-            void main()
-            {
-                gl_Position = vec4(aPos, 1.0) * model * view * projection;
-                FragPos = vec3(vec4(aPos, 1.0) * model);
-                Normal = aNormal * mat3(transpose(inverse(model)));
-                TexCoords = aTexCoords;
-            } 
-            """,
-            /*language=glsl*/
-            """
-            #version 330 core
-            
-            uniform vec3 color;
-            
-            out vec4 FragColor;
-            
-            void main()
-            {
-                FragColor = vec4(color, 1.0);
-            }
-            """);
+            fragmentShaderSource = fragmentShaderSource.Replace(
+                "#version 330 core",
+                /*language=glsl*/
+                """
+                #version 310 es
+                precision highp float;
+                precision highp int; 
+                precision highp sampler2D;
+                """);
+        }
+
+        _glslShader.Build(vertexShaderSource, fragmentShaderSource);
         
         _wasBuilt = true;
     }
@@ -80,4 +70,45 @@ public class SimpleColorShader : IShader
         _glslShader.SetMatrix4("projection", camera.GetProjectionMatrix());
         _glslShader.SetMatrix4("model", sceneObject.ModelMatrix);
     }
+
+    private const string VertexShaderSource =
+        /*language=glsl*/
+        """
+        #version 330 core
+        
+        layout (location = 0) in vec3 aPos;
+        layout (location = 1) in vec3 aNormal;
+        layout (location = 2) in vec2 aTexCoords;
+        
+        uniform mat4 model;
+        uniform mat4 view;
+        uniform mat4 projection;
+        
+        out vec3 Normal;
+        out vec3 FragPos;
+        out vec2 TexCoords;
+        
+        void main()
+        {
+            gl_Position = vec4(aPos, 1.0) * model * view * projection;
+            FragPos = vec3(vec4(aPos, 1.0) * model);
+            Normal = aNormal * mat3(transpose(inverse(model)));
+            TexCoords = aTexCoords;
+        }     
+        """;
+    
+    private const string FragmentShaderSource =
+        /*language=glsl*/
+        """
+        #version 330 core
+        
+        uniform vec3 color;
+        
+        out vec4 FragColor;
+        
+        void main()
+        {
+            FragColor = vec4(color, 1.0);
+        }    
+        """;
 }

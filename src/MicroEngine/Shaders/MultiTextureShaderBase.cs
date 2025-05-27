@@ -14,7 +14,7 @@ public abstract class MultiTextureShaderBase : IShader
 {
     private bool _wasBuilt;
     
-    public bool SupportsOpenGLES => false;
+    public bool SupportsOpenGLES => true;
 
     protected GlslShader GlslShader { get; } = new();
     
