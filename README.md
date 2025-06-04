@@ -2,7 +2,7 @@
 
 ---
 
-## Requirements for running ME on Manjaro on Raspberry PI 5:
+## Requirements for running ME on Manjaro, Ubuntu or Raspberry OS on Raspberry PI 5:
 
 - Install: glfw (3.4-2)
 - RPI5 GL Version: "3.1 (Core Profile) Mesa 25.1.1-arch1.1"
