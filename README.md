@@ -15,7 +15,7 @@
       To fix this, you can launch VSCode with the following command:
 
 ```
-code --enable-features=UseOzonePlatform --ozone-platform=wayland
+code --ozone-platform=wayland --enable-features=UseOzonePlatform --use-cmd-decoder=validating --use-gl=desktop
 ```
 
 ---
