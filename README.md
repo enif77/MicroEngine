@@ -28,6 +28,7 @@ scene management, and more. Below is an overview of the key classes and interfac
 
 ## Features
 
+- [x] OpenGL ES 3.1/Raspberry Pi 5 support.
 - [x] Scene graph.
 - [x] Lights.
 - [x] Materials.
@@ -36,16 +37,24 @@ scene management, and more. Below is an overview of the key classes and interfac
 - [x] Cameras.
 - [x] Skybox.
 - [x] Audio.
+- [x] Physics. 
 - [ ] Shadows.
-- [ ] Physics.
 - [ ] Scripting.
 
 ## Todo
 
-- Skybox should use a cube map.
-- Replace IGame.SetCameraAspectRatio().
 - Logging using ILogger.
 - Write documentation. :-)
+
+---
+
+## **Projects in solution**
+
+- **`MicroEngine`**: The core engine library.
+- **`MicroEngine.Audio`**: Audio management and playback.
+- **`MicroEngine.Physics`**: Physics simulation and collision detection.
+- **`MicroEngine.Extensions`**: Extensions and utilities for the engine.
+- **`MicroEngine.Extensions.Audio`**: Audio extensions and utilities.
 
 ---
 
