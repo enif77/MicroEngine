@@ -19,7 +19,7 @@ public class PhysicsEngine
     public event Action? EngineStopped;
 
      // Events for update lifecycle
-    public event Action? UpdateStarted;
+    public event Action<float>? UpdateStarted;
     public event Action? UpdateCompleted;
     public event Action? UpdateSkipped;
 
@@ -125,7 +125,7 @@ public class PhysicsEngine
             var deltaTime = (float)(updateInterval / 1000.0);
 
             // Invoke UpdateStarted event
-            UpdateStarted?.Invoke();
+            UpdateStarted?.Invoke(deltaTime);
 
             lock (_objects)
             {
