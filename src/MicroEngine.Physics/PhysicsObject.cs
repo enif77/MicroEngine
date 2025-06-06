@@ -8,16 +8,16 @@ using OpenTK.Mathematics;
 /// Represents a physics object in a 3D space, capable of hierarchical transformations
 /// and dynamic updates based on velocity and angular velocity.
 /// </summary>
-public class PhysicsObject
+public class PhysicsObject : IPhysicsObject
 {
     /// <summary>
     /// Gets the root physics object in the hierarchy.
     /// </summary>
-    public PhysicsObject Root
+    public IPhysicsObject Root
     {
         get
         {
-            var root = this;
+            var root = (IPhysicsObject)this;
             
             // Traverse up the hierarchy to find the root object.
             while (root.Parent != null)
@@ -32,12 +32,12 @@ public class PhysicsObject
     /// <summary>
     /// Gets or sets the parent of this physics object in the hierarchy.
     /// </summary>
-    public PhysicsObject? Parent { get; set; }
+    public IPhysicsObject? Parent { get; set; }
 
     /// <summary>
     /// Gets the list of child physics objects attached to this object.
     /// </summary>
-    public List<PhysicsObject> Children { get; }
+    public List<IPhysicsObject> Children { get; }
 
     /// <summary>
     /// Optional collision object.
