@@ -381,16 +381,16 @@ public class PhysicsObject : IPhysicsObject
     public void ApplyAccumulatedForcesAndTorques()
     {
         // Apply the accumulated force to the object.
-        if (_forceAccumulator.LengthSquared > 0)
-        {
+        //if (_forceAccumulator.LengthSquared > 0)
+        //{
             ApplyForce(_forceAccumulator);
-        }
+        //}
         
         // Apply the accumulated torque to the object.
-        if (_torqueAccumulator.LengthSquared > 0)
-        {
+        //if (_torqueAccumulator.LengthSquared > 0)
+        //{
             ApplyTorque(_torqueAccumulator);
-        }
+        //}
         
         // Clear the accumulators after applying.
         ClearForceAndTorqueAccumulators();
