@@ -8,8 +8,8 @@ namespace MicroEngine.Graphics;
 /// <param name="r">Red.</param>
 /// <param name="g">Green.</param>
 /// <param name="b">Blue.</param>
-/// <param name="a">Alpha.</param>
-public readonly struct Color(byte r, byte g, byte b, byte a)
+/// <param name="a">Alpha. Optional; 255 by default.</param>
+public readonly struct Color(byte r, byte g, byte b, byte a = 255)
 {
     public byte R { get; } = r;
     public byte G { get; } = g;
