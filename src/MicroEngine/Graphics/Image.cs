@@ -46,7 +46,34 @@ public class Image
         Pixels = new byte[width * height * 4];
     }
 
-
+    /// <summary>
+    /// Constructor. Creates an image with the specified width, height and pixel data.
+    /// </summary>
+    /// <param name="width">The width of this image.</param>
+    /// <param name="height">The height of this image.</param>
+    /// <param name="pixels">The pixel data of this image in RGBA format.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when the width or height is less than 1.</exception>
+    /// <exception cref="ArgumentException">Thrown when the pixel data is null or does not match the expected size.</exception>
+    public Image(int width, int height, byte[] pixels)
+    {
+        if (width < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(width), "The width must be at least 1.");
+        }
+        
+        if (height < 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(height), "The height must be at least 1.");
+        }
+        
+        if (pixels == null || pixels.Length != Width * Height * 4)
+        {
+            throw new ArgumentException("Invalid pixel data.", nameof(pixels));
+        }
+        
+        Pixels = pixels;
+    }   
+    
     /// <summary>
     /// Gets a pixel at the specified position or 0, if the given coords are outside of this image dimensions.
     /// </summary>
