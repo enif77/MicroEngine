@@ -42,7 +42,7 @@ public class DefaultGeometry : GeometryBase
         GenerateVertexBufferObject();
         
         // Vertex attributes.
-        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerFor3DPosition(forShader, VertexDataStride);
         GenerateVertexAttribPointerForNormals(forShader, VertexDataStride, 3);
         GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 6);
         

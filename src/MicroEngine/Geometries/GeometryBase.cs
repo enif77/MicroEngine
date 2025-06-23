@@ -168,16 +168,29 @@ public abstract class GeometryBase : IGeometry
     }
     
     /// <summary>
-    /// Generates a vertex attribute pointer for a vertex position.
+    /// Generates a vertex attribute pointer for a 3D vertex position.
     /// </summary>
     /// <param name="forShader">A shader for which we are generating the vertex attribute pointer.</param>
     /// <param name="stride">How many values we have per vertex.</param>
     /// <param name="offset">How many values to skip to reach the first value defining the vertex position.</param>
-    protected void GenerateVertexAttribPointerForPosition(IShader forShader, int stride, int offset = 0)
+    protected void GenerateVertexAttribPointerFor3DPosition(IShader forShader, int stride, int offset = 0)
     {
         var positionLocation = forShader.GetAttributeLocation("aPos");
         GL.EnableVertexAttribArray(positionLocation);
         GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, stride * sizeof(float), offset);
+    }
+    
+    /// <summary>
+    /// Generates a vertex attribute pointer for a 2D vertex position.
+    /// </summary>
+    /// <param name="forShader">A shader for which we are generating the vertex attribute pointer.</param>
+    /// <param name="stride">How many values we have per vertex.</param>
+    /// <param name="offset">How many values to skip to reach the first value defining the vertex position.</param>
+    protected void GenerateVertexAttribPointerFor2DPosition(IShader forShader, int stride, int offset = 0)
+    {
+        var positionLocation = forShader.GetAttributeLocation("aPos");
+        GL.EnableVertexAttribArray(positionLocation);
+        GL.VertexAttribPointer(positionLocation, 2, VertexAttribPointerType.Float, false, stride * sizeof(float), offset);
     }
     
     /// <summary>

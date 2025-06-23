@@ -43,7 +43,7 @@ public class SingleTextureGeometry : GeometryBase
         GenerateVertexBufferObject();
         
         // Vertex attributes.
-        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerFor3DPosition(forShader, VertexDataStride);
         GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 3);
         
         // Unbind.

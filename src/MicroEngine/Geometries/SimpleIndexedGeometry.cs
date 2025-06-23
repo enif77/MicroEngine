@@ -28,7 +28,7 @@ public class SimpleIndexedGeometry(float[] vertexData, uint[] indices, bool isDy
         GenerateElementBufferObject();
         
         // Vertex attributes.
-        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerFor3DPosition(forShader, VertexDataStride);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

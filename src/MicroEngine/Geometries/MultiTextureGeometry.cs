@@ -43,7 +43,7 @@ public class MultiTextureGeometry : GeometryBase
         GenerateVertexBufferObject();
         
         // Vertex attributes.
-        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerFor3DPosition(forShader, VertexDataStride);
         GenerateVertexAttribPointerForTextureId(forShader, VertexDataStride, 3);
         GenerateVertexAttribPointerForTextureCoords(forShader, VertexDataStride, 4);
         

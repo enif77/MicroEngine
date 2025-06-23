@@ -35,7 +35,7 @@ public class SimpleIndexedLinesGeometry : GeometryBase
         GenerateElementBufferObject();
         
         // Vertex attributes.
-        GenerateVertexAttribPointerForPosition(forShader, VertexDataStride);
+        GenerateVertexAttribPointerFor3DPosition(forShader, VertexDataStride);
         
         // Unbind.
         GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
