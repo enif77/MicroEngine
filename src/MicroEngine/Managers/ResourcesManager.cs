@@ -351,11 +351,12 @@ public class ResourcesManager : IResourcesManager
                     var imageData = new byte[width * height * 4]; // RGBA format (4 bytes per pixel)
 
                     // BMP stores pixel data bottom-to-top
+                    var ty = 0;
                     for (var y = height - 1; y >= 0; y--)
                     {
                         for (var x = 0; x < width; x++)
                         {
-                            var pixelIndex = (y * width + x) * 4;
+                            var pixelIndex = (ty * width + x) * 4;
 
                             imageData[pixelIndex + 2] = reader.ReadByte(); // Blue component
                             imageData[pixelIndex + 1] = reader.ReadByte(); // Green component
@@ -363,6 +364,8 @@ public class ResourcesManager : IResourcesManager
                             imageData[pixelIndex + 3] = 255;               // Alpha component
                         }
 
+                        ty++;
+                        
                         // Skip padding bytes
                         reader.BaseStream.Seek(paddingSize, SeekOrigin.Current);
                     }
@@ -377,17 +380,20 @@ public class ResourcesManager : IResourcesManager
                     
                     var imageData = new byte[width * height * 4]; 
                     
+                    var ty = 0;
                     for (var y = height - 1; y >= 0; y--)
                     {
                         for (var x = 0; x < width; x++)
                         {
-                            var pixelIndex = (y * width + x) * 4;
+                            var pixelIndex = (ty * width + x) * 4;
 
                             imageData[pixelIndex + 2] = reader.ReadByte(); // Blue component
                             imageData[pixelIndex + 1] = reader.ReadByte(); // Green component
                             imageData[pixelIndex + 0] = reader.ReadByte(); // Red component
                             imageData[pixelIndex + 3] = reader.ReadByte(); // Alpha component
                         }
+                        
+                        ty++;
                     }
 
                     return new Image(width, height, imageData);
