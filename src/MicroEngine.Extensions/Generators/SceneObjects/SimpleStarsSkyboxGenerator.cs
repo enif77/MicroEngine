@@ -112,7 +112,7 @@ public static class SimpleStarsSkyboxGenerator
         var skyboxShader = new MultiTextureSkyboxShader();
         skyboxShader.Build();
         
-        var skybox = SkyboxGenerator.Generate(new MultiTextureMaterial(
+        var skybox = SkyboxGenerator.Generate(Material.Create(
             textures,
             skyboxShader));
         

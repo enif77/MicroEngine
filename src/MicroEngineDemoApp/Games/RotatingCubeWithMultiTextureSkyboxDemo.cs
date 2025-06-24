@@ -198,7 +198,7 @@ public class RotatingCubeWithMultiTextureSkyboxDemo : IGame
         var skyboxName = "TestSkybox";
         //var skyboxName = "Pond";
         //var skyboxName = "Rocky";
-        var material = new MultiTextureMaterial(
+        var material = Material.Create(
             [
                 _resourcesManager.LoadTexture("pz", "Textures/Skyboxes/TestSkybox/pz.bmp", TextureWrapMode.ClampToEdge),
                 _resourcesManager.LoadTexture("px", "Textures/Skyboxes/TestSkybox/px.bmp", TextureWrapMode.ClampToEdge),

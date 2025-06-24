@@ -195,7 +195,7 @@ public class RotatingCubeDemo : IGame
         var skyboxShader = new MultiTextureSkyboxShader();
         skyboxShader.Build();
         
-        var skybox = SkyboxGenerator.Generate(new MultiTextureMaterial(
+        var skybox = SkyboxGenerator.Generate(Material.Create(
             [
                 _resourcesManager.LoadTexture("pz", "Textures/Skyboxes/TestSkybox/pz.bmp", TextureWrapMode.ClampToEdge),
                 _resourcesManager.LoadTexture("px", "Textures/Skyboxes/TestSkybox/px.bmp", TextureWrapMode.ClampToEdge),

@@ -48,6 +48,11 @@ public interface IMaterial
     int OpacityBias { get; set; }
     
     /// <summary>
+    /// The list of textures used by this material.
+    /// </summary>
+    IReadOnlyList<ITexture> Textures { get; }
+    
+    /// <summary>
     /// Shader to be used for rendering of this material.
     /// </summary>
     IShader Shader { get; }

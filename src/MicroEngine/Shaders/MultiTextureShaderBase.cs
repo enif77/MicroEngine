@@ -48,19 +48,10 @@ public abstract class MultiTextureShaderBase : IShader
         
         GlslShader.Use();
         
-        // TODO: The base material should support for multiple textures.
-        var m = material as MultiTextureMaterial;
-        if (m == null)
+        for (var i = 0; i < material.Textures.Count; i++)
         {
-            material.DiffuseMap.Use(TextureUnit.Texture0);
-        }
-        else
-        {
-            for (var i = 0; i < m.Textures.Length; i++)
-            {
-                m.Textures[i].Use(TextureUnit.Texture0 + i);
-                GlslShader.SetInt(SamplersUniformNames[i], i);
-            }
+            material.Textures[i].Use(TextureUnit.Texture0 + i);
+            GlslShader.SetInt(SamplersUniformNames[i], i);
         }
         
         GlslShader.SetMatrix4("view", camera.GetViewMatrix());

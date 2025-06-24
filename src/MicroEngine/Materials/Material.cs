@@ -13,12 +13,18 @@ using MicroEngine.Shaders;
 public class Material : IMaterial
 {
     public Vector3 Color { get; private init; } = new(1);
-    public ITexture DiffuseMap { get; private init; } = new NullTexture();
-    public ITexture SpecularMap { get; private init; } = new NullTexture();
+    public ITexture DiffuseMap => Textures[0];
+    public ITexture SpecularMap => Textures[1];
     public Vector3 Specular { get; set; } = Vector3.Zero;
     public float Shininess { get; set; }
     public int OpacityLevel { get; set; }
     public int OpacityBias { get; set; }
+    
+    public IReadOnlyList<ITexture> Textures { get; } = new List<ITexture>
+    {
+        new NullTexture(),  // Placeholder for the diffuse map
+        new NullTexture()   // Placeholder for the specular map
+    };
 
     public IShader Shader { get; private init; } = new NullShader();
 
@@ -46,11 +52,14 @@ public class Material : IMaterial
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="diffuseMap"/> or <paramref name="shader"/> is null.</exception>
     public static IMaterial Create(ITexture diffuseMap, IShader shader)
     {
-        return new Material
+        var material = new Material()
         {
-            DiffuseMap = diffuseMap ?? throw new ArgumentNullException(nameof(diffuseMap)),
-            Shader = shader ?? throw new ArgumentNullException(nameof(shader)),
+            Shader = shader ?? throw new ArgumentNullException(nameof(shader))
         };
+
+        ((List<ITexture>)material.Textures)[0] = diffuseMap ?? throw new ArgumentNullException(nameof(diffuseMap));
+        
+        return material;
     }
 
     /// <summary>
@@ -63,16 +72,67 @@ public class Material : IMaterial
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="diffuseMap"/>, <paramref name="specularMap"/>, or <paramref name="shader"/> is null.</exception>
     public static IMaterial Create(ITexture diffuseMap, ITexture specularMap, IShader shader)
     {
-        return new Material
+        var material = new Material
         {
-            DiffuseMap = diffuseMap ?? throw new ArgumentNullException(nameof(diffuseMap)),
-            SpecularMap = specularMap ?? throw new ArgumentNullException(nameof(specularMap)),
             Specular = new Vector3(0.5f, 0.5f, 0.5f),
             Shininess = 32.0f,
             OpacityLevel = 0,
             OpacityBias = 0,
             Shader = shader ?? throw new ArgumentNullException(nameof(shader)),
         };
+        
+        ((List<ITexture>)material.Textures)[0] = diffuseMap ?? throw new ArgumentNullException(nameof(diffuseMap));
+        ((List<ITexture>)material.Textures)[1] = specularMap ?? throw new ArgumentNullException(nameof(specularMap));
+        
+        return material;
+    }
+    
+    /// <summary>
+    /// Create a new material with multiple textures and a shader.
+    /// </summary>
+    /// <param name="textures">A list of textures to be used by this material. Must contain at least one texture and can contain up to 16 textures.</param>
+    /// <param name="shader">The shader to use for rendering this material.</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="textures"/> or <paramref name="shader"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="textures"/> is empty or contains more than 16 textures.</exception>
+    public static IMaterial Create(ITexture[] textures, IShader shader)
+    {
+        if (textures == null)
+        {
+            throw new ArgumentNullException(nameof(textures), "Textures array must not be null or empty.");
+        }
+        
+        if (textures.Length == 0)
+        {
+            throw new ArgumentException("Textures array must not be empty.", nameof(textures));
+        }
+        
+        if (textures.Length > 16)
+        {
+            throw new ArgumentException("The number of textures must be 16 or less.", nameof(textures));
+        }
+        
+        if (textures[0] == null)
+        {
+            throw new ArgumentNullException(nameof(textures), "The first texture must not be null.");
+        }
+        
+        var material = new Material
+        {
+            Shader = shader ?? throw new ArgumentNullException(nameof(shader)),
+        };
+
+        var texturesList = ((List<ITexture>)material.Textures);
+        
+        texturesList.Clear();
+        texturesList.AddRange(textures);
+        if (texturesList.Count < 2)
+        {
+            // Ensure there's always a specular map.
+            texturesList.Add(new NullTexture()); 
+        }
+        
+        return material;
     }
 
     /// <summary>
