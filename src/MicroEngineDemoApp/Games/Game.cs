@@ -401,11 +401,11 @@ public class Game : IGame
         var lampShader = new SimpleColorShader();
         lampShader.Build();
         
-        var lampMaterial = new SimpleColorMaterial(
+        var lampMaterial = Material.Create(
             new Vector3(1.0f, 1.0f, 1.0f),
             lampShader);
         
-        var redLampMaterial = new SimpleColorMaterial(
+        var redLampMaterial = Material.Create(
             new Vector3(1.0f, 0.0f, 0.0f),
             lampShader);
         
@@ -442,7 +442,7 @@ public class Game : IGame
         var shader = new SimpleColorShader();
         shader.Build();
         
-        var subCube = SimpleCubeGenerator.Generate(new SimpleColorMaterial(
+        var subCube = SimpleCubeGenerator.Generate(Material.Create(
             new Vector3(1.0f, 1.0f, 0.0f),
             shader));
         subCube.Position = new Vector3(2, 0, 0);
@@ -454,7 +454,7 @@ public class Game : IGame
         parentCube.AddChild(subCube);
         
         
-        var subCube2 = SimpleCubeGenerator.Generate(new SimpleColorMaterial(
+        var subCube2 = SimpleCubeGenerator.Generate(Material.Create(
                 new Vector3(1.0f, 0.0f, 1.0f),
                 shader)); 
         subCube2.Position = new Vector3(-2, 0, 0);
@@ -470,7 +470,7 @@ public class Game : IGame
         
         
         // Cube with the camera as its parent.
-        var subCube3 = SimpleCubeGenerator.Generate(new SimpleColorMaterial(
+        var subCube3 = SimpleCubeGenerator.Generate(Material.Create(
             new Vector3(0.75f, 0.25f, 0.50f),
             shader)); 
         subCube3.Position = new Vector3(0, 1, -2);

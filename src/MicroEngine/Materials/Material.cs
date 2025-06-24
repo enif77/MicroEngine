@@ -12,10 +12,10 @@ using MicroEngine.Shaders;
 /// </summary>
 public class Material : IMaterial
 {
-    public Vector3 Color => new(1);
+    public Vector3 Color { get; private init; } = new(1);
     public ITexture DiffuseMap { get; private init; } = new NullTexture();
     public ITexture SpecularMap { get; private init; } = new NullTexture();
-    public Vector3 Specular { get; set; }
+    public Vector3 Specular { get; set; } = Vector3.Zero;
     public float Shininess { get; set; }
     public int OpacityLevel { get; set; }
     public int OpacityBias { get; set; }
@@ -44,7 +44,7 @@ public class Material : IMaterial
     /// <param name="specularMap">The specular texture map. Defines the shininess and specular highlights of the material.</param>
     /// <param name="shader">The shader to use for rendering this material.</param>
     /// <returns>A new instance of <see cref="IMaterial"/>.</returns>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="diffuseMap"/>, <paramref name="specularMap"/>, or <paramref name="shader"/> is null.</exception>
     public static IMaterial Create(ITexture diffuseMap, ITexture specularMap, IShader shader)
     {
         return new Material
@@ -55,6 +55,22 @@ public class Material : IMaterial
             Shininess = 32.0f,
             OpacityLevel = 0,
             OpacityBias = 0,
+            Shader = shader ?? throw new ArgumentNullException(nameof(shader)),
+        };
+    }
+
+    /// <summary>
+    /// Create a new material with a single color and a shader.
+    /// </summary>
+    /// <param name="color">A color used by this material.</param>
+    /// <param name="shader">The shader to use for rendering this material.</param>
+    /// <returns>A new instance of <see cref="IMaterial"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="shader"/> is null.</exception>
+    public static IMaterial Create(Vector3 color, IShader shader)
+    {
+        return new Material
+        {
+            Color = color,
             Shader = shader ?? throw new ArgumentNullException(nameof(shader)),
         };
     }

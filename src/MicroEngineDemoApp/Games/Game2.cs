@@ -60,11 +60,11 @@ public class Game2 : IGame
         var lampShader = new SimpleColorShader();
         lampShader.Build();
         
-        var lampMaterial = new SimpleColorMaterial(
+        var lampMaterial = Material.Create(
             new Vector3(1.0f, 1.0f, 1.0f),
             lampShader);
         
-        var redLampMaterial = new SimpleColorMaterial(
+        var redLampMaterial = Material.Create(
             new Vector3(1.0f, 0.0f, 0.0f),
             lampShader);
         
