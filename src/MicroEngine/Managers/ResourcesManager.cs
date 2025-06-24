@@ -150,7 +150,7 @@ public class ResourcesManager : IResourcesManager
     
     #region materials
     
-    private readonly IMaterial _nullMaterial = new NullMaterial();
+    private readonly IMaterial _nullMaterial = Material.Create();
     private readonly Dictionary<string, IMaterial> _materials = new();
     
     

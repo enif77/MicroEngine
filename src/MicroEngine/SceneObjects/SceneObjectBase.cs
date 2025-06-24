@@ -13,7 +13,7 @@ public abstract class SceneObjectBase : ISceneObject
     public IList<ISceneObject> Children { get; } = new List<ISceneObject>();
 
     public IGeometry Geometry { get; protected set; } = new NullGeometry();
-    public IMaterial Material { get; init; } = new NullMaterial();
+    public IMaterial Material { get; init; } = MicroEngine.Materials.Material.Create();
 
     private float _scale = 1.0f;
     public float Scale

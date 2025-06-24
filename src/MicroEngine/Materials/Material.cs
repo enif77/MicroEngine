@@ -27,6 +27,16 @@ public class Material : IMaterial
     {
     }
 
+    
+    /// <summary>
+    /// Creates a new instance of <see cref="Material"/> with default values.
+    /// </summary>
+    /// <returns>A new instance of <see cref="IMaterial"/>.</returns>
+    public static IMaterial Create()
+    {
+        return new Material();
+    }
+    
     /// <summary>
     /// Create a new material with diffuse and specular maps, and a shader.
     /// </summary>
