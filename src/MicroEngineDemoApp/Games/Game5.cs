@@ -297,8 +297,8 @@ public class Game5 : IGame
         
         // Materials
         var cubeMaterial = new Material(
-            _resourcesManager.LoadTexture("Textures/container2.png"),
-            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("container2", "Textures/container2.bmp"),
+            _resourcesManager.LoadTexture("container2_specular", "Textures/container2_specular.bmp"),
             cubeShader);
 
         // Scene

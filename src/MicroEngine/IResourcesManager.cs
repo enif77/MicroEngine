@@ -1,10 +1,10 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine.Graphics;
-
 namespace MicroEngine;
 
 using OpenTK.Graphics.OpenGL4;
+
+using MicroEngine.Graphics;
 
 /// <summary>
 /// Manages resources.
@@ -58,14 +58,15 @@ public interface IResourcesManager
     /// <param name="name">A texture name.</param>
     /// <returns>A texture with a given name or the NullTexture instance.</returns>
     ITexture GetTexture(string name);
-    
+
     /// <summary>
     /// Loads a texture from the given path.
     /// </summary>
+    /// <param name="name">An unique name of this texture.</param>
     /// <param name="path">A path to a texture. Will be used as an unique name for this texture.</param>
     /// <param name="wrapMode">Texture wrap mode. TextureWrapMode.Repeat by default.</param>
     /// <returns>A loaded texture.</returns>
-    ITexture LoadTexture(string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat);
+    ITexture LoadTexture(string name, string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat);
 
     /// <summary>
     /// Loads a texture from the given RGBA bytes.

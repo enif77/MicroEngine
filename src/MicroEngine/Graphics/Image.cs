@@ -66,11 +66,13 @@ public class Image
             throw new ArgumentOutOfRangeException(nameof(height), "The height must be at least 1.");
         }
         
-        if (pixels == null || pixels.Length != Width * Height * 4)
+        if (pixels == null || pixels.Length != width * height * 4)
         {
             throw new ArgumentException("Invalid pixel data.", nameof(pixels));
         }
         
+        Width = width;
+        Height = height;
         Pixels = pixels;
     }   
     

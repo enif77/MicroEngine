@@ -1,7 +1,5 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine.Graphics;
-
 namespace MicroEngine.Managers;
 
 using System.Runtime.InteropServices;
@@ -10,6 +8,7 @@ using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Core;
 using MicroEngine.Geometries;
+using MicroEngine.Graphics;
 using MicroEngine.Materials;
 using MicroEngine.OGL;
 using MicroEngine.Shaders;
@@ -105,22 +104,21 @@ public class ResourcesManager : IResourcesManager
     }
 
 
-    public ITexture LoadTexture(string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+    public ITexture LoadTexture(string name, string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("A texture name is null or empty.");
+        }
+        
         if (string.IsNullOrWhiteSpace(path))
         {
             throw new ArgumentException("A path to a texture is null or empty.");
         }
         
-        if (_textures.TryGetValue(path, out var value))
-        {
-            return value;
-        }
-
-        var texture = GlTexture.LoadFromFile(GetFullPath(path), wrapMode);
-        _textures.Add(path, texture);
-        
-        return texture;
+        return _textures.TryGetValue(name, out var value)
+            ? value
+            : LoadTextureInternal(name, LoadImageFromBmp(GetFullPath(path)), wrapMode);
     }
     
     
@@ -133,11 +131,14 @@ public class ResourcesManager : IResourcesManager
         
         ArgumentNullException.ThrowIfNull(image, nameof(image));
         
-        if (_textures.TryGetValue(name, out var value))
-        {
-            return value;
-        }
-
+        return _textures.TryGetValue(name, out var value)
+            ? value
+            : LoadTextureInternal(name, image, wrapMode);
+    }
+    
+    
+    private ITexture LoadTextureInternal(string name, Image image, TextureWrapMode wrapMode)
+    {
         var texture = GlTexture.LoadFromRgbaBytes(image.Pixels, image.Width, image.Height, wrapMode);
         _textures.Add(name, texture);
         
@@ -316,6 +317,85 @@ public class ResourcesManager : IResourcesManager
         return RuntimeInformation.IsOSPlatform(OSPlatform.OSX)
             ? path.Replace("Contents/MacOS/", "Contents/")
             : path;
+    }
+    
+    
+    private static Image LoadImageFromBmp(string filePath)
+    {
+        using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+        {
+            using (var reader = new BinaryReader(fs))
+            {
+                // BMP Header
+                if (reader.ReadUInt16() != 0x4D42) // 'BM' signature
+                {
+                    throw new InvalidOperationException("Invalid file format.");
+                }
+
+                reader.BaseStream.Seek(18, SeekOrigin.Begin); // Move to width/height in the header
+                var width = reader.ReadInt32(); // Image width
+                var height = reader.ReadInt32(); // Image height
+
+                reader.BaseStream.Seek(28, SeekOrigin.Begin); // Move to bits per pixel
+
+                var bitsPerPixel = (int)reader.ReadUInt16();
+                
+                // BGR
+                if (bitsPerPixel == 24) 
+                {
+                    reader.BaseStream.Seek(54, SeekOrigin.Begin); // Move to pixel data
+
+                    var rowSize = width * 3; // Size of one row in bytes (RGB = 3 bytes per pixel)
+                    var paddingSize = (4 - (rowSize % 4)) % 4; // Padding to make row size divisible by 4
+
+                    var imageData = new byte[width * height * 4]; // RGBA format (4 bytes per pixel)
+
+                    // BMP stores pixel data bottom-to-top
+                    for (var y = height - 1; y >= 0; y--)
+                    {
+                        for (var x = 0; x < width; x++)
+                        {
+                            var pixelIndex = (y * width + x) * 4;
+
+                            imageData[pixelIndex + 2] = reader.ReadByte(); // Blue component
+                            imageData[pixelIndex + 1] = reader.ReadByte(); // Green component
+                            imageData[pixelIndex + 0] = reader.ReadByte(); // Red component
+                            imageData[pixelIndex + 3] = 255;               // Alpha component
+                        }
+
+                        // Skip padding bytes
+                        reader.BaseStream.Seek(paddingSize, SeekOrigin.Current);
+                    }
+
+                    return new Image(width, height, imageData);
+                }
+                
+                // BGRA
+                if (bitsPerPixel == 32)
+                {
+                    reader.BaseStream.Seek(54, SeekOrigin.Begin);
+                    
+                    var imageData = new byte[width * height * 4]; 
+                    
+                    for (var y = height - 1; y >= 0; y--)
+                    {
+                        for (var x = 0; x < width; x++)
+                        {
+                            var pixelIndex = (y * width + x) * 4;
+
+                            imageData[pixelIndex + 2] = reader.ReadByte(); // Blue component
+                            imageData[pixelIndex + 1] = reader.ReadByte(); // Green component
+                            imageData[pixelIndex + 0] = reader.ReadByte(); // Red component
+                            imageData[pixelIndex + 3] = reader.ReadByte(); // Alpha component
+                        }
+                    }
+
+                    return new Image(width, height, imageData);
+                }
+                
+                throw new InvalidOperationException("Only 24-bit or 32-bit BMP files are supported.");
+            }
+        }
     }
     
     #endregion

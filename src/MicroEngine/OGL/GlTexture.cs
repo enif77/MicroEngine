@@ -3,7 +3,6 @@
 namespace MicroEngine.OGL;
 
 using OpenTK.Graphics.OpenGL4;
-using StbImageSharp;
 
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 
@@ -59,22 +58,6 @@ public class GlTexture : ITexture, IDisposable
         GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
 
         return new GlTexture(handle);
-    }
-
-    
-    public static GlTexture LoadFromFile(string path, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
-    {
-        // OpenGL has it's texture origin in the lower left corner instead of the top left corner,
-        // so we tell StbImageSharp to flip the image when loading.
-        StbImage.stbi_set_flip_vertically_on_load(1);
-            
-        // Here we open a stream to the file and pass it to StbImageSharp to load.
-        using (var stream = File.OpenRead(path))
-        {
-            var image = ImageResult.FromStream(stream, ColorComponents.RedGreenBlueAlpha);
-
-            return LoadFromRgbaBytes(image.Data, image.Width, image.Height, wrapMode);
-        }
     }
 
 

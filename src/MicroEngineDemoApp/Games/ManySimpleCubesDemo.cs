@@ -48,18 +48,18 @@ public class ManySimpleCubesDemo : IGame
         // };
         
         var cubeMaterialGreen = new Material(
-            _resourcesManager.LoadTexture("Textures/container2_green.png"),
-            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("container2_green", "Textures/container2_green.bmp"),
+            _resourcesManager.LoadTexture("container2_specular", "Textures/container2_specular.bmp"),
             _resourcesManager.GetShader("default"));
         
         var cubeMaterialRed = new Material(
-            _resourcesManager.LoadTexture("Textures/container2_red.png"),
-            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("container2_red", "Textures/container2_red.bmp"),
+            _resourcesManager.LoadTexture("container2_specular", "Textures/container2_specular.bmp"),
             _resourcesManager.GetShader("default"));
         
         var cubeMaterialGray = new Material(
-            _resourcesManager.LoadTexture("Textures/container2_gray.png"),
-            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+            _resourcesManager.LoadTexture("container2_gray", "Textures/container2_gray.bmp"),
+            _resourcesManager.LoadTexture("container2_specular", "Textures/container2_specular.bmp"),
             _resourcesManager.GetShader("default"));
         
         // Generates 1000 cubes in a 10x10x10 grid.
@@ -112,8 +112,8 @@ public class ManySimpleCubesDemo : IGame
                     if ((x + y + z) % 3 == 0)
                     {
                         scene.AddChild(CreateCube(new Material(
-                            _resourcesManager.LoadTexture("Textures/container2_pink.png"),
-                            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+                            _resourcesManager.LoadTexture("container2_pink", "Textures/container2_pink.bmp"),
+                            _resourcesManager.LoadTexture("container2_specular", "Textures/container2_specular.bmp"),
                             _resourcesManager.GetShader("default"))
                         {
                             OpacityLevel = 2,
@@ -123,8 +123,8 @@ public class ManySimpleCubesDemo : IGame
                     else
                     {
                         scene.AddChild(CreateCube(new Material(
-                            _resourcesManager.LoadTexture("Textures/container2.png"),
-                            _resourcesManager.LoadTexture("Textures/container2_specular.png"),
+                            _resourcesManager.LoadTexture("container2", "Textures/container2.bmp"),
+                            _resourcesManager.LoadTexture("container2_specular", "Textures/container2_specular.bmp"),
                             _resourcesManager.GetShader("default"))
                         {
                             OpacityLevel = 2,
