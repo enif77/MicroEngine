@@ -52,7 +52,7 @@ public class Game2 : IGame
         var cubeShader = new DefaultShader();
         cubeShader.Build();
         
-        var cubeMaterial = new Material(
+        var cubeMaterial = Material.Create(
             _resourcesManager.LoadTexture("container2", "Textures/container2.bmp"),
             _resourcesManager.LoadTexture("container2_specular", "Textures/container2_specular.bmp"),
             cubeShader);

@@ -45,7 +45,7 @@ public class RotatingCubeDemo : IGame
         cubeShader.Build();
         
         scene.AddChild(CreateCube(
-            new Material(
+            Material.Create(
                 _resourcesManager.LoadTexture("container2", "Textures/container2.bmp"),
                 _resourcesManager.LoadTexture("container2_specular", "Textures/container2_specular.bmp"),
                 cubeShader),
