@@ -36,7 +36,23 @@ public class Material : IMaterial
     {
         return new Material();
     }
-    
+
+    /// <summary>
+    /// Create a new material with a diffuse map and a shader.
+    /// </summary>
+    /// <param name="diffuseMap">A texture to be used by this material as a diffuse map.</param>
+    /// <param name="shader">The shader to use for rendering this material.</param>
+    /// <returns>A new instance of <see cref="IMaterial"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="diffuseMap"/> or <paramref name="shader"/> is null.</exception>
+    public static IMaterial Create(ITexture diffuseMap, IShader shader)
+    {
+        return new Material
+        {
+            DiffuseMap = diffuseMap ?? throw new ArgumentNullException(nameof(diffuseMap)),
+            Shader = shader ?? throw new ArgumentNullException(nameof(shader)),
+        };
+    }
+
     /// <summary>
     /// Create a new material with diffuse and specular maps, and a shader.
     /// </summary>

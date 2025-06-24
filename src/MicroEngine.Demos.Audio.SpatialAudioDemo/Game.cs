@@ -76,7 +76,7 @@ public class Game : IGame, IDisposable
         
         // Generate a cube with the texture.
         var listenerCube = TexturedCubeGenerator.Generate(
-            new SimpleTextureMaterial(
+            Material.Create(
                 resourcesManager.LoadTexture(
                     "listener-cube-texture",
                     listenerCubeTexture,
@@ -90,7 +90,7 @@ public class Game : IGame, IDisposable
         
         // Generate the sound source cube.
         var soundSourceCube = TexturedCubeGenerator.Generate(
-            new SimpleTextureMaterial(
+            Material.Create(
                 resourcesManager.LoadTexture(
                     "sound-source-cube-texture",
                     soundSourceCubeTexture,

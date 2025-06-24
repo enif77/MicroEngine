@@ -44,7 +44,7 @@ public class MinimalGameDemo : IGame
         shader.Build();
         
         _cube = CreateCube(
-            new SimpleTextureMaterial(
+            Material.Create(
                 _resourcesManager.LoadTexture("container2", "Textures/container2.bmp"),
                 shader),
             new Vector3(0.0f, 0.0f, 0.0f));
