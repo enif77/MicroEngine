@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using MicroEngine.Graphics;
+
 namespace MicroEngine;
 
 using OpenTK.Graphics.OpenGL4;
@@ -69,13 +71,11 @@ public interface IResourcesManager
     /// Loads a texture from the given RGBA bytes.
     /// </summary>
     /// <param name="name">An unique name of this texture.</param>
-    /// <param name="pixels">An array of RGBA pixels.</param>
-    /// <param name="width">A width of this texture.</param>
-    /// <param name="height">A height of this texture.</param>
+    /// <param name="image">An image containing RGBA bytes.</param>
     /// <param name="wrapMode">Texture wrap mode. TextureWrapMode.Repeat by default.</param>
     /// <returns>A loaded texture.</returns>
-    ITexture LoadTextureFromRgbaBytes(
-        string name, byte[] pixels, int width, int height,
+    ITexture LoadTexture(
+        string name, Image image,
         TextureWrapMode wrapMode = TextureWrapMode.Repeat);
 
     #endregion

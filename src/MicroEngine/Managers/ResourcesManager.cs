@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using MicroEngine.Graphics;
+
 namespace MicroEngine.Managers;
 
 using System.Runtime.InteropServices;
@@ -122,21 +124,21 @@ public class ResourcesManager : IResourcesManager
     }
     
     
-    public ITexture LoadTextureFromRgbaBytes(string name, byte[] pixels, int width, int height, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
+    public ITexture LoadTexture(string name, Image image, TextureWrapMode wrapMode = TextureWrapMode.Repeat)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
             throw new ArgumentException("A texture name is null or empty.");
         }
-
-        ArgumentNullException.ThrowIfNull(pixels);
-
+        
+        ArgumentNullException.ThrowIfNull(image, nameof(image));
+        
         if (_textures.TryGetValue(name, out var value))
         {
             return value;
         }
 
-        var texture = GlTexture.LoadFromRgbaBytes(pixels, width, height, wrapMode);
+        var texture = GlTexture.LoadFromRgbaBytes(image.Pixels, image.Width, image.Height, wrapMode);
         _textures.Add(name, texture);
         
         return texture;

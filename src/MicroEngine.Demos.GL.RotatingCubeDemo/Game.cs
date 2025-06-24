@@ -70,11 +70,9 @@ public class Game : IGame
         // Generate a cube with the texture.
         var cube = TexturedCubeGenerator.Generate(
             new SimpleTextureMaterial(
-                resourcesManager.LoadTextureFromRgbaBytes(
+                resourcesManager.LoadTexture(
                     "gray",
-                    texture.Pixels,
-                    texture.Width,
-                    texture.Height,
+                    texture,
                     TextureWrapMode.ClampToEdge),
                 shader));
         
