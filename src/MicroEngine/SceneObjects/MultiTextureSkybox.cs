@@ -1,12 +1,12 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine.Geometries;
-using MicroEngine.OGL;
-
 namespace MicroEngine.SceneObjects;
 
 using OpenTK.Graphics.OpenGL4;
 using OpenTK.Mathematics;
+
+using MicroEngine.Geometries;
+using MicroEngine.OGL;
 
 /// <summary>
 /// Generic skybox.
