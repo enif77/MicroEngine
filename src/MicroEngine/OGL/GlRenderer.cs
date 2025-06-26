@@ -133,6 +133,23 @@ public static class GlRenderer
     {
         GL.Disable(EnableCap.CullFace);
     }
+    
+    /// <summary>
+    /// Sets the depth function.
+    /// </summary>
+    /// <param name="depthFunction">The depth function to be used for depth testing.</param>
+    public static void SetDepthFunc(DepthFunction depthFunction)
+    {
+        GL.DepthFunc(depthFunction);
+    }
+    
+    /// <summary>
+    /// Sets the default depth function to <see cref="DepthFunction.Less"/>.
+    /// </summary>
+    public static void SetDefaultDepthFunc()
+    {
+        GL.DepthFunc(DepthFunction.Less);
+    }
 
     /// <summary>
     /// Clears the color buffer and the depth buffer of the screen.

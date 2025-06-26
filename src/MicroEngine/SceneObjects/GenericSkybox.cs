@@ -1,5 +1,7 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
+using MicroEngine.OGL;
+
 namespace MicroEngine.SceneObjects;
 
 using OpenTK.Graphics.OpenGL4;
@@ -34,9 +36,9 @@ public class GenericSkybox : SceneObjectBase
         Material.Shader.Use(_scene, this);
         
         // Render.
-        GL.DepthFunc(DepthFunction.Lequal);
+        GlRenderer.SetDepthFunc(DepthFunction.Lequal);
         Geometry.Render();
-        GL.DepthFunc(DepthFunction.Less);
+        GlRenderer.SetDefaultDepthFunc();
        
         base.Render();
     }
