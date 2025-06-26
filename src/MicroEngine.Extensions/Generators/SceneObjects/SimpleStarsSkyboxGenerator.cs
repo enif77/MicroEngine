@@ -6,6 +6,7 @@ using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Materials;
 using MicroEngine.OGL;
+using MicroEngine.SceneObjects;
 using MicroEngine.Shaders;
 
 /// <summary>
@@ -13,10 +14,10 @@ using MicroEngine.Shaders;
 /// </summary>
 public static class SimpleStarsSkyboxGenerator
 {
-    public const int DefaultTextureSizePixels = 1024;
-    public const int DefaultNumberOfStars = 256;
-    public const int DefaultMinStartSize = 3;
-    public const int DefaultMaxStartSize = 7;
+    private const int DefaultTextureSizePixels = 1024;
+    private const int DefaultNumberOfStars = 256;
+    private const int DefaultMinStartSize = 3;
+    private const int DefaultMaxStartSize = 7;
 
     /// <summary>
     /// Generates a simple stars skybox.
@@ -81,7 +82,7 @@ public static class SimpleStarsSkyboxGenerator
                 var x = rand.Next(starSize, textureSizePixels - starSize - 1);
                 var y = rand.Next(starSize, textureSizePixels - starSize - 1);
 
-                // A random star light intensity. Bigger stars can be brighter.
+                // A random starlight intensity. Bigger stars can be brighter.
                 var c = (starSize == maxStarSize)
                     ? (byte)rand.Next(128, 256)
                     : (byte)rand.Next(32, 200);
@@ -112,9 +113,10 @@ public static class SimpleStarsSkyboxGenerator
         var skyboxShader = new MultiTextureSkyboxShader();
         skyboxShader.Build();
         
-        var skybox = SkyboxGenerator.Generate(Material.Create(
-            textures,
-            skyboxShader));
+        var skybox = MultiTextureSkybox.Create(
+            Material.Create(
+                textures,
+                skyboxShader));
         
         skybox.BuildGeometry();
         

@@ -12,6 +12,7 @@ using MicroEngine.Extensions.Generators.SceneObjects;
 using MicroEngine.Managers;
 using MicroEngine.Materials;
 using MicroEngine.OGL;
+using MicroEngine.SceneObjects;
 using MicroEngine.SceneObjects.Cameras;
 using MicroEngine.SceneObjects.Lights;
 using MicroEngine.Shaders;
@@ -195,16 +196,17 @@ public class RotatingCubeDemo : IGame
         var skyboxShader = new MultiTextureSkyboxShader();
         skyboxShader.Build();
         
-        var skybox = SkyboxGenerator.Generate(Material.Create(
-            [
-                _resourcesManager.LoadTexture("pz", "Textures/Skyboxes/TestSkybox/pz.bmp", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture("px", "Textures/Skyboxes/TestSkybox/px.bmp", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture("nz", "Textures/Skyboxes/TestSkybox/nz.bmp", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture("nx", "Textures/Skyboxes/TestSkybox/nx.bmp", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture("py", "Textures/Skyboxes/TestSkybox/py.bmp", TextureWrapMode.ClampToEdge),
-                _resourcesManager.LoadTexture("ny", "Textures/Skyboxes/TestSkybox/ny.bmp", TextureWrapMode.ClampToEdge)
-            ],
-            skyboxShader));
+        var skybox = MultiTextureSkybox.Create(
+            Material.Create(
+                [
+                    _resourcesManager.LoadTexture("pz", "Textures/Skyboxes/TestSkybox/pz.bmp", TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("px", "Textures/Skyboxes/TestSkybox/px.bmp", TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("nz", "Textures/Skyboxes/TestSkybox/nz.bmp", TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("nx", "Textures/Skyboxes/TestSkybox/nx.bmp", TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("py", "Textures/Skyboxes/TestSkybox/py.bmp", TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("ny", "Textures/Skyboxes/TestSkybox/ny.bmp", TextureWrapMode.ClampToEdge)
+                ],
+                skyboxShader));
         
         skybox.BuildGeometry();
         
