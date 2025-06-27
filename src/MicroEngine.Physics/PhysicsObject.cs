@@ -22,6 +22,12 @@ public class PhysicsObject : IPhysicsObject
             // Traverse up the hierarchy to find the root object.
             while (root.Parent != null)
             {
+                // If the parent is this, we found cycle. Throw an exception.
+                if (root.Parent == this)
+                {
+                    throw new InvalidOperationException("Cycle detected in the physics object hierarchy.");
+                }
+                
                 root = root.Parent;
             }
             
@@ -149,6 +155,8 @@ public class PhysicsObject : IPhysicsObject
             var totalMass = TotalMass;
             if (totalMass == 0)
             {
+                // If total mass is zero, return zero vector to avoid division by zero.
+                // This can happen if the object has no mass and no children with a mass.
                 return Vector3.Zero;
             }
 
