@@ -52,11 +52,12 @@ public class PhysicsEngine
     {
         if (_cancellationTokenSource != null)
         {
-            return; // Already running
+            // Already running
+            return; 
         }
 
-        // Clamp updatesPerSecond to the range [1, 100]
-        _updatesPerSecond = Math.Clamp(updatesPerSecond, 1, 100);
+        // Clamp updatesPerSecond to the range [1, 500]
+        _updatesPerSecond = Math.Clamp(updatesPerSecond, 1, 500);
         _cancellationTokenSource = new CancellationTokenSource();
 
         Task.Run(() => Update(_cancellationTokenSource.Token), _cancellationTokenSource.Token);
@@ -69,7 +70,8 @@ public class PhysicsEngine
     {
         if (_cancellationTokenSource == null)
         {
-            return; // Not running
+            // Not running
+            return; 
         }
 
         _cancellationTokenSource.Cancel();
