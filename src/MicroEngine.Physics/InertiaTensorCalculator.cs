@@ -9,6 +9,25 @@ using OpenTK.Mathematics;
 /// </summary>
 public static class InertiaTensorCalculator
 {
+    /// <summary>
+    /// Calculates the inertia tensor for a sphere with uniformly distributed mass.
+    /// </summary>
+    /// <param name="mass">The mass of the sphere.</param>
+    /// <param name="radius">The radius of the sphere.</param>
+    /// <returns>Inertia tensor as a 3x3 matrix.</returns>
+    public static Matrix3 CalculateSphereInertiaTensor(float mass, float radius)
+    {
+        // The moment of inertia of a sphere around any axis is (2/5) * m * r^2.
+        var moment = (2.0f / 5.0f) * mass * radius * radius;
+
+        // The inertia tensor is a diagonal matrix.
+        return new Matrix3(
+            moment, 0, 0,
+            0, moment, 0,
+            0, 0, moment
+        );
+    }
+    
     /*
      
     Here is an example of calculating the inertia tensor for a cubic spaceship with uniformly distributed mass.
@@ -34,10 +53,10 @@ public static class InertiaTensorCalculator
     /// <returns>Inertia tensor as a 3x3 matrix.</returns>
     public static Matrix3 CalculateCubeInertiaTensor(float mass, float sideLength)
     {
-        // Moment setrvačnosti krychle kolem osy je (1/6) * m * a^2
-        float moment = (1.0f / 6.0f) * mass * sideLength * sideLength;
+        // The moment of inertia of a cube around an axis is (1/6) * m * a^2.
+        var moment = (1.0f / 6.0f) * mass * sideLength * sideLength;
 
-        // Tenzor setrvačnosti je diagonální matice
+        // The inertia tensor is a diagonal matrix.
         return new Matrix3(
             moment, 0, 0,
             0, moment, 0,
@@ -84,12 +103,12 @@ public static class InertiaTensorCalculator
     /// <returns>Inertia tensor as a 3x3 matrix.</returns>
     public static Matrix3 CalculateCuboidInertiaTensor(float mass, float width, float height, float depth)
     {
-        // Výpočet momentů setrvačnosti
+        // Calculation of moments of inertia
         var iX = (1.0f / 12.0f) * mass * (height * height + depth * depth);
         var iY = (1.0f / 12.0f) * mass * (width * width + depth * depth);
         var iZ = (1.0f / 12.0f) * mass * (width * width + height * height);
 
-        // Tenzor setrvačnosti jako diagonální matice
+        // The inertia tensor is a diagonal matrix.
         return new Matrix3(
             iX, 0, 0,
             0, iY, 0,
