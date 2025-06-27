@@ -4,6 +4,7 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.Core;
 using MicroEngine.Geometries;
 
 /// <summary>
@@ -11,9 +12,6 @@ using MicroEngine.Geometries;
 /// </summary>
 public class StaticBoundarySphere : RenderableSceneObject
 {
-    // The base constructor requires a geometry, but we will update it in our constructor.
-    private static readonly IGeometry NullGeometry = new NullGeometry();
-    
     /// <summary>
     /// World center of this boundary sphere.
     /// </summary>
@@ -21,7 +19,7 @@ public class StaticBoundarySphere : RenderableSceneObject
     
     
     public StaticBoundarySphere()
-        : base(NullGeometry)
+        : base(NullGeometry.Instance)
     {
         // 22.5 degrees splits circle to 16 segments.
         var circlePoints = GetCircularPoints(1.0f, Vector3.Zero, MathHelper.DegreesToRadians(22.5f));

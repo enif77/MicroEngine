@@ -5,7 +5,6 @@ namespace MicroEngine.Materials;
 using OpenTK.Mathematics;
 
 using MicroEngine.Core;
-using MicroEngine.Shaders;
 
 /// <summary>
 /// A material that uses multiple textures with lighting. 
@@ -22,11 +21,11 @@ public class Material : IMaterial
     
     public IReadOnlyList<ITexture> Textures { get; } = new List<ITexture>
     {
-        new NullTexture(),  // Placeholder for the diffuse map
-        new NullTexture()   // Placeholder for the specular map
+        NullTexture.Instance,  // Placeholder for the diffuse map
+        NullTexture.Instance   // Placeholder for the specular map
     };
 
-    public IShader Shader { get; private init; } = new NullShader();
+    public IShader Shader { get; private init; } = NullShader.Instance;
 
 
     private Material()
@@ -129,7 +128,7 @@ public class Material : IMaterial
         if (texturesList.Count < 2)
         {
             // Ensure there's always a specular map.
-            texturesList.Add(new NullTexture()); 
+            texturesList.Add(NullTexture.Instance); 
         }
         
         return material;

@@ -4,6 +4,8 @@ namespace MicroEngine.Extensions;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.Core;
+
 /// <summary>
 /// Scene object related extensions.
 /// </summary>
@@ -19,6 +21,22 @@ public static class SceneObjectExtensions
     public static ISceneObject AddChild(this ISceneObject sceneObject, ISceneObject child)
     {
         ArgumentNullException.ThrowIfNull(child);
+        
+        if (sceneObject is NullSceneObject)
+        {
+            throw new InvalidOperationException("Cannot add a child to a null scene object.");
+        }
+        
+        // if (child.Parent != null)
+        // {
+        //     throw new InvalidOperationException("Child already has a parent.");
+        // }
+        
+        if (sceneObject == child)
+        {
+            throw new InvalidOperationException("Cannot add a scene object as its own child.");
+        }
+        
         if (sceneObject.Children.Contains(child))
         {
             throw new InvalidOperationException("Child already exists in the parent object.");
@@ -39,6 +57,22 @@ public static class SceneObjectExtensions
     public static void RemoveChild(this ISceneObject sceneObject, ISceneObject child)
     {
         ArgumentNullException.ThrowIfNull(child);
+        
+        if (sceneObject is NullSceneObject)
+        {
+            throw new InvalidOperationException("Cannot remove a child from a null scene object.");
+        }
+        
+        if (child.Parent != sceneObject)
+        {
+            throw new InvalidOperationException("Child does not belong to the parent object.");
+        }
+        
+        if (sceneObject.Children.Count == 0)
+        {
+            throw new InvalidOperationException("No children to remove from the parent object.");
+        }
+        
         if (sceneObject.Children.Contains(child) == false)
         {
             throw new InvalidOperationException("Child does not exist in the parent object.");

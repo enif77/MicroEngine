@@ -4,15 +4,14 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Geometries;
-using MicroEngine.Materials;
+using MicroEngine.Core;
 
 public abstract class SceneObjectBase : ISceneObject
 {
     public virtual ISceneObject? Parent { get; set; }
     public IList<ISceneObject> Children { get; } = new List<ISceneObject>();
 
-    public IGeometry Geometry { get; protected set; } = new NullGeometry();
+    public IGeometry Geometry { get; protected set; } = NullGeometry.Instance;
     public IMaterial Material { get; init; } = MicroEngine.Materials.Material.Create();
 
     private float _scale = 1.0f;

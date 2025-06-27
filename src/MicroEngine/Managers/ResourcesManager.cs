@@ -7,11 +7,9 @@ using System.Runtime.InteropServices;
 using OpenTK.Graphics.OpenGL4;
 
 using MicroEngine.Core;
-using MicroEngine.Geometries;
 using MicroEngine.Graphics;
 using MicroEngine.Materials;
 using MicroEngine.OGL;
-using MicroEngine.Shaders;
 
 /// <summary>
 /// Manages resources.
@@ -78,7 +76,7 @@ public class ResourcesManager : IResourcesManager
     
     #region textures
     
-    private readonly ITexture _nullTexture = new NullTexture();
+    private readonly ITexture _nullTexture = NullTexture.Instance;
     private readonly Dictionary<string, ITexture> _textures = new();
 
 
@@ -193,7 +191,7 @@ public class ResourcesManager : IResourcesManager
     
     #region shaders
     
-    private readonly IShader _nullShader = new NullShader();
+    private readonly IShader _nullShader = NullShader.Instance;
     private readonly Dictionary<string, IShader> _shaders = new();
     
     
@@ -237,7 +235,7 @@ public class ResourcesManager : IResourcesManager
     
     #region geometries
     
-    private readonly IGeometry _nullGeometry = new NullGeometry();
+    private readonly IGeometry _nullGeometry = NullGeometry.Instance;
     private readonly Dictionary<string, IGeometry> _geometries = new();
     
     

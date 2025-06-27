@@ -4,6 +4,7 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.Core;
 using MicroEngine.Geometries;
 
 /// <summary>
@@ -11,15 +12,12 @@ using MicroEngine.Geometries;
 /// </summary>
 public sealed class DynamicAxisAlignedBoundaryBox : RenderableSceneObject, IAxisAlignedBoundaryBox
 {
-    // The base constructor requires a geometry, but we will update it in our constructor.
-    private static readonly IGeometry NullGeometry = new NullGeometry();
-    
     public Vector3 Min { get; private set; } = new(-0.5f, -0.5f, -0.5f);
     public Vector3 Max { get; private set; } = new(0.5f, 0.5f, 0.5f);
 
     
     public DynamicAxisAlignedBoundaryBox()
-        : base(NullGeometry)
+        : base(NullGeometry.Instance)
     {
         Geometry = new SimpleIndexedLinesGeometry(
             _vertices,

@@ -4,6 +4,7 @@ namespace MicroEngine.SceneObjects;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.Core;
 using MicroEngine.Geometries;
 
 /// <summary>
@@ -12,9 +13,6 @@ using MicroEngine.Geometries;
 /// </summary>
 public class StaticAxisAlignedBoundaryBox : RenderableSceneObject, IAxisAlignedBoundaryBox
 {
-    // The base constructor requires a geometry, but we will update it in our constructor.
-    private static readonly IGeometry NullGeometry = new NullGeometry();
-    
     private static readonly Vector3 MinVertex = new(-0.5f, -0.5f, -0.5f);
     private static readonly Vector3 MaxVertex = new(0.5f, 0.5f, 0.5f);
     
@@ -23,7 +21,7 @@ public class StaticAxisAlignedBoundaryBox : RenderableSceneObject, IAxisAlignedB
     
     
     public StaticAxisAlignedBoundaryBox()
-        : base(NullGeometry)
+        : base(NullGeometry.Instance)
     {
         Geometry = new SimpleIndexedLinesGeometry(
             [

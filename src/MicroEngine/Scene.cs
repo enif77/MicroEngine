@@ -5,6 +5,7 @@ namespace MicroEngine;
 using OpenTK.Mathematics;
 
 using MicroEngine.SceneObjects;
+using MicroEngine.SceneObjects.Cameras;
 
 /// <summary>
 /// Scene is the parent for all game objects.
