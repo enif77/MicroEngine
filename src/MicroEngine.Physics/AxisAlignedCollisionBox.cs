@@ -56,8 +56,12 @@ public class AxisAlignedCollisionBox : ICollisionObject
             // Position will be calculated as the average of Min and Max. See the UpdateCornersAndPosition() method.
             
             // Update Min and Max based on the new position
-            var min = new Vector3(value.X - (_max.X - _min.X) / 2, value.Y - (_max.Y - _min.Y) / 2, value.Z - (_max.Z - _min.Z) / 2);
-            var max = new Vector3(value.X + (_max.X - _min.X) / 2, value.Y + (_max.Y - _min.Y) / 2, value.Z + (_max.Z - _min.Z) / 2);
+            // We assume that the box is centered around the new position.
+            var halfSizeX = (_max.X - _min.X) / 2.0f;
+            var halfSizeY = (_max.Y - _min.Y) / 2.0f;
+            var halfSizeZ = (_max.Z - _min.Z) / 2.0f;
+            var min = new Vector3(value.X - halfSizeX, value.Y - halfSizeY, value.Z - halfSizeZ);
+            var max = new Vector3(value.X + halfSizeX, value.Y + halfSizeY, value.Z + halfSizeZ);
             
             _min = min;
             _max = max;
