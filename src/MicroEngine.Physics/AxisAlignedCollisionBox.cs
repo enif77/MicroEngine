@@ -9,6 +9,11 @@ using OpenTK.Mathematics;
 /// </summary>
 public class AxisAlignedCollisionBox : ICollisionObject
 {
+    /// <summary>
+    /// Gets the calculated size of the bounding box.
+    /// </summary>
+    public Vector3 Size => Max - Min;
+    
     private Vector3 _min;
 
     /// <summary>
@@ -75,15 +80,70 @@ public class AxisAlignedCollisionBox : ICollisionObject
     /// </summary>
     /// <param name="min">The minimum point of the bounding box.</param>
     /// <param name="max">The maximum point of the bounding box.</param>
-    public AxisAlignedCollisionBox(Vector3 min, Vector3 max)
+    private AxisAlignedCollisionBox(Vector3 min, Vector3 max)
     {
         _min = min;
         _max = max;
 
         UpdateCornersAndPosition();
     }
-    
 
+    
+    /// <summary>
+    /// Creates a new AxisAlignedCollisionBox from minimum and maximum points.
+    /// </summary>
+    /// <param name="min">A point that represents the minimum corner of the box.</param>
+    /// <param name="max">A point that represents the maximum corner of the box.</param>
+    /// <returns>A new instance of AxisAlignedCollisionBox.</returns>
+    /// <exception cref="ArgumentException">Thrown when Min is not less than Max in any dimension.</exception>
+    public static AxisAlignedCollisionBox Create(Vector3 min, Vector3 max)
+    {
+        if (min.X >= max.X || min.Y >= max.Y || min.Z >= max.Z)
+        {
+            throw new ArgumentException("Min must be less than Max in all dimensions.", nameof(min));
+        }
+        
+        return new AxisAlignedCollisionBox(min, max);
+    }
+
+    /// <summary>
+    /// Creates a new AxisAlignedCollisionBox from a position and size.
+    /// </summary>
+    /// <param name="position">A position that represents the center of the box.</param>
+    /// <param name="size">A size that represents the dimensions of the box.</param>
+    /// <returns>A new instance of AxisAlignedCollisionBox.</returns>
+    /// <exception cref="ArgumentException">Thrown when size is not greater than zero in any dimension.</exception>
+    public static AxisAlignedCollisionBox CreateFromPositionAndSize(Vector3 position, Vector3 size)
+    {
+        if (size.X <= 0 || size.Y <= 0 || size.Z <= 0)
+        {
+            throw new ArgumentException("Size must be greater than zero in all dimensions.", nameof(size));
+        }
+        
+        return new AxisAlignedCollisionBox(
+            position - size / 2.0f, // Calculate Min
+            position + size / 2.0f  // Calculate Max
+        );
+    }
+
+    /// <summary>
+    /// Creates a new AxisAlignedCollisionBox from a position and a uniform size.
+    /// </summary>
+    /// <param name="position">A position that represents the center of the box.</param>
+    /// <param name="size">A uniform size that represents the dimensions of the box.</param>
+    /// <returns>A new instance of AxisAlignedCollisionBox.</returns>
+    /// <exception cref="ArgumentException">Thrown when size is not greater than zero.</exception>
+    public static AxisAlignedCollisionBox CreateFromPositionAndSize(Vector3 position, float size)
+    {
+        if (size <= 0)
+        {
+            throw new ArgumentException("Size must be greater than zero.", nameof(size));
+        }
+        
+        return CreateFromPositionAndSize(position, new Vector3(size, size, size));
+    }
+    
+    
     public bool CheckCollision(ICollisionObject other)
     {
         return other switch
@@ -97,10 +157,36 @@ public class AxisAlignedCollisionBox : ICollisionObject
             _ => false
         };
     }
+    
+    
+    public bool IsPointInside(Vector3 point)
+    {
+        return point.X >= Min.X && point.X <= Max.X &&
+               point.Y >= Min.Y && point.Y <= Max.Y &&
+               point.Z >= Min.Z && point.Z <= Max.Z;
+    }
+    
+    
+    public bool IsInside(ICollisionObject other)
+    {
+        return other switch
+        {
+            AxisAlignedCollisionBox box => IsPointInside(box.Min) && IsPointInside(box.Max),
+            CollisionSphere sphere => 
+                Vector3.DistanceSquared(Position, sphere.Position) <= sphere.RadiusSquared &&
+                IsPointInside(sphere.Position + new Vector3(sphere.Radius, sphere.Radius, sphere.Radius)) &&
+                IsPointInside(sphere.Position - new Vector3(sphere.Radius, sphere.Radius, sphere.Radius)),
+            
+            // We cannot check if this box is inside a plane, as planes are infinite in one direction.
+            _ => false
+        };
+    }
 
     
     private bool CheckCollisionWithPlane(CollisionPlane plane)
     {
+        UpdateCorners();
+        
         // Check, if any corner of the box is on the positive side of the plane.
         foreach (var corner in _corners)
         {
@@ -121,7 +207,19 @@ public class AxisAlignedCollisionBox : ICollisionObject
     private void UpdateCornersAndPosition()
     {
         _position = (Min + Max) / 2;
-        
+        _needsCornersUpdate = true;
+    }
+    
+    
+    private bool _needsCornersUpdate = true;
+    
+    private void UpdateCorners()
+    {
+        if (!_needsCornersUpdate)
+        {
+            return;
+        }
+
         _corners[0] = new Vector3(Min.X, Min.Y, Min.Z);
         _corners[1] = new Vector3(Min.X, Min.Y, Max.Z);
         _corners[2] = new Vector3(Min.X, Max.Y, Min.Z);
@@ -130,6 +228,8 @@ public class AxisAlignedCollisionBox : ICollisionObject
         _corners[5] = new Vector3(Max.X, Min.Y, Max.Z);
         _corners[6] = new Vector3(Max.X, Max.Y, Min.Z);
         _corners[7] = new Vector3(Max.X, Max.Y, Max.Z);
+        
+        _needsCornersUpdate = false;
     }
     
     
@@ -138,5 +238,46 @@ public class AxisAlignedCollisionBox : ICollisionObject
         return Min.X <= box.Max.X && Max.X >= box.Min.X &&
                Min.Y <= box.Max.Y && Max.Y >= box.Min.Y &&
                Min.Z <= box.Max.Z && Max.Z >= box.Min.Z;
+    }
+
+
+    
+    public void Translate(Vector3 translation)
+    {
+        Min += translation;
+        Max += translation;
+        _position += translation;
+
+        // Update corners after translation
+        UpdateCornersAndPosition();
+    }
+    
+    
+    public void Scale(Vector3 scale)
+    {
+        if (scale.X <= 0 || scale.Y <= 0 || scale.Z <= 0)
+        {
+            throw new ArgumentException("Scale must be greater than zero in all dimensions.", nameof(scale));
+        }
+
+        var center = Position;
+        var halfSize = Size / 2.0f;
+
+        Min = center - halfSize * scale;
+        Max = center + halfSize * scale;
+
+        // Update corners after scaling
+        UpdateCornersAndPosition();
+    }
+    
+    
+    public void Scale(float scale)
+    {
+        if (scale <= 0)
+        {
+            throw new ArgumentException("Scale must be greater than zero.", nameof(scale));
+        }
+
+        Scale(new Vector3(scale, scale, scale));
     }
 }

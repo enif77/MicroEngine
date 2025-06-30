@@ -20,4 +20,11 @@ public interface ICollisionObject
     /// <param name="other">A collision object to check for collision with.</param>
     /// <returns>True if a collision occurs, otherwise false.</returns>
     bool CheckCollision(ICollisionObject other);
+
+    /// <summary>
+    /// Checks if a point is inside this collision object.
+    /// </summary>
+    /// <param name="point">A point in the physics world to check.</param>
+    /// <returns>True if the point is inside the collision object, otherwise false.</returns>
+    bool IsPointInside(Vector3 point);
 }

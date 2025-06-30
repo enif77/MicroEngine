@@ -44,6 +44,14 @@ public class CollisionPlane : ICollisionObject
             _ => false
         };
     }
+    
+    /// <summary>
+    /// Checks if a point is inside the plane. Inside is defined as being above or below the plane based on the normal vector.
+    /// </summary>
+    /// <param name="point">A point in the physics world to check.</param>
+    /// <returns>True if the point is inside the plane, otherwise false.</returns>
+    public bool IsPointInside(Vector3 point)
+        => Vector3.Dot(Normal, point - Position) >= 0;
 
     
     public float GetDistanceToPoint(Vector3 corner)

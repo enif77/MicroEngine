@@ -18,6 +18,11 @@ public class CollisionSphere : ICollisionObject
     /// Radius of the sphere. Should be a positive value.
     /// </summary>
     public float Radius { get; set; }
+    
+    /// <summary>
+    /// Returns the squared radius of the sphere.
+    /// </summary>
+    public float RadiusSquared => Radius * Radius;
 
     
     /// <summary>
@@ -36,23 +41,35 @@ public class CollisionSphere : ICollisionObject
     {
         return other switch
         {
-            CollisionSphere sphere => Vector3.Distance(Position, sphere.Position) <= (Radius + sphere.Radius),
+            CollisionSphere sphere => Vector3.DistanceSquared(Position, sphere.Position) <= (RadiusSquared + sphere.RadiusSquared),
             AxisAlignedCollisionBox box => CheckCollisionWithBox(box),
+            XyAxisAlignedCollisionPlane xyPlane => xyPlane.CheckCollision(this),
             XzAxisAlignedCollisionPlane xzPlane => xzPlane.CheckCollision(this),
-            YzAxisAlignedCollisionPlane xzPlane => xzPlane.CheckCollision(this),
+            YzAxisAlignedCollisionPlane yzPlane => yzPlane.CheckCollision(this),
             CollisionPlane plane => Math.Abs(Vector3.Dot(plane.Normal, Position - plane.Position)) <= Radius,
             
             // Planes do not collide with each other.
             _ => false
         };
     }
-
+    
+    
+    public bool IsPointInside(Vector3 point)
+    {
+        // Check if the distance from the sphere's center to the point is less than or equal to the radius
+        return Vector3.DistanceSquared(Position, point) <= RadiusSquared;
+    }
+    
     
     private bool CheckCollisionWithBox(AxisAlignedCollisionBox box)
     {
+        // Find the closest point on the box to the sphere's center
         var closestPoint = Vector3.Clamp(Position, box.Min, box.Max);
-        var distance = Vector3.Distance(Position, closestPoint);
-        
-        return distance <= Radius;
+
+        // Calculate the distance from the closest point to the sphere's center
+        var distanceSquared = (closestPoint - Position).LengthSquared;
+
+        // Check if the distance is less than or equal to the sphere's radius squared
+        return distanceSquared <= Radius * Radius;
     }
 }

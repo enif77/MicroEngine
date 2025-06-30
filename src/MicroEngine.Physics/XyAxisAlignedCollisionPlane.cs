@@ -48,6 +48,16 @@ public class XyAxisAlignedCollisionPlane : ICollisionObject
             _ => false
         };
     }
+    
+    /// <summary>
+    /// Checks if a point is inside the plane. Inside is defined as being in front of the plane (if the normal points forward) or behind the plane (if the normal points backward).
+    /// </summary>
+    /// <param name="point">A point in the physics world to check.</param>
+    /// <returns>True if the point is inside the plane, otherwise false.</returns>
+    public bool IsPointInside(Vector3 point)
+        => Normal.Z > 0
+            ? point.Z <= ZPosition
+            : point.Z >= ZPosition;
 
     
     private bool CheckSphereCollision(CollisionSphere sphere)
