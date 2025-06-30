@@ -41,14 +41,16 @@ public class CollisionSphere : ICollisionObject
     {
         return other switch
         {
-            CollisionSphere sphere => Vector3.DistanceSquared(Position, sphere.Position) <= (RadiusSquared + sphere.RadiusSquared),
             AxisAlignedCollisionBox box => CheckCollisionWithBox(box),
-            XyAxisAlignedCollisionPlane xyPlane => xyPlane.CheckCollision(this),
-            XzAxisAlignedCollisionPlane xzPlane => xzPlane.CheckCollision(this),
-            YzAxisAlignedCollisionPlane yzPlane => yzPlane.CheckCollision(this),
+            CollisionSphere sphere => Vector3.DistanceSquared(Position, sphere.Position) <= (RadiusSquared + sphere.RadiusSquared),
+            BackFrontAxisAlignedCollisionPlane bfPlane => bfPlane.CheckCollision(this),
+            FrontBackAxisAlignedCollisionPlane fbPlane => fbPlane.CheckCollision(this),
+            LeftRightAxisAlignedCollisionPlane lrPlane => lrPlane.CheckCollision(this),
+            RightLeftAxisAlignedCollisionPlane rlPlane => rlPlane.CheckCollision(this),
+            TopDownAxisAlignedCollisionPlane tdPlane => tdPlane.CheckCollision(this),
+            BottomUpAxisAlignedCollisionPlane buPlane => buPlane.CheckCollision(this),
             CollisionPlane plane => Math.Abs(Vector3.Dot(plane.Normal, Position - plane.Position)) <= Radius,
             
-            // Planes do not collide with each other.
             _ => false
         };
     }
@@ -56,7 +58,6 @@ public class CollisionSphere : ICollisionObject
     
     public bool IsPointInside(Vector3 point)
     {
-        // Check if the distance from the sphere's center to the point is less than or equal to the radius
         return Vector3.DistanceSquared(Position, point) <= RadiusSquared;
     }
     
@@ -70,6 +71,6 @@ public class CollisionSphere : ICollisionObject
         var distanceSquared = (closestPoint - Position).LengthSquared;
 
         // Check if the distance is less than or equal to the sphere's radius squared
-        return distanceSquared <= Radius * Radius;
+        return distanceSquared <= RadiusSquared;
     }
 }

@@ -148,12 +148,16 @@ public class AxisAlignedCollisionBox : ICollisionObject
     {
         return other switch
         {
-            CollisionSphere sphere => sphere.CheckCollision(this),
             AxisAlignedCollisionBox box => CheckCollisionWithBox(box),
-            XyAxisAlignedCollisionPlane xyPlane => xyPlane.CheckCollision(this),
-            XzAxisAlignedCollisionPlane xzPlane => xzPlane.CheckCollision(this),
-            YzAxisAlignedCollisionPlane yzPlane => yzPlane.CheckCollision(this),
+            CollisionSphere sphere => sphere.CheckCollision(this),
+            BackFrontAxisAlignedCollisionPlane bfPlane => bfPlane.CheckCollision(this),
+            FrontBackAxisAlignedCollisionPlane fbPlane => fbPlane.CheckCollision(this),
+            LeftRightAxisAlignedCollisionPlane lrPlane => lrPlane.CheckCollision(this),
+            RightLeftAxisAlignedCollisionPlane rlPlane => rlPlane.CheckCollision(this),
+            TopDownAxisAlignedCollisionPlane tdPlane => tdPlane.CheckCollision(this),
+            BottomUpAxisAlignedCollisionPlane buPlane => buPlane.CheckCollision(this),
             CollisionPlane plane => CheckCollisionWithPlane(plane),
+            
             _ => false
         };
     }
