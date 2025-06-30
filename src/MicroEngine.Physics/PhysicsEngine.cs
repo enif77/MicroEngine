@@ -22,6 +22,11 @@ public class PhysicsEngine
     public event Action<float>? UpdateStarted;
     public event Action? UpdateCompleted;
     public event Action? UpdateSkipped;
+    
+    /// <summary>
+    /// The optional collision resolver to use for resolving collisions.
+    /// </summary>
+    public ICollisionResolver? CollisionResolver { get; set; }
 
 
     public PhysicsEngine()
@@ -137,8 +142,12 @@ public class PhysicsEngine
                     obj.Update(deltaTime);
                 }
                 
-                // Perform collision detection
-                PerformCollisionDetection();
+                // Perform collision detection.
+                // If no collision resolver is set, skip it.
+                if (CollisionResolver != null)
+                {
+                    PerformCollisionDetection(deltaTime);
+                }
             }
 
             // Invoke UpdateCompleted event
@@ -152,7 +161,7 @@ public class PhysicsEngine
     }
     
     
-    private void PerformCollisionDetection()
+    private void PerformCollisionDetection(float deltaTime)
     {
         for (var i = 0; i < _objects.Count; i++)
         {
@@ -172,8 +181,10 @@ public class PhysicsEngine
 
                 if (objA.CollisionObject.CheckCollision(objB.CollisionObject))
                 {
-                    objA.CollisionObject.OnCollision(objB.CollisionObject);
-                    objB.CollisionObject.OnCollision(objA.CollisionObject);
+                    _ = CollisionResolver!.ResolveCollision(
+                        objA.CollisionObject,
+                        objB.CollisionObject,
+                        deltaTime);
                 }
             }
         }

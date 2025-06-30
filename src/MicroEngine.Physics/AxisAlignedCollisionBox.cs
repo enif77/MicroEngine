@@ -171,20 +171,20 @@ public class AxisAlignedCollisionBox : ICollisionObject
     }
     
     
-    public bool IsInside(ICollisionObject other)
-    {
-        return other switch
-        {
-            AxisAlignedCollisionBox box => IsPointInside(box.Min) && IsPointInside(box.Max),
-            CollisionSphere sphere => 
-                Vector3.DistanceSquared(Position, sphere.Position) <= sphere.RadiusSquared &&
-                IsPointInside(sphere.Position + new Vector3(sphere.Radius, sphere.Radius, sphere.Radius)) &&
-                IsPointInside(sphere.Position - new Vector3(sphere.Radius, sphere.Radius, sphere.Radius)),
-            
-            // We cannot check if this box is inside a plane, as planes are infinite in one direction.
-            _ => false
-        };
-    }
+    // public bool IsInside(ICollisionObject other)
+    // {
+    //     return other switch
+    //     {
+    //         AxisAlignedCollisionBox box => IsPointInside(box.Min) && IsPointInside(box.Max),
+    //         CollisionSphere sphere => 
+    //             Vector3.DistanceSquared(Position, sphere.Position) <= sphere.RadiusSquared &&
+    //             IsPointInside(sphere.Position + new Vector3(sphere.Radius, sphere.Radius, sphere.Radius)) &&
+    //             IsPointInside(sphere.Position - new Vector3(sphere.Radius, sphere.Radius, sphere.Radius)),
+    //         
+    //         // We cannot check if this box is inside a plane, as planes are infinite in one direction.
+    //         _ => false
+    //     };
+    // }
 
     
     private bool CheckCollisionWithPlane(CollisionPlane plane)
@@ -246,42 +246,42 @@ public class AxisAlignedCollisionBox : ICollisionObject
 
 
     
-    public void Translate(Vector3 translation)
-    {
-        Min += translation;
-        Max += translation;
-        _position += translation;
-
-        // Update corners after translation
-        UpdateCornersAndPosition();
-    }
+    // public void Translate(Vector3 translation)
+    // {
+    //     Min += translation;
+    //     Max += translation;
+    //     _position += translation;
+    //
+    //     // Update corners after translation
+    //     UpdateCornersAndPosition();
+    // }
     
     
-    public void Scale(Vector3 scale)
-    {
-        if (scale.X <= 0 || scale.Y <= 0 || scale.Z <= 0)
-        {
-            throw new ArgumentException("Scale must be greater than zero in all dimensions.", nameof(scale));
-        }
-
-        var center = Position;
-        var halfSize = Size / 2.0f;
-
-        Min = center - halfSize * scale;
-        Max = center + halfSize * scale;
-
-        // Update corners after scaling
-        UpdateCornersAndPosition();
-    }
+    // public void Scale(Vector3 scale)
+    // {
+    //     if (scale.X <= 0 || scale.Y <= 0 || scale.Z <= 0)
+    //     {
+    //         throw new ArgumentException("Scale must be greater than zero in all dimensions.", nameof(scale));
+    //     }
+    //
+    //     var center = Position;
+    //     var halfSize = Size / 2.0f;
+    //
+    //     Min = center - halfSize * scale;
+    //     Max = center + halfSize * scale;
+    //
+    //     // Update corners after scaling
+    //     UpdateCornersAndPosition();
+    // }
     
     
-    public void Scale(float scale)
-    {
-        if (scale <= 0)
-        {
-            throw new ArgumentException("Scale must be greater than zero.", nameof(scale));
-        }
-
-        Scale(new Vector3(scale, scale, scale));
-    }
+    // public void Scale(float scale)
+    // {
+    //     if (scale <= 0)
+    //     {
+    //         throw new ArgumentException("Scale must be greater than zero.", nameof(scale));
+    //     }
+    //
+    //     Scale(new Vector3(scale, scale, scale));
+    // }
 }

@@ -48,7 +48,7 @@ public class PhysicsObject : IPhysicsObject
     /// <summary>
     /// Optional collision object.
     /// </summary>
-    public CollisionObject? CollisionObject { get; set; }
+    public ICollisionObject? CollisionObject { get; set; }
 
     private Vector3 _position = Vector3.Zero;
 
