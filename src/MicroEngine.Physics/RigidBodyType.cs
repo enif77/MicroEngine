@@ -3,7 +3,7 @@
 namespace MicroEngine.Physics;
 
 /// <summary>
-/// Defines the type of a rigid body in the physics world.
+/// Defines the type of rigid body in the physics world.
 /// </summary>
 public enum RigidBodyType
 {
@@ -14,7 +14,7 @@ public enum RigidBodyType
     STATIC_BODY,
     
     /// <summary>
-    /// Kinematic body moves under simulation according to its velocity and acceleration, but it is not affected by forces like gravity or collisions.
+    /// The kinematic body moves under simulation according to its velocity and acceleration, but it is not affected by forces like gravity or collisions.
     /// </summary>
     KINEMATIC_BODY,
     
