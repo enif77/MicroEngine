@@ -3,7 +3,7 @@
 namespace MicroEngine.Physics;
 
 /// <summary>
-/// A definition of a physics word used for a creating one.
+/// A definition of a physics word used for creating one.
 /// </summary>
 public sealed class PhysicsWorldDefinition
 {

@@ -31,7 +31,7 @@ public class RigidBodyDefinition
     public bool FixedRotation { get; set; }
     
     /// <summary>
-    /// Used to disable a body. A disabled body does not move or colide.
+    /// Used to disable a body. A disabled body does not move or collide.
     /// </summary>
     public bool IsEnabled { get; set; } = true;
     
