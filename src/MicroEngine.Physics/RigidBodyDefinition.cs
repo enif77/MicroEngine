@@ -10,6 +10,11 @@ using OpenTK.Mathematics;
 public class RigidBodyDefinition
 {
     /// <summary>
+    /// This allows fast movement of the rigid body. Should be used on bullets or similar objects.
+    /// </summary>
+    public bool AllowFastMovement { get; set; }
+    
+    /// <summary>
     /// This allows fast rotation of the rigid body. Should be used on wheels or similar objects.
     /// </summary>
     public bool AllowFastRotation { get; set; }
@@ -46,7 +51,10 @@ public class RigidBodyDefinition
     public Vector3 LinearVelocity { get; set; } = Vector3.Zero;
     
     /// <summary>
-    /// An optional unique body name. This can be used to identify the body in the physics world.
+    /// Optional unique body name. This can be used to identify the body in the physics world.
+    /// It is not used for any other purpose and can be set to an empty string if not needed.
+    /// It is useful for debugging or when you need to find a specific body in the physics world.
+    /// The name should be unique within the physics world, but it is not enforced.
     /// </summary>
     public string Name { get; set; } = string.Empty;
     
@@ -66,8 +74,11 @@ public class RigidBodyDefinition
     public RigidBodyType Type { get; set; } = RigidBodyType.STATIC_BODY;
     
     /// <summary>
-    /// A user data that can be used to store any additional information about the rigid body.
-    /// This can be any object, such as a reference to a game entity or other relevant data.
+    /// Optional user data associated with the rigid body.
+    /// This can be used to store any additional information about the rigid body.
+    /// This data is not used by the physics engine and is purely for user-defined purposes.
+    /// It can be used to store metadata, references to game objects, or any other information that is relevant to the rigid body.
+    /// The user data can be set or retrieved at any time, and it does not affect the physics simulation in any way.
     /// </summary>
     public object? UserData { get; set; }
 }

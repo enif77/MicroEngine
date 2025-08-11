@@ -29,8 +29,26 @@ public class PhysicsWorld
     private PhysicsWorld()
     {
     }
-    
-    
+
+
+    /// <summary>
+    /// Updates the internal state of this physics object, including its position,
+    /// orientation, and model matrix, based on the elapsed time and its velocity
+    /// and angular velocity. Recursively updates all child objects.
+    /// </summary>
+    /// <param name="deltaTime">The time elapsed since the last update, in seconds.</param>
+    public void Update(float deltaTime)
+    {
+        // TODO: Implement the update logic for the physics world.
+        
+        // This method should update the state of all rigid bodies in the world,
+        // including their positions and orientations based on their velocities and angular velocities.
+        // It should also handle collisions, apply forces, and manage the physics simulation.
+        // The deltaTime parameter can be used to scale the updates based on the time elapsed.
+        // This is a placeholder for the actual implementation.
+    }
+
+
     /// <summary>
     /// Creates a new instance of the physics world based on the provided definition.
     /// </summary>

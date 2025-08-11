@@ -15,6 +15,9 @@ public enum RigidBodyType
     
     /// <summary>
     /// The kinematic body moves under simulation according to its velocity and acceleration, but it is not affected by forces like gravity or collisions.
+    /// Kinematic bodies does not collide with any other kinds of physical bodies.
+    /// They can be used for moving platforms or other objects that need to move in a controlled way.
+    /// Kinematic bodies can be moved by setting their position or velocity directly.
     /// </summary>
     KINEMATIC_BODY,
     
