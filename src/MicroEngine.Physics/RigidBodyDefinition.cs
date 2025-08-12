@@ -4,6 +4,8 @@ namespace MicroEngine.Physics;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.Physics.CollisionObjects;
+
 /// <summary>
 /// A rigid body definition used for creating a rigid body.
 /// </summary>
@@ -29,6 +31,11 @@ public sealed class RigidBodyDefinition
     /// The initial angular velocity of the rigid body. Radians per second.
     /// </summary>
     public Vector3 AngularVelocity { get; set; } = Vector3.Zero;
+    
+    /// <summary>
+    /// Collision object that defines the shape and properties of the rigid body.
+    /// </summary>
+    public ICollisionObject CollisionObject { get; set; } = new NullCollisionShape(Vector3.Zero);
     
     /// <summary>
     /// Should this body be prevented from rotating?

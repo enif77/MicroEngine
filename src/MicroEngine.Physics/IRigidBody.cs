@@ -71,6 +71,15 @@ public interface IRigidBody
     /// </summary>
     object? UserData { get; set; }
     
+    /// <summary>
+    /// A collision object associated with this rigid body.
+    /// It contains the collision shape and other properties related to collisions.
+    /// This object is used by the physics engine to detect collisions and manage interactions
+    /// with other collision objects in the physics world.
+    /// It is essential for the physics simulation and should be set when creating the rigid body.
+    /// </summary>
+    ICollisionObject CollisionObject { get; }
+    
     
     /// <summary>
     /// Updates the internal state of this physics object, including its position,

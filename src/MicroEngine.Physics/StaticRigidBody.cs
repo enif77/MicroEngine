@@ -4,6 +4,8 @@ namespace MicroEngine.Physics;
 
 using OpenTK.Mathematics;
 
+using MicroEngine.Physics.CollisionObjects;
+
 /// <summary>
 /// Static rigid body is a body that does not move and is not affected by forces.
 /// It does not have a velocity and is used for static objects like terrain or buildings.
@@ -57,6 +59,8 @@ internal sealed class StaticRigidBody : IRigidBody
     /// </summary>
     public Vector3 Position { get; set; } = Vector3.Zero;
     
+    public ICollisionObject CollisionObject { get; private init; } = new NullCollisionShape(Vector3.Zero);
+    
     public object? UserData { get; set; }
 
     
@@ -68,6 +72,15 @@ internal sealed class StaticRigidBody : IRigidBody
 
     public void Update(float deltaTime)
     {
+        // If the body is not enabled, do not update its internal state
+        if (!IsEnabled)
+        {
+            return; 
+        }
+        
+        // Update the collision object's position to match the rigid body's position.
+        // This ensures that the collision detection system knows where the body is located.
+        CollisionObject.Position = Position;
     }
     
     
@@ -97,6 +110,8 @@ internal sealed class StaticRigidBody : IRigidBody
             throw new ArgumentNullException(nameof(definition), "Definition cannot be null.");
         }
 
+        // TODO: Validate the definition properties if needed, such as ensuring that the position and orientation are valid.
+        
         var body = new StaticRigidBody
         {
             Name = definition.Name,
@@ -104,6 +119,8 @@ internal sealed class StaticRigidBody : IRigidBody
             
             Orientation = definition.Orientation,
             Position = definition.Position,
+            
+            CollisionObject = definition.CollisionObject,
             
             UserData = definition.UserData
         };
