@@ -7,7 +7,7 @@ using OpenTK.Mathematics;
 /// <summary>
 /// A rigid body definition used for creating a rigid body.
 /// </summary>
-public class RigidBodyDefinition
+public sealed class RigidBodyDefinition
 {
     /// <summary>
     /// This allows fast movement of the rigid body. Should be used on bullets or similar objects.

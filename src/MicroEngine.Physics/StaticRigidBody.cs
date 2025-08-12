@@ -100,9 +100,11 @@ internal sealed class StaticRigidBody : IRigidBody
         var body = new StaticRigidBody
         {
             Name = definition.Name,
-            Position = definition.Position,
-            Orientation = definition.Orientation,
             IsEnabled = definition.IsEnabled,
+            
+            Orientation = definition.Orientation,
+            Position = definition.Position,
+            
             UserData = definition.UserData
         };
 
