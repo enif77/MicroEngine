@@ -1,6 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.Physics;
+namespace MicroEngine.PhysicsNg;
 
 /// <summary>
 /// A definition of a physics word used for creating one.

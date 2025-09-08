@@ -1,6 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.Physics;
+namespace MicroEngine.PhysicsNg;
 
 /// <summary>
 /// Physics world is a container for all physics objects.

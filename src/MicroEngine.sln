@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{14CAFE45
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Tools.FontGen", "MicroEngine.Tools.FontGen\MicroEngine.Tools.FontGen.csproj", "{29369BE6-7BBC-4BFC-B430-BF5CB322EC93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.PhysicsNg", "MicroEngine.PhysicsNg\MicroEngine.PhysicsNg.csproj", "{5CAEB5A1-7ACE-444A-94C1-61C4C11105FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{29369BE6-7BBC-4BFC-B430-BF5CB322EC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29369BE6-7BBC-4BFC-B430-BF5CB322EC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29369BE6-7BBC-4BFC-B430-BF5CB322EC93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CAEB5A1-7ACE-444A-94C1-61C4C11105FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CAEB5A1-7ACE-444A-94C1-61C4C11105FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CAEB5A1-7ACE-444A-94C1-61C4C11105FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CAEB5A1-7ACE-444A-94C1-61C4C11105FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{12EEBA60-33E1-42FA-ABCC-D12389392CE4} = {2FADF165-1C66-48F1-8C63-6EDA0403B8AD}

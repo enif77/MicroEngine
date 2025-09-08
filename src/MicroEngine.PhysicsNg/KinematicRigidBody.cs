@@ -1,10 +1,10 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.Physics;
+namespace MicroEngine.PhysicsNg;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Physics.CollisionObjects;
+using MicroEngine.PhysicsNg.CollisionObjects;
 
 /// <summary>
 /// Contains a kinematic rigid body not affected by forces like gravity or collisions.

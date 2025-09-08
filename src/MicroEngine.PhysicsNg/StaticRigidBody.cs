@@ -1,10 +1,10 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.Physics;
+namespace MicroEngine.PhysicsNg;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Physics.CollisionObjects;
+using MicroEngine.PhysicsNg.CollisionObjects;
 
 /// <summary>
 /// Static rigid body is a body that does not move and is not affected by forces.

@@ -1,6 +1,6 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.Physics;
+namespace MicroEngine.PhysicsNg;
 
 /// <summary>
 /// Defines the type of rigid body in the physics world.

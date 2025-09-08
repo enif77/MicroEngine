@@ -1,10 +1,10 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-namespace MicroEngine.Physics;
+namespace MicroEngine.PhysicsNg;
 
 using OpenTK.Mathematics;
 
-using MicroEngine.Physics.CollisionObjects;
+using MicroEngine.PhysicsNg.CollisionObjects;
 
 /// <summary>
 /// A rigid body definition used for creating a rigid body.
