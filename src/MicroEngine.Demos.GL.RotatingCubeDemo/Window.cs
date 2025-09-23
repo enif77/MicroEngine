@@ -71,7 +71,7 @@ internal class Window : GameWindow
 
         var viewportSizeScaleFactor = _settings.ViewportSizeScaleFactor;
         
-        // MacOS needs to update the viewport on each frame.
+        // macOS needs to update the viewport on each frame.
         // FramebufferSize returns correct values, only Cocoa visual render size is halved.
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX) && viewportSizeScaleFactor > 1)
         {

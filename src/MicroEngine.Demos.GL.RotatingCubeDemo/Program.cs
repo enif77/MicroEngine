@@ -18,7 +18,7 @@ internal static class Program
     /// <summary>
     /// Global application settings.
     /// </summary>
-    public static Settings Settings { get; private set; } = Settings.DefaultSettings;
+    private static Settings Settings { get; set; } = Settings.DefaultSettings;
     
     
     static void Main(string[] args)
@@ -49,7 +49,7 @@ internal static class Program
         
         ResourcesManager.Instance.RootPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources");
         
-        // This is callback for GLFW errors.
+        // This is a callback for GLFW errors.
         GLFWProvider.SetErrorCallback(
             (error, description) =>
             {
@@ -109,10 +109,10 @@ internal static class Program
     {
         const string configFileName = Defaults.ConfigFileName;
         
-        // We are reading and writing config file in user's home directory.
+        // We are reading and writing config file in the user's home directory.
         var configFileRootPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         
-        // If config file does not exist, create it with default values.
+        // If a config file does not exist, create it with default values.
         var configPath = Path.Combine(
             configFileRootPath,
             configFileName);
@@ -124,7 +124,7 @@ internal static class Program
             }
             catch (IOException)
             {
-                // We are OK with an IO related exception.
+                // We are OK with an IO-related exception.
             }
         }
         

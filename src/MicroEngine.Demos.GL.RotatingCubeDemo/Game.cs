@@ -27,7 +27,7 @@ public class Game : IGame
     
     public bool Initialize()
     {
-        // We do not want to see back faces of the cube.
+        // We do not want to see the back faces of the cube.
         GlRenderer.EnableFaceCulling();
         
         // The scene is the root of the scene graph.
