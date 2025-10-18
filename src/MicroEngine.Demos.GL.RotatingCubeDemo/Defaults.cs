@@ -8,7 +8,7 @@ namespace MicroEngine.Demos.GL.RotatingCubeDemo;
 internal static class Defaults
 {
     public const string AppName = "MicroEngine Rotating Cube Demo";
-    public const string AppVersionInfo = AppName + " 1.0.0";
+    public const string AppVersionInfo = AppName + " 1.0.1";
     
     public const string ConfigFileName = ".microengine-rotating-cube-demo.json";
     

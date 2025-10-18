@@ -58,6 +58,7 @@ internal class Window : GameWindow
 
         #endif
         
+        GlRenderer.SetViewport(0, 0, ClientSize.X, ClientSize.Y);
         GlRenderer.SetClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         GlRenderer.EnableDepthTest();
         
@@ -101,22 +102,6 @@ internal class Window : GameWindow
         }
     }
 
-    
-    protected override void OnMouseWheel(MouseWheelEventArgs e)
-    {
-        base.OnMouseWheel(e);
-
-        InputManager.Instance.OnMouseWheel(e);
-    }
-
-    
-    protected override void OnResize(ResizeEventArgs e)
-    {
-        base.OnResize(e);
-        
-        GlRenderer.SetViewport(0, 0, ClientSize.X, ClientSize.Y);
-    }
-    
     
     #if DEBUG
     

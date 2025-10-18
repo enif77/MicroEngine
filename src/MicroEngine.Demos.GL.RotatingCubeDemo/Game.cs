@@ -22,7 +22,7 @@ public class Game : IGame
     private ISceneObject? _cube;
     
     
-    public string Name => "minimal-rotating-cube-demo";
+    public string Name => "rotating-cube-demo";
 
     
     public bool Initialize()
