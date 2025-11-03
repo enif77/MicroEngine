@@ -44,6 +44,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.GL.EmptyW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Demos.GL.PanoramaViewerDemo", "MicroEngine.Demos.GL.PanoramaViewerDemo\MicroEngine.Demos.GL.PanoramaViewerDemo.csproj", "{55B2E334-1E28-42E0-A62B-9C8CDEE6EA2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroEngine.Tools.EquirectangularProjectionToCubeMapConverter", "MicroEngine.Tools.EquirectangularProjectionToCubeMapConverter\MicroEngine.Tools.EquirectangularProjectionToCubeMapConverter.csproj", "{5BB1565E-A5CD-4C52-A5E8-839555ACA88E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,6 +124,10 @@ Global
 		{55B2E334-1E28-42E0-A62B-9C8CDEE6EA2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55B2E334-1E28-42E0-A62B-9C8CDEE6EA2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55B2E334-1E28-42E0-A62B-9C8CDEE6EA2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BB1565E-A5CD-4C52-A5E8-839555ACA88E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BB1565E-A5CD-4C52-A5E8-839555ACA88E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BB1565E-A5CD-4C52-A5E8-839555ACA88E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BB1565E-A5CD-4C52-A5E8-839555ACA88E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{12EEBA60-33E1-42FA-ABCC-D12389392CE4} = {2FADF165-1C66-48F1-8C63-6EDA0403B8AD}
@@ -138,5 +144,6 @@ Global
 		{29369BE6-7BBC-4BFC-B430-BF5CB322EC93} = {14CAFE45-A9F4-4E97-B4F9-9AD6ABCA1692}
 		{86052FE2-19D5-4280-8394-F81B28BBCCF9} = {1B8EB950-75C8-49D6-8936-15491340DD84}
 		{55B2E334-1E28-42E0-A62B-9C8CDEE6EA2C} = {1B8EB950-75C8-49D6-8936-15491340DD84}
+		{5BB1565E-A5CD-4C52-A5E8-839555ACA88E} = {14CAFE45-A9F4-4E97-B4F9-9AD6ABCA1692}
 	EndGlobalSection
 EndGlobal
