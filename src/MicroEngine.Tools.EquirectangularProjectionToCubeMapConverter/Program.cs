@@ -4,6 +4,14 @@ namespace MicroEngine.Tools.EquirectangularProjectionToCubeMapConverter;
 
 internal static class Program
 {
+    // private const string PositiveZOrientationFaceName = "pz";
+    // private const string NegativeZOrientationFaceName = "nz";
+    // private const string PositiveXOrientationFaceName = "px";
+    // private const string NegativeXOrientationFaceName = "nx";
+    // private const string PositiveYOrientationFaceName = "py";
+    // private const string NegativeYOrientationFaceName = "ny";
+    
+    
     static void Main(string[] args)
     {
         Console.WriteLine("Equirectangular Projection Image to Cube Map Converter v1.0.0");
@@ -34,6 +42,22 @@ internal static class Program
 
         SaveImageToRgbaBmp(face, path);
     }
+    
+    
+    // private static string GetCubeMapFaceName(CubeMapFaceOrientation cubeMapFaceOrientation)
+    // {
+    //     return cubeMapFaceOrientation switch
+    //     {
+    //         CubeMapFaceOrientation.PositiveZ => PositiveZOrientationFaceName,
+    //         CubeMapFaceOrientation.NegativeZ => NegativeZOrientationFaceName,
+    //         CubeMapFaceOrientation.PositiveX => PositiveXOrientationFaceName,
+    //         CubeMapFaceOrientation.NegativeX => NegativeXOrientationFaceName,
+    //         CubeMapFaceOrientation.PositiveY => PositiveYOrientationFaceName,
+    //         CubeMapFaceOrientation.NegativeY => NegativeYOrientationFaceName,
+    //         
+    //         _ => throw new ArgumentException("Unknown cube map face orientation: " + cubeMapFaceOrientation)
+    //     };
+    // }
     
     
     private static Image LoadImageFromBmp(string filePath)

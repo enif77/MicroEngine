@@ -57,20 +57,13 @@ internal class RenderState
 /// </summary>
 public class EquirectangularProjectionToCubeMapConverter
 {
-    private const string PositiveZOrientationFaceName = "pz";
-    private const string NegativeZOrientationFaceName = "nz";
-    private const string PositiveXOrientationFaceName = "px";
-    private const string NegativeXOrientationFaceName = "nx";
-    private const string PositiveYOrientationFaceName = "py";
-    private const string NegativeYOrientationFaceName = "ny";
-
     /// <summary>
     /// Renders a cube face from a 2:1 panorama image.
     /// </summary>
-    /// <param name="sourceImage">Source image data. The image must have 2:1 aspect ratio, width and height divisible and width >= 16.</param>
+    /// <param name="sourceImage">Source image data. The image must have a 2:1 aspect ratio, width and height must be divisible by 4, and width must be >= 16.</param>
     /// <param name="cubeMapFaceOrientation">A cube map face orientation to be rendered.</param>
     /// <param name="rotation">A cube rotation. From 0 to 359.</param>
-    /// <param name="interpolationStrategy">Which image interpolation should be used.</param>
+    /// <param name="interpolationStrategy">Which image interpolation should be used?</param>
     /// <param name="maxWidth">The maximum width of the generated image.</param>
     /// <param name="maxThreads">The maximum number of threads to use for rendering. Default is 1.</param>
     /// <returns>An image representing a cube face.</returns>
@@ -297,22 +290,6 @@ public class EquirectangularProjectionToCubeMapConverter
             },
             
             _ => throw new ArgumentException("Unknown face orientation: " + cubeMapFaceOrientation)
-        };
-    }
-    
-    
-    private static string GetCubeMapFaceName(CubeMapFaceOrientation cubeMapFaceOrientation)
-    {
-        return cubeMapFaceOrientation switch
-        {
-            CubeMapFaceOrientation.PositiveZ => PositiveZOrientationFaceName,
-            CubeMapFaceOrientation.NegativeZ => NegativeZOrientationFaceName,
-            CubeMapFaceOrientation.PositiveX => PositiveXOrientationFaceName,
-            CubeMapFaceOrientation.NegativeX => NegativeXOrientationFaceName,
-            CubeMapFaceOrientation.PositiveY => PositiveYOrientationFaceName,
-            CubeMapFaceOrientation.NegativeY => NegativeYOrientationFaceName,
-            
-            _ => throw new ArgumentException("Unknown cube map face orientation: " + cubeMapFaceOrientation)
         };
     }
     
