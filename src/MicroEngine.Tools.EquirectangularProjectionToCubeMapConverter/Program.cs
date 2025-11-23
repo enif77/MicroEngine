@@ -4,31 +4,45 @@ namespace MicroEngine.Tools.EquirectangularProjectionToCubeMapConverter;
 
 internal static class Program
 {
-    // private const string PositiveZOrientationFaceName = "pz";
-    // private const string NegativeZOrientationFaceName = "nz";
-    // private const string PositiveXOrientationFaceName = "px";
-    // private const string NegativeXOrientationFaceName = "nx";
-    // private const string PositiveYOrientationFaceName = "py";
-    // private const string NegativeYOrientationFaceName = "ny";
+    private const string PositiveZOrientationFaceName = "pz";
+    private const string NegativeZOrientationFaceName = "nz";
+    private const string PositiveXOrientationFaceName = "px";
+    private const string NegativeXOrientationFaceName = "nx";
+    private const string PositiveYOrientationFaceName = "py";
+    private const string NegativeYOrientationFaceName = "ny";
     
     
-    static void Main(string[] args)
+    static int Main(string[] args)
     {
         Console.WriteLine("Equirectangular Projection Image to Cube Map Converter v1.0.0");
             
-        var imagePath = "/home/enif/Devel/Temp/PanoView/letiste-pano.bmp";
+        var imagePath = args.Length > 0 ? args[0] : "";
+        if (string.IsNullOrEmpty(imagePath))
+        {
+            Console.WriteLine("Usage: EquirectangularProjectionToCubeMapConverter.exe <image-path>");
+
+            return 1;
+        }
+
+        var imageExtension = Path.GetExtension(imagePath);
+        var renderedImagePathTemplate = string.IsNullOrEmpty(imageExtension)
+            ? imagePath + "_{cube-map-face-name}.bmp"
+            : imagePath.Replace(imageExtension, "_{cube-map-face-name}.bmp");
+        
         var imageData = LoadImageFromBmp(imagePath);
 
-        RenderCubeFace(imageData, CubeMapFaceOrientation.NegativeX, "/home/enif/Devel/Temp/PanoView/letiste-pano_nx.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.PositiveX, "/home/enif/Devel/Temp/PanoView/letiste-pano_px.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.NegativeY, "/home/enif/Devel/Temp/PanoView/letiste-pano_ny.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.PositiveY, "/home/enif/Devel/Temp/PanoView/letiste-pano_py.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.NegativeZ, "/home/enif/Devel/Temp/PanoView/letiste-pano_nz.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.PositiveZ, "/home/enif/Devel/Temp/PanoView/letiste-pano_pz.bmp");
+        GenerateCubeFace(imageData, CubeMapFaceOrientation.NegativeX, renderedImagePathTemplate);
+        GenerateCubeFace(imageData, CubeMapFaceOrientation.PositiveX, renderedImagePathTemplate);
+        GenerateCubeFace(imageData, CubeMapFaceOrientation.NegativeY, renderedImagePathTemplate);
+        GenerateCubeFace(imageData, CubeMapFaceOrientation.PositiveY, renderedImagePathTemplate);
+        GenerateCubeFace(imageData, CubeMapFaceOrientation.NegativeZ, renderedImagePathTemplate);
+        GenerateCubeFace(imageData, CubeMapFaceOrientation.PositiveZ, renderedImagePathTemplate);
+        
+        return 0;
     }
     
     
-    private static void RenderCubeFace(Image image, CubeMapFaceOrientation faceOrientation, string path)
+    private static void GenerateCubeFace(Image image, CubeMapFaceOrientation faceOrientation, string pathTemplate)
     {
         var convertor = new EquirectangularProjectionToCubeMapConverter();
                 
@@ -40,24 +54,26 @@ internal static class Program
             1024,
             1);
 
-        SaveImageToRgbaBmp(face, path);
+        SaveImageToRgbaBmp(
+            face,
+            pathTemplate.Replace("{cube-map-face-name}", GetCubeMapFaceName(faceOrientation)));
     }
     
     
-    // private static string GetCubeMapFaceName(CubeMapFaceOrientation cubeMapFaceOrientation)
-    // {
-    //     return cubeMapFaceOrientation switch
-    //     {
-    //         CubeMapFaceOrientation.PositiveZ => PositiveZOrientationFaceName,
-    //         CubeMapFaceOrientation.NegativeZ => NegativeZOrientationFaceName,
-    //         CubeMapFaceOrientation.PositiveX => PositiveXOrientationFaceName,
-    //         CubeMapFaceOrientation.NegativeX => NegativeXOrientationFaceName,
-    //         CubeMapFaceOrientation.PositiveY => PositiveYOrientationFaceName,
-    //         CubeMapFaceOrientation.NegativeY => NegativeYOrientationFaceName,
-    //         
-    //         _ => throw new ArgumentException("Unknown cube map face orientation: " + cubeMapFaceOrientation)
-    //     };
-    // }
+    private static string GetCubeMapFaceName(CubeMapFaceOrientation cubeMapFaceOrientation)
+    {
+        return cubeMapFaceOrientation switch
+        {
+            CubeMapFaceOrientation.PositiveZ => PositiveZOrientationFaceName,
+            CubeMapFaceOrientation.NegativeZ => NegativeZOrientationFaceName,
+            CubeMapFaceOrientation.PositiveX => PositiveXOrientationFaceName,
+            CubeMapFaceOrientation.NegativeX => NegativeXOrientationFaceName,
+            CubeMapFaceOrientation.PositiveY => PositiveYOrientationFaceName,
+            CubeMapFaceOrientation.NegativeY => NegativeYOrientationFaceName,
+            
+            _ => throw new ArgumentException("Unknown cube map face orientation: " + cubeMapFaceOrientation)
+        };
+    }
     
     
     private static Image LoadImageFromBmp(string filePath)
@@ -143,9 +159,9 @@ internal static class Program
             }
         }
     }
-    
-    
-    public static void SaveImageToRgbaBmp(Image image, string filePath)
+
+
+    private static void SaveImageToRgbaBmp(Image image, string filePath)
     {
         using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
         using (BinaryWriter writer = new BinaryWriter(fs))
