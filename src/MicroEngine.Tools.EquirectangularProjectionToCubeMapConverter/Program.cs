@@ -8,22 +8,20 @@ internal static class Program
     {
         Console.WriteLine("Equirectangular Projection Image to Cube Map Converter v1.0.0");
             
-        var imagePath = "/Users/enif/Devel/Temp/PanoView/letiste-pano.bmp";
+        var imagePath = "/home/enif/Devel/Temp/PanoView/letiste-pano.bmp";
         var imageData = LoadImageFromBmp(imagePath);
 
-        RenderCubeFace(imageData, CubeMapFaceOrientation.NegativeX, "/Users/enif/Devel/Temp/PanoView/letiste-pano_nx.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.PositiveX, "/Users/enif/Devel/Temp/PanoView/letiste-pano_px.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.NegativeY, "/Users/enif/Devel/Temp/PanoView/letiste-pano_ny.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.PositiveY, "/Users/enif/Devel/Temp/PanoView/letiste-pano_py.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.NegativeZ, "/Users/enif/Devel/Temp/PanoView/letiste-pano_nz.bmp");
-        RenderCubeFace(imageData, CubeMapFaceOrientation.PositiveZ, "/Users/enif/Devel/Temp/PanoView/letiste-pano_pz.bmp");
+        RenderCubeFace(imageData, CubeMapFaceOrientation.NegativeX, "/home/enif/Devel/Temp/PanoView/letiste-pano_nx.bmp");
+        RenderCubeFace(imageData, CubeMapFaceOrientation.PositiveX, "/home/enif/Devel/Temp/PanoView/letiste-pano_px.bmp");
+        RenderCubeFace(imageData, CubeMapFaceOrientation.NegativeY, "/home/enif/Devel/Temp/PanoView/letiste-pano_ny.bmp");
+        RenderCubeFace(imageData, CubeMapFaceOrientation.PositiveY, "/home/enif/Devel/Temp/PanoView/letiste-pano_py.bmp");
+        RenderCubeFace(imageData, CubeMapFaceOrientation.NegativeZ, "/home/enif/Devel/Temp/PanoView/letiste-pano_nz.bmp");
+        RenderCubeFace(imageData, CubeMapFaceOrientation.PositiveZ, "/home/enif/Devel/Temp/PanoView/letiste-pano_pz.bmp");
     }
     
     
     private static void RenderCubeFace(Image image, CubeMapFaceOrientation faceOrientation, string path)
     {
-        SaveImageToRgbaBmp(image, "/Users/enif/Devel/Temp/PanoView/letiste-pano_reload.bmp");
-        
         var convertor = new EquirectangularProjectionToCubeMapConverter();
                 
         var face = convertor.RenderFace(
@@ -69,8 +67,8 @@ internal static class Program
                     var imageData = new byte[width * height * 4]; // RGBA format (4 bytes per pixel)
 
                     // BMP stores pixel data bottom-to-top
-                    var ty = 0;
-                    for (var y = height - 1; y >= 0; y--)
+                    var ty = height - 1;
+                    for (var y = 0; y < height; y++)
                     {
                         for (var x = 0; x < width; x++)
                         {
@@ -82,7 +80,7 @@ internal static class Program
                             imageData[pixelIndex + 3] = 255;               // Alpha component
                         }
 
-                        ty++;
+                        ty--;
                         
                         // Skip padding bytes
                         reader.BaseStream.Seek(paddingSize, SeekOrigin.Current);
