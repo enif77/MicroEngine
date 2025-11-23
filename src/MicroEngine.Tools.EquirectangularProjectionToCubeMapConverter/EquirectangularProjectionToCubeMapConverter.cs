@@ -53,7 +53,7 @@ internal class RenderState
 
 
 /// <summary>
-/// Converts a panoramatic 2:1 image (equirectangular projection) to a 6 cube map images.
+/// Converts a panorama 2:1 image (equirectangular projection) to a 6 cube map images.
 /// </summary>
 public class EquirectangularProjectionToCubeMapConverter
 {
@@ -65,7 +65,7 @@ public class EquirectangularProjectionToCubeMapConverter
     private const string NegativeYOrientationFaceName = "ny";
 
     /// <summary>
-    /// Renders a cube face from a 2:1 panoramatic image.
+    /// Renders a cube face from a 2:1 panorama image.
     /// </summary>
     /// <param name="sourceImage">Source image data. The image must have 2:1 aspect ratio, width and height divisible and width >= 16.</param>
     /// <param name="cubeMapFaceOrientation">A cube map face orientation to be rendered.</param>
@@ -73,7 +73,7 @@ public class EquirectangularProjectionToCubeMapConverter
     /// <param name="interpolationStrategy">Which image interpolation should be used.</param>
     /// <param name="maxWidth">The maximum width of the generated image.</param>
     /// <param name="maxThreads">The maximum number of threads to use for rendering. Default is 1.</param>
-    /// <returns>A image representing a cube face.</returns>
+    /// <returns>An image representing a cube face.</returns>
     public Image RenderFace(Image sourceImage, CubeMapFaceOrientation cubeMapFaceOrientation, double rotation, ImageInterpolationStrategy interpolationStrategy, int maxWidth = int.MaxValue, int maxThreads = 1)
     {
         if (sourceImage.Width / sourceImage.Height != 2) throw new Exception("The source image aspect ratio must be 2:1.");
@@ -183,7 +183,7 @@ public class EquirectangularProjectionToCubeMapConverter
     /// <param name="faceSize">The full face width and height.</param>
     /// <param name="state">Render state.</param>
     /// <returns>The part of the face rendered from the source image.</returns>
-    private void RenderSubFace(
+    private static void RenderSubFace(
         Image sourceImage,
         CubeMapFaceOrientation cubeMapFaceOrientation,
         double rotation,
@@ -214,7 +214,7 @@ public class EquirectangularProjectionToCubeMapConverter
                 //var cube = cubeOrientation((2.0 * (x + 0.5) / faceWidth) - 1.0, (2.0 * (y + 0.5) / faceHeight) - 1.0);
                 var cube = cubeOrientation((cubeSize * (x + 0.5) / faceSize) - cubeSize2, (cubeSize * (y + 0.5) / faceSize) - cubeSize2);
 
-                // Project cube face onto unit sphere by converting cartesian to spherical coordinates.
+                // Project cube face onto a unit sphere by converting cartesian to spherical coordinates.
                 var r = Math.Sqrt((cube.X * cube.X) + (cube.Y * cube.Y) + (cube.Z * cube.Z));
                 var lon = Mod(Math.Atan2(cube.Y, cube.X) + rotationRad, twoPi);
                 var lat = Math.Acos(cube.Z / r);
@@ -227,81 +227,105 @@ public class EquirectangularProjectionToCubeMapConverter
     }
     
     
-    private double Rad(double angle)
+    private static double Rad(double angle)
     {
         return angle * (Math.PI / 180.0);
     }
 
 
-    private double Mod(double x, double n)
+    private static double Mod(double x, double n)
     {
         return ((x % n) + n) % n;
     }
 
 
-    private Vector3 GetCubeOrientationVector(CubeMapFaceOrientation cubeMapFaceOrientation)
+    private static Vector3 GetCubeOrientationVector(CubeMapFaceOrientation cubeMapFaceOrientation)
     {
-        switch (cubeMapFaceOrientation)
+        return cubeMapFaceOrientation switch
         {
-            case CubeMapFaceOrientation.PositiveZ: return new Vector3(-1, 0, 0);
-            case CubeMapFaceOrientation.NegativeZ: return new Vector3(1, 0, 0);
-
-            case CubeMapFaceOrientation.PositiveX: return new Vector3(0, -1, 0);
-            case CubeMapFaceOrientation.NegativeX: return new Vector3(0, 1, 0);
-
-            case CubeMapFaceOrientation.PositiveY: return new Vector3(0, 0, 1);
-            case CubeMapFaceOrientation.NegativeY: return new Vector3(0, 0, -1);
+            CubeMapFaceOrientation.PositiveZ => new Vector3(-1, 0, 0),
+            CubeMapFaceOrientation.NegativeZ => new Vector3(1, 0, 0),
+            CubeMapFaceOrientation.PositiveX => new Vector3(0, -1, 0),
+            CubeMapFaceOrientation.NegativeX => new Vector3(0, 1, 0),
+            CubeMapFaceOrientation.PositiveY => new Vector3(0, 0, 1),
+            CubeMapFaceOrientation.NegativeY => new Vector3(0, 0, -1),
             
-            default: throw new ArgumentException("Unknown face orientation: " + cubeMapFaceOrientation);
-        }
+            _ => throw new ArgumentException("Unknown face orientation: " + cubeMapFaceOrientation)
+        };
     }
 
 
-    private Func<double, double, Vector3> GetCubeOrientation(CubeMapFaceOrientation cubeMapFaceOrientation, Vector3 v)
+    private static Func<double, double, Vector3> GetCubeOrientation(CubeMapFaceOrientation cubeMapFaceOrientation, Vector3 v)
     {
-        switch (cubeMapFaceOrientation)
+        return cubeMapFaceOrientation switch
         {
-            case CubeMapFaceOrientation.PositiveZ: return (x, y) => { v.Y = -x; v.Z = -y; return v; };
-            case CubeMapFaceOrientation.NegativeZ: return (x, y) => { v.Y =  x; v.Z = -y; return v; };
-
-            case CubeMapFaceOrientation.PositiveX: return (x, y) => { v.X =  x; v.Z = -y; return v; };
-            case CubeMapFaceOrientation.NegativeX: return (x, y) => { v.X = -x; v.Z = -y; return v; };
-
-            case CubeMapFaceOrientation.PositiveY: return (x, y) => { v.X = -y; v.Y = -x; return v; };
-            case CubeMapFaceOrientation.NegativeY: return (x, y) => { v.X =  y; v.Y = -x; return v; };
+            CubeMapFaceOrientation.PositiveZ => (x, y) =>
+            {
+                v.Y = -x;
+                v.Z = -y;
+                return v;
+            },
+            CubeMapFaceOrientation.NegativeZ => (x, y) =>
+            {
+                v.Y = x;
+                v.Z = -y;
+                return v;
+            },
+            CubeMapFaceOrientation.PositiveX => (x, y) =>
+            {
+                v.X = x;
+                v.Z = -y;
+                return v;
+            },
+            CubeMapFaceOrientation.NegativeX => (x, y) =>
+            {
+                v.X = -x;
+                v.Z = -y;
+                return v;
+            },
+            CubeMapFaceOrientation.PositiveY => (x, y) =>
+            {
+                v.X = -y;
+                v.Y = -x;
+                return v;
+            },
+            CubeMapFaceOrientation.NegativeY => (x, y) =>
+            {
+                v.X = y;
+                v.Y = -x;
+                return v;
+            },
             
-            default: throw new ArgumentException("Unknown face orientation: " + cubeMapFaceOrientation);
-        }
+            _ => throw new ArgumentException("Unknown face orientation: " + cubeMapFaceOrientation)
+        };
     }
     
     
-    private string GetCubeMapFaceName(CubeMapFaceOrientation cubeMapFaceOrientation)
+    private static string GetCubeMapFaceName(CubeMapFaceOrientation cubeMapFaceOrientation)
     {
-        switch (cubeMapFaceOrientation)
+        return cubeMapFaceOrientation switch
         {
-            case CubeMapFaceOrientation.PositiveZ: return PositiveZOrientationFaceName;
-            case CubeMapFaceOrientation.NegativeZ: return NegativeZOrientationFaceName;
+            CubeMapFaceOrientation.PositiveZ => PositiveZOrientationFaceName,
+            CubeMapFaceOrientation.NegativeZ => NegativeZOrientationFaceName,
+            CubeMapFaceOrientation.PositiveX => PositiveXOrientationFaceName,
+            CubeMapFaceOrientation.NegativeX => NegativeXOrientationFaceName,
+            CubeMapFaceOrientation.PositiveY => PositiveYOrientationFaceName,
+            CubeMapFaceOrientation.NegativeY => NegativeYOrientationFaceName,
             
-            case CubeMapFaceOrientation.PositiveX: return PositiveXOrientationFaceName;
-            case CubeMapFaceOrientation.NegativeX: return NegativeXOrientationFaceName;
-            
-            case CubeMapFaceOrientation.PositiveY: return PositiveYOrientationFaceName;
-            case CubeMapFaceOrientation.NegativeY: return NegativeYOrientationFaceName;
-            
-            default: throw new ArgumentException("Unknown cube map face orientation: " + cubeMapFaceOrientation);
-        }
+            _ => throw new ArgumentException("Unknown cube map face orientation: " + cubeMapFaceOrientation)
+        };
     }
     
     
-    private IPixelInterpolator GetPixelInterpolator(ImageInterpolationStrategy interpolationStrategy)
+    private static IPixelInterpolator GetPixelInterpolator(ImageInterpolationStrategy interpolationStrategy)
     {
-        switch (interpolationStrategy)
+        return interpolationStrategy switch
         {
-            case ImageInterpolationStrategy.Bilinear: return new BilinearPixelInterpolator();
-            case ImageInterpolationStrategy.Bicubic: return new BicubicPixelInterpolator();
-            case ImageInterpolationStrategy.Lanczos: return new LanczosPixelInterpolator();
+            ImageInterpolationStrategy.Bilinear => new BilinearPixelInterpolator(),
+            ImageInterpolationStrategy.Bicubic => new BicubicPixelInterpolator(),
+            ImageInterpolationStrategy.Lanczos => new LanczosPixelInterpolator(),
             
-            default: return new NearestPixelInterpolator();
-        }
+            _ => new NearestPixelInterpolator()
+        };
     }
 }
