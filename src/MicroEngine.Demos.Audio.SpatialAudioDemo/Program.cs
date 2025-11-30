@@ -10,6 +10,12 @@ internal static class Program
 {
     static void Main(string[] args)
     {
+        GLFWProvider.SetErrorCallback(
+            (error, description) =>
+            {
+                Console.Error.WriteLine($"GLFW Error: {error} - {description}");
+            });
+        
         var primaryMonitor = Monitors.GetPrimaryMonitor();
 
         var windowWidth = 1280;

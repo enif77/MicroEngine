@@ -12,7 +12,7 @@ using MicroEngine.OGL;
 internal static class Program
 {
     // Set this to 2 for high-DPI displays (MacBook), otherwise set it to 1.
-    public static int ViewportSizeScaleFactor { get; } = 2;
+    public static int ViewportSizeScaleFactor { get; } = 1;
     
     // Hardcoded settings.
     private const int WindowWidth = 800;
@@ -23,6 +23,16 @@ internal static class Program
     
     static void Main(string[] args)
     {
+        // This is a callback for GLFW errors.
+        // We don't need to do anything special here, as GLFW will print the error to stderr.'
+        // The default implementation throws the "GLFW Error: FeatureUnavailable - Wayland: The platform does not support setting the window position"
+        // exception on Wayland platforms.
+        GLFWProvider.SetErrorCallback(
+            (error, description) =>
+            {
+                Console.Error.WriteLine($"GLFW Error: {error} - {description}");
+            });
+        
         // We want to center the window on the primary monitor.
         var primaryMonitor = Monitors.GetPrimaryMonitor();
         
