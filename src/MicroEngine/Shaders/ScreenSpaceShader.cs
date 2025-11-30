@@ -2,7 +2,7 @@
 
 namespace MicroEngine.Shaders;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 using MicroEngine;
 using MicroEngine.OGL;

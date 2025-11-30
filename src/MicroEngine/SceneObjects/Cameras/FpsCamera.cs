@@ -55,7 +55,7 @@ public class FpsCamera : SceneObjectBase, ICamera
             // We clamp the pitch value between -89 and 89 to prevent the camera from going upside down, and a bunch
             // of weird "bugs" when you are using euler angles for rotation.
             // If you want to read more about this you can try researching a topic called gimbal lock
-            var angle = MathHelper.Clamp(value, -89f, 89f);
+            var angle = Math.Clamp(value, -89f, 89f);
             SetRotationX(MathHelper.DegreesToRadians(angle));
             UpdateVectors();
         }
@@ -87,7 +87,7 @@ public class FpsCamera : SceneObjectBase, ICamera
     public float Fov
     {
         get => MathHelper.RadiansToDegrees(_fov);
-        set => _fov = MathHelper.DegreesToRadians(MathHelper.Clamp(value, 1f, 90f));
+        set => _fov = MathHelper.DegreesToRadians(Math.Clamp(value, 1f, 90f));
     }
 
     // Get the view matrix using the amazing LookAt function described more in depth on the web tutorials

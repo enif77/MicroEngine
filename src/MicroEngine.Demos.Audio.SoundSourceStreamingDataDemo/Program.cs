@@ -108,8 +108,8 @@ internal static class Program
                 
                 Console.WriteLine("  >> Buffer {0} queued.", soundBuffer.ALBufferId);
                 
-                // Keep source playing.
-                if (source.State != ALSourceState.Playing)
+                // Keep the source playing.
+                if (source.State != SourceState.Playing)
                 {
                     source.Play();
                 }
@@ -118,7 +118,7 @@ internal static class Program
             Console.WriteLine(" >> Waiting for the source to finish playing...");
             
             // Wait for the source to finish playing.
-            while (source.State == ALSourceState.Playing)
+            while (source.State == SourceState.Playing)
             {
                 Thread.Sleep(100);
             }

@@ -4,7 +4,7 @@ namespace MicroEngine.Managers;
 
 using System.Runtime.InteropServices;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 using MicroEngine.Core;
 using MicroEngine.Graphics;

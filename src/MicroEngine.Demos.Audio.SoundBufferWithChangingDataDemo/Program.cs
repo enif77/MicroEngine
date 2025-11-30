@@ -58,7 +58,7 @@ internal static class Program
                     }
 
                     Thread.Sleep(125);
-                } while (source.State == ALSourceState.Playing);
+                } while (source.State == SourceState.Playing);
                 
                 // Stop the source.
                 source.Stop();

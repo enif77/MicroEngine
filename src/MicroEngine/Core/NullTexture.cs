@@ -2,7 +2,7 @@
 
 namespace MicroEngine.Core;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 /// <summary>
 /// Null texture implementation.

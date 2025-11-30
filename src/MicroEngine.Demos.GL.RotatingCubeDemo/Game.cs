@@ -2,7 +2,7 @@
 
 namespace MicroEngine.Demos.GL.RotatingCubeDemo;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.GraphicsLibraryFramework;
 

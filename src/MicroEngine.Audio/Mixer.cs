@@ -5,6 +5,7 @@ using OpenTK.Mathematics;
 namespace MicroEngine.Audio;
 
 using OpenTK.Audio.OpenAL;
+using OpenTK.Audio.OpenAL.ALC;
 
 /// <summary>
 /// The general audio mixer.
@@ -13,8 +14,8 @@ public sealed class Mixer : IDisposable
 {
     private bool _isInitialized;
     
-    private ALDevice _device = ALDevice.Null;
-    private ALContext _context = ALContext.Null;
+    private ALCDevice _device = ALCDevice.Null;
+    private ALCContext _context = ALCContext.Null;
     
     private readonly IDictionary<int, ISoundSource> _soundSources = new Dictionary<int, ISoundSource>();
     private readonly IDictionary<int, ISoundBuffer> _soundBuffers = new Dictionary<int, ISoundBuffer>();
@@ -23,11 +24,11 @@ public sealed class Mixer : IDisposable
     {
         var audioContextInfo = new AudioContextInfo
         {
-            Version = AL.Get(ALGetString.Version),
-            Vendor = AL.Get(ALGetString.Vendor),
-            Renderer = AL.Get(ALGetString.Renderer)
+            Version = AL.GetString(OpenTK.Audio.OpenAL.StringName.Version),
+            Vendor = AL.GetString(OpenTK.Audio.OpenAL.StringName.Vendor),
+            Renderer = AL.GetString(OpenTK.Audio.OpenAL.StringName.Renderer)
         };
-        
+       
         return System.Text.Json.JsonSerializer.Serialize(audioContextInfo);
     }
 
@@ -44,10 +45,10 @@ public sealed class Mixer : IDisposable
 
             _ = AL.GetError();
             
-            var masterVolume = AL.GetListener(ALListenerf.Gain);
+            var masterVolume = AL.GetListenerf(ListenerGetPNameF.Gain);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != OpenTK.Audio.OpenAL.ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to get master volume. OpenAL error: {error}");
             }
@@ -61,10 +62,10 @@ public sealed class Mixer : IDisposable
 
             _ = AL.GetError();
             
-            AL.Listener(ALListenerf.Gain, value);
+            AL.Listenerf(ListenerPNameF.Gain, value);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != OpenTK.Audio.OpenAL.ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to set master volume. OpenAL error: {error}");
             }
@@ -83,10 +84,11 @@ public sealed class Mixer : IDisposable
 
             _ = AL.GetError();
             
-            var position = AL.GetListener(ALListener3f.Position);
+            var position = new Vector3();
+            AL.GetListener3f(ListenerGetPName3F.Position, out position.X, out position.Y, out position.Z);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != OpenTK.Audio.OpenAL.ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to get listener position. OpenAL error: {error}");
             }
@@ -100,10 +102,10 @@ public sealed class Mixer : IDisposable
 
             _ = AL.GetError();
             
-            AL.Listener(ALListener3f.Position, value.X, value.Y, value.Z);
+            AL.Listener3f(ListenerPName3F.Position, value.X, value.Y, value.Z);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != OpenTK.Audio.OpenAL.ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to set listener position. OpenAL error: {error}");
             }
@@ -122,10 +124,11 @@ public sealed class Mixer : IDisposable
 
             _ = AL.GetError();
             
-            var velocity = AL.GetListener(ALListener3f.Velocity);
+            var velocity = new Vector3();
+            AL.GetListener3f(ListenerGetPName3F.Velocity, out velocity.X, out velocity.Y, out velocity.Z);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != OpenTK.Audio.OpenAL.ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to get listener velocity. OpenAL error: {error}");
             }
@@ -139,10 +142,10 @@ public sealed class Mixer : IDisposable
 
             _ = AL.GetError();
             
-            AL.Listener(ALListener3f.Velocity, value.X, value.Y, value.Z);
+            AL.Listener3f(ListenerPName3F.Velocity, value.X, value.Y, value.Z);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != OpenTK.Audio.OpenAL.ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to set listener velocity. OpenAL error: {error}");
             }
@@ -162,15 +165,18 @@ public sealed class Mixer : IDisposable
 
             _ = AL.GetError();
             
-            AL.GetListener(ALListenerfv.Orientation, out var at, out var up);
+            var orientation = new float[6];
+            AL.GetListenerfv(ListenerGetPNameFV.Orientation, orientation);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != OpenTK.Audio.OpenAL.ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to get listener orientation. OpenAL error: {error}");
             }
             
-            return (at, up);
+            return (
+                new Vector3(orientation[0], orientation[1], orientation[2]),
+                new Vector3(orientation[3], orientation[4], orientation[5]));
         }
         
         set
@@ -179,10 +185,17 @@ public sealed class Mixer : IDisposable
 
             _ = AL.GetError();
             
-            AL.Listener(ALListenerfv.Orientation, ref value.Item1, ref value.Item2);
+            var orientation = new float[6];
+            orientation[0] = value.Item1.X;
+            orientation[1] = value.Item1.Y;
+            orientation[2] = value.Item1.Z;
+            orientation[3] = value.Item2.X;
+            orientation[4] = value.Item2.Y;
+            orientation[5] = value.Item2.Z;
+            AL.Listenerfv(ListenerPNameFV.Orientation, orientation);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != OpenTK.Audio.OpenAL.ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to set listener orientation. OpenAL error: {error}");
             }
@@ -201,17 +214,18 @@ public sealed class Mixer : IDisposable
             return;
         }
         
-        _device = ALC.OpenDevice(null);
-        if (_device == ALDevice.Null)
+        _device = ALC.OpenDevice((string)null);
+        if (_device == ALCDevice.Null)
         {
             throw new InvalidOperationException("Failed to open audio device.");
         }
         
-        _context = ALC.CreateContext(_device, new ALContextAttributes());
-        if (_context == ALContext.Null)
+        //_context = ALC.CreateContext(_device, new ALCContextAttributes());
+        _context = ALC.CreateContext(_device, Array.Empty<int>());
+        if (_context == ALCContext.Null)
         {
             ALC.CloseDevice(_device);
-            _device = ALDevice.Null;
+            _device = ALCDevice.Null;
             
             throw new InvalidOperationException("Failed to create audio context.");
         }
@@ -220,10 +234,10 @@ public sealed class Mixer : IDisposable
         if (!makeContextCurrentResult)
         {
             ALC.DestroyContext(_context);
-            _context = ALContext.Null;
+            _context = ALCContext.Null;
             
             ALC.CloseDevice(_device);
-            _device = ALDevice.Null;
+            _device = ALCDevice.Null;
             
             throw new InvalidOperationException("Failed to make audio context current.");
         }
@@ -361,16 +375,16 @@ public sealed class Mixer : IDisposable
         }
         _soundBuffers.Clear();
         
-        if (_context != ALContext.Null) {
-            ALC.MakeContextCurrent(ALContext.Null);
+        if (_context != ALCContext.Null) {
+            ALC.MakeContextCurrent(ALCContext.Null);
             ALC.DestroyContext(_context);
         }
-        _context = ALContext.Null;
+        _context = ALCContext.Null;
 
         if (_device != IntPtr.Zero) {
             ALC.CloseDevice(_device);
         }
-        _device = ALDevice.Null;
+        _device = ALCDevice.Null;
     }
 
     

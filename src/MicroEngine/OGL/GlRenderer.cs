@@ -2,7 +2,7 @@
 
 namespace MicroEngine.OGL;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
 /// <summary>

@@ -28,10 +28,11 @@ internal sealed class SoundSource : ISoundSource
 
             _ = AL.GetError();
             
-            AL.GetSource(ALSourceId, ALSource3f.Position, out var position);
+            var position = new Vector3();
+            AL.GetSource3f(ALSourceId, SourceGetPName3F.Position, out position.X, out position.Y, out position.Z);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to get source position. OpenAL error: {error}");
             }
@@ -45,10 +46,10 @@ internal sealed class SoundSource : ISoundSource
             
             _ = AL.GetError();
             
-            AL.Source(ALSourceId, ALSource3f.Position, value.X, value.Y, value.Z);
+            AL.Source3f(ALSourceId, SourcePName3F.Position, value.X, value.Y, value.Z);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to set source position. OpenAL error: {error}");
             }
@@ -63,10 +64,10 @@ internal sealed class SoundSource : ISoundSource
             
             _ = AL.GetError();
             
-            AL.GetSource(ALSourceId, ALSourcef.Gain, out var gain);
+            AL.GetSourcef(ALSourceId, SourceGetPNameF.Gain, out var gain);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to get source volume. OpenAL error: {error}");
             }
@@ -80,10 +81,10 @@ internal sealed class SoundSource : ISoundSource
             
             _ = AL.GetError();
             
-            AL.Source(ALSourceId, ALSourcef.Gain, value);
+            AL.Sourcef(ALSourceId, SourcePNameF.Gain, value);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to set source volume. OpenAL error: {error}");
             }
@@ -98,15 +99,15 @@ internal sealed class SoundSource : ISoundSource
             
             _ = AL.GetError();
             
-            var isLoopingValue =  AL.GetSource(ALSourceId, ALSourceb.Looping);
+            var isLoopingValue =  AL.GetSourcei(ALSourceId, SourceGetPNameI.Looping);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to get source looping state. OpenAL error: {error}");
             }
             
-            return isLoopingValue;
+            return isLoopingValue != 0;
         }
         
         set
@@ -115,17 +116,17 @@ internal sealed class SoundSource : ISoundSource
             
             _ = AL.GetError();
             
-            AL.Source(ALSourceId, ALSourceb.Looping, value);
+            AL.Sourcei(ALSourceId, SourcePNameI.Looping, value ? 1 : 0);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to set source looping state. OpenAL error: {error}");
             }
         }
     }
     
-    public ALSourceState State
+    public SourceState State
     {
         get
         {
@@ -133,15 +134,15 @@ internal sealed class SoundSource : ISoundSource
             
             _ = AL.GetError();
             
-            AL.GetSource(ALSourceId, ALGetSourcei.SourceState, out var state);
+            AL.GetSourcei(ALSourceId, SourceGetPNameI.SourceState, out var state);
             
             var error = AL.GetError();
-            if (error != ALError.NoError)
+            if (error != ErrorCode.NoError)
             {
                 throw new InvalidOperationException($"Failed to get source state. OpenAL error: {error}");
             }
             
-            return (ALSourceState)state;
+            return (SourceState)state;
         }
     }
     
@@ -158,7 +159,7 @@ internal sealed class SoundSource : ISoundSource
         ALSourceId = AL.GenSource();
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to create OpenAL source. OpenAL error: {error}");
         }
@@ -193,10 +194,10 @@ internal sealed class SoundSource : ISoundSource
 
         _ = AL.GetError();
         
-        AL.Source(ALSourceId, ALSourcei.Buffer, soundBuffer.ALBufferId);
+        AL.Sourcei(ALSourceId, SourcePNameI.Buffer, soundBuffer.ALBufferId);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to attach sound buffer. OpenAL error: {error}");
         }
@@ -213,10 +214,10 @@ internal sealed class SoundSource : ISoundSource
         
         _ = AL.GetError();
         
-        AL.Source(ALSourceId, ALSourcei.Buffer, 0);
+        AL.Sourcei(ALSourceId, SourcePNameI.Buffer, 0);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to detach sound buffer. OpenAL error: {error}");
         }
@@ -251,10 +252,11 @@ internal sealed class SoundSource : ISoundSource
         
         _ = AL.GetError();
         
-        AL.SourceQueueBuffer(ALSourceId, soundBuffer.ALBufferId);
+        var alBufferId = (uint)soundBuffer.ALBufferId;
+        AL.SourceQueueBuffers(ALSourceId, 1, ref alBufferId);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to queue sound buffer. OpenAL error: {error}");
         }
@@ -269,10 +271,10 @@ internal sealed class SoundSource : ISoundSource
         
         _ = AL.GetError();
         
-        AL.GetSource(ALSourceId, ALGetSourcei.BuffersQueued, out var count);
+        AL.GetSourcei(ALSourceId, SourceGetPNameI.BuffersQueued, out var count);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to get queued sound buffers count. OpenAL error: {error}");
         }
@@ -287,10 +289,10 @@ internal sealed class SoundSource : ISoundSource
         
         _ = AL.GetError();
         
-        AL.GetSource(ALSourceId, ALGetSourcei.BuffersProcessed, out var count);
+        AL.GetSourcei(ALSourceId, SourceGetPNameI.BuffersProcessed, out var count);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to get processed sound buffers count. OpenAL error: {error}");
         }
@@ -304,16 +306,17 @@ internal sealed class SoundSource : ISoundSource
         CheckInitialized();
         
         _ = AL.GetError();
-        
-        var buffer = AL.SourceUnqueueBuffer(ALSourceId);
+
+        var bufferId = 0;
+        AL.SourceUnqueueBuffers(ALSourceId, 1, ref bufferId);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to unqueue sound buffer. OpenAL error: {error}");
         }
         
-        var soundBuffer = _queuedSoundBuffers.FirstOrDefault(b => b.ALBufferId == buffer);
+        var soundBuffer = _queuedSoundBuffers.FirstOrDefault(b => b.ALBufferId == bufferId);
         if (soundBuffer != null)
         {
             _queuedSoundBuffers.Remove(soundBuffer);
@@ -332,7 +335,7 @@ internal sealed class SoundSource : ISoundSource
         AL.SourcePlay(ALSourceId);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to play source. OpenAL error: {error}");
         }
@@ -348,7 +351,7 @@ internal sealed class SoundSource : ISoundSource
         AL.SourcePause(ALSourceId);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to pause source. OpenAL error: {error}");
         }
@@ -364,7 +367,7 @@ internal sealed class SoundSource : ISoundSource
         AL.SourceStop(ALSourceId);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to stop source. OpenAL error: {error}");
         }
@@ -380,7 +383,7 @@ internal sealed class SoundSource : ISoundSource
         AL.SourceRewind(ALSourceId);
         
         var error = AL.GetError();
-        if (error != ALError.NoError)
+        if (error != ErrorCode.NoError)
         {
             throw new InvalidOperationException($"Failed to rewind source. OpenAL error: {error}");
         }
@@ -417,12 +420,12 @@ internal sealed class SoundSource : ISoundSource
         }
         
         AL.SourceStop(ALSourceId);
-        AL.Source(ALSourceId, ALSourcei.Buffer, 0);
+        AL.Sourcei(ALSourceId, SourcePNameI.Buffer, 0);
         AL.DeleteSource(ALSourceId);
         
         ALSourceId = 0;
         
-        // We expect that all sound buffers were created by teh Mixer and are destroyed by it or by the user.
+        // We expect that all sound buffers were created by the Mixer and are destroyed by it or by the user.
         _attachedSoundBuffer = null;
         _queuedSoundBuffers.Clear();
     }

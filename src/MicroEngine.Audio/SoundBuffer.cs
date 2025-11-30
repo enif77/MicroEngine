@@ -43,7 +43,7 @@ internal sealed class SoundBuffer : ISoundBuffer
             throw new ArgumentNullException(nameof(sound), "Sound cannot be null.");
         }
         
-        AL.BufferData(ALBufferId, GetSoundFormat(sound.Channels, sound.BitsPerChannel), sound.Samples, sound.SamplesPerSecond);
+        AL.BufferData(ALBufferId, GetSoundFormat(sound.Channels, sound.BitsPerChannel), sound.Samples, sound.Length, sound.SamplesPerSecond);
     }
     
     
@@ -69,19 +69,19 @@ internal sealed class SoundBuffer : ISoundBuffer
     }
     
     
-    private static ALFormat GetSoundFormat(int channels, int bits)
+    private static Format GetSoundFormat(int channels, int bits)
     {
         switch (channels)
         {
             case 1:
                 return bits == 8
-                    ? ALFormat.Mono8
-                    : ALFormat.Mono16;
+                    ? Format.FormatMono8
+                    : Format.FormatMono16;
             
             case 2: 
                 return bits == 8
-                    ? ALFormat.Stereo8
-                    : ALFormat.Stereo16;
+                    ? Format.FormatStereo8
+                    : Format.FormatStereo16;
             
             default: throw new NotSupportedException("The specified sound format is not supported.");
         }

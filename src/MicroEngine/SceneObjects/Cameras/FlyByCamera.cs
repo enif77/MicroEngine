@@ -22,7 +22,7 @@ public class FlyByCamera : SceneObjectBase, ICamera
     public float Fov
     {
         get => MathHelper.RadiansToDegrees(_fov);
-        set => _fov = MathHelper.DegreesToRadians(MathHelper.Clamp(value, 1f, 90f));
+        set => _fov = MathHelper.DegreesToRadians(Math.Clamp(value, 1f, 90f));
     }
 
     

@@ -2,9 +2,9 @@
 
 namespace MicroEngine.OGL;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
-using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
+using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 // A helper class, much like Shader, meant to simplify loading textures.
 public class GlTexture : ITexture, IDisposable
@@ -18,7 +18,7 @@ public class GlTexture : ITexture, IDisposable
 
         // Bind the handle
         GL.ActiveTexture(TextureUnit.Texture0);
-        GL.BindTexture(TextureTarget.Texture2D, handle);
+        GL.BindTexture(TextureTarget.Texture2d, handle);
         
         // Now that our pixels are prepared, it's time to generate a texture. We do this with GL.TexImage2D.
         // Arguments:
@@ -31,7 +31,7 @@ public class GlTexture : ITexture, IDisposable
         //   The format of the pixels, explained above. Since we loaded the pixels as RGBA earlier, we need to use PixelFormat.Rgba.
         //   Data type of the pixels.
         //   And finally, the actual pixels.
-        GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, bytes);
+        GL.TexImage2D(TextureTarget.Texture2d, 0, InternalFormat.Rgba, width, height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, bytes);
         
         // Now that our texture is loaded, we can set a few settings to affect how the image appears on rendering.
 
@@ -40,13 +40,13 @@ public class GlTexture : ITexture, IDisposable
         // You could also use (amongst other options) Nearest, which just grabs the nearest pixel, which makes the texture look pixelated if scaled too far.
         // NOTE: The default settings for both of these are LinearMipmap. If you leave these as default but don't generate mipmaps,
         // your image will fail to render at all (usually resulting in pure black instead).
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+        GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.LinearMipmapLinear);
+        GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
         // Now, set the wrapping mode. S is for the X axis, and T is for the Y axis.
         // We set this to Repeat so that textures will repeat when wrapped. Not demonstrated here since the texture coordinates exactly match
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)wrapMode);
-        GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)wrapMode);
+        GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureWrapS, (int)wrapMode);
+        GL.TexParameteri(TextureTarget.Texture2d, TextureParameterName.TextureWrapT, (int)wrapMode);
 
         // Next, generate mipmaps.
         // Mipmaps are smaller copies of the texture, scaled down. Each mipmap level is half the size of the previous one
@@ -55,7 +55,7 @@ public class GlTexture : ITexture, IDisposable
         // This prevents moiré effects, as well as saving on texture bandwidth.
         // Here you can see and read about the morié effect https://en.wikipedia.org/wiki/Moir%C3%A9_pattern
         // Here is an example of mips in action https://en.wikipedia.org/wiki/File:Mipmap_Aliasing_Comparison.png
-        GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
+        GL.GenerateMipmap(TextureTarget.Texture2d);
 
         return new GlTexture(handle);
     }
@@ -68,13 +68,13 @@ public class GlTexture : ITexture, IDisposable
 
     
     // Activate texture
-    // Multiple textures can be bound, if your shader needs more than just one.
+    // Multiple textures can be bound if your shader needs more than just one.
     // If you want to do that, use GL.ActiveTexture to set which slot GL.BindTexture binds to.
     // The OpenGL standard requires that there be at least 16, but there can be more depending on your graphics card.
     public void Use(TextureUnit unit)
     {
         GL.ActiveTexture(unit);
-        GL.BindTexture(TextureTarget.Texture2D, Handle);
+        GL.BindTexture(TextureTarget.Texture2d, Handle);
     }
     
     

@@ -55,7 +55,7 @@ internal static class Program
             source.Play();
             
             // Wait for the sound to finish playing.
-            while (source.State == ALSourceState.Playing)
+            while (source.State == SourceState.Playing)
             {
                 Thread.Sleep(100);
             }

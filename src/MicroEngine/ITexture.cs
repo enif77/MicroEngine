@@ -2,7 +2,7 @@
 
 namespace MicroEngine;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 /// <summary>
 /// Represents a texture.

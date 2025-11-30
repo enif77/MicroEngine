@@ -4,7 +4,7 @@ namespace MicroEngineDemoApp;
 
 using System.Runtime.InteropServices;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
@@ -115,12 +115,12 @@ public class GameWindow : OpenTK.Windowing.Desktop.GameWindow
     
     // https://opentk.net/learn/appendix_opengl/debug_callback.html?tabs=debug-context-4%2Cdelegate-gl%2Cenable-gl
 
-    private static DebugProc DebugMessageDelegate = OnDebugMessage;
+    private static GLDebugProc DebugMessageDelegate = OnDebugMessage;
 
     private static void OnDebugMessage(
         DebugSource source,     // Source of the debugging message.
         DebugType type,         // Type of the debugging message.
-        int id,                 // ID associated with the message.
+        uint id,                 // ID associated with the message.
         DebugSeverity severity, // Severity of the message.
         int length,             // Length of the string in pMessage.
         IntPtr pMessage,        // Pointer to message string.

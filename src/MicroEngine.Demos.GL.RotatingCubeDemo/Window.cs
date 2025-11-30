@@ -4,7 +4,7 @@ namespace MicroEngine.Demos.GL.RotatingCubeDemo;
 
 using System.Runtime.InteropServices;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
 
@@ -114,12 +114,12 @@ internal class Window : GameWindow
     }
     
     
-    private static readonly DebugProc DebugMessageDelegate = OnDebugMessage;
+    private static readonly GLDebugProc DebugMessageDelegate = OnDebugMessage;
 
     private static void OnDebugMessage(
         DebugSource source,     // Source of the debugging message.
         DebugType type,         // Type of the debugging message.
-        int id,                 // ID associated with the message.
+        uint id,                 // ID associated with the message.
         DebugSeverity severity, // Severity of the message.
         int length,             // Length of the string in pMessage.
         IntPtr pMessage,        // Pointer to message string.

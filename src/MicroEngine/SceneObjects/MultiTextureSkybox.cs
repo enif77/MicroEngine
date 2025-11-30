@@ -2,7 +2,7 @@
 
 namespace MicroEngine.SceneObjects;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
 using MicroEngine.Geometries;

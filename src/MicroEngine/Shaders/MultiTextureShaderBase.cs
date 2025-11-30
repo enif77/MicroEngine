@@ -2,13 +2,13 @@
 
 namespace MicroEngine.Shaders;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 using MicroEngine.Materials;
 using MicroEngine.OGL;
 
 /// <summary>
-/// A base for all shaders, that use multiple textures.
+/// A base for all shaders that use multiple textures.
 /// </summary>
 public abstract class MultiTextureShaderBase : IShader
 {
@@ -50,7 +50,7 @@ public abstract class MultiTextureShaderBase : IShader
         
         for (var i = 0; i < material.Textures.Count; i++)
         {
-            material.Textures[i].Use(TextureUnit.Texture0 + i);
+            material.Textures[i].Use(TextureUnit.Texture0 + (uint)i);
             GlslShader.SetInt(SamplersUniformNames[i], i);
         }
         

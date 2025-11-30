@@ -44,7 +44,7 @@ public interface ISoundSource : IDisposable
     /// </summary>
     /// <exception cref="InvalidOperationException">When this sound source is not initialized yet.</exception>
     /// <exception cref="InvalidOperationException">When an OpenAL error occurs.</exception>
-    ALSourceState State { get; }
+    SourceState State { get; }
 
     /// <summary>
     /// Initializes the OpenAL source.

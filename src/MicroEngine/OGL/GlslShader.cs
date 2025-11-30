@@ -2,7 +2,7 @@
 
 namespace MicroEngine.OGL;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
 /// <summary>
@@ -87,14 +87,17 @@ public sealed class GlslShader : IDisposable
         // later.
 
         // First, we have to get the number of active uniforms in the shader.
-        GL.GetProgram(_handle, GetProgramParameterName.ActiveUniforms, out var numberOfUniforms);
+        GL.GetProgrami(_handle, ProgramProperty.ActiveUniforms, out var numberOfUniforms);
         
         // Loop over all the uniforms,
         for (var i = 0; i < numberOfUniforms; i++)
         {
             // get the name of this uniform,
-            var key = GL.GetActiveUniform(_handle, i, out _, out _);
+            //var key = GL.GetActiveUniform(_handle, i, out _, out _);
 
+            // public static unsafe string GetActiveUniform(int program, uint index, int bufSize, out int length, out int size, out UniformType type)
+            var key = GL.GetActiveUniform(_handle, (uint)i, 1024, out _, out _, out _);
+            
             // get the location,
             var location = GL.GetUniformLocation(_handle, key);
 
@@ -117,7 +120,7 @@ public sealed class GlslShader : IDisposable
     
     /// <summary>
     /// The shader sources provided with this project use hardcoded layout(location)-s. If you want to do it dynamically,
-    /// you can omit the layout(location=X) lines in the vertex shader, and use this in VertexAttribPointer instead of the hardcoded values.
+    /// you can omit the layout(location=X) lines in the vertex shader and use this in VertexAttribPointer instead of the hardcoded values.
     /// </summary>
     /// <param name="attribName">An attribute name.</param>
     /// <returns>An attribute location.</returns>
@@ -147,7 +150,7 @@ public sealed class GlslShader : IDisposable
         CheckWasBuilt();
         
         GL.UseProgram(_handle);
-        GL.Uniform1(_uniformLocations[name], data);
+        GL.Uniform1i(_uniformLocations[name], data);
     }
 
     /// <summary>
@@ -160,7 +163,7 @@ public sealed class GlslShader : IDisposable
         CheckWasBuilt();
         
         GL.UseProgram(_handle);
-        GL.Uniform1(_uniformLocations[name], data);
+        GL.Uniform1f(_uniformLocations[name], data);
     }
 
     /// <summary>
@@ -177,8 +180,9 @@ public sealed class GlslShader : IDisposable
     {
         CheckWasBuilt();
         
-        GL.UseProgram(_handle);
-        GL.UniformMatrix4(_uniformLocations[name], true, ref data);
+        //GL.UseProgram(_handle);
+        //GL.UniformMatrix4(_uniformLocations[name], true, ref data);
+        GL.ProgramUniformMatrix4f(_handle, _uniformLocations[name], 1, true, ref data);
     }
 
     /// <summary>
@@ -190,8 +194,9 @@ public sealed class GlslShader : IDisposable
     {
         CheckWasBuilt();
         
-        GL.UseProgram(_handle);
-        GL.Uniform2(_uniformLocations[name], data);
+        //GL.UseProgram(_handle);
+        //GL.Uniform2(_uniformLocations[name], data);
+        GL.ProgramUniform2f(_handle, _uniformLocations[name], 1, ref data);
     }
     
     /// <summary>
@@ -203,8 +208,9 @@ public sealed class GlslShader : IDisposable
     {
         CheckWasBuilt();
         
-        GL.UseProgram(_handle);
-        GL.Uniform3(_uniformLocations[name], data);
+        //GL.UseProgram(_handle);
+        //GL.Uniform3(_uniformLocations[name], data);
+        GL.ProgramUniform3f(_handle, _uniformLocations[name], 1, ref data);
     }
     
     
@@ -223,10 +229,11 @@ public sealed class GlslShader : IDisposable
         GL.CompileShader(shader);
 
         // Check for compilation errors
-        GL.GetShader(shader, ShaderParameter.CompileStatus, out var code);
+        GL.GetShaderi(shader, ShaderParameterName.CompileStatus, out var code);
         if (code != (int)All.True)
         {
-            throw new Exception($"GlslShader: Error occurred whilst compiling Shader({shader}), error({GL.GetShaderInfoLog(shader)})");
+            GL.GetShaderInfoLog(shader, out var glShaderErrorMessage);
+            throw new Exception($"GlslShader: Error occurred whilst compiling Shader({shader}), error({glShaderErrorMessage})");
         }
     }
 
@@ -237,10 +244,11 @@ public sealed class GlslShader : IDisposable
         GL.LinkProgram(program);
 
         // Check for linking errors
-        GL.GetProgram(program, GetProgramParameterName.LinkStatus, out var code);
+        GL.GetProgrami(program, ProgramProperty.LinkStatus, out var code);
         if (code != (int)All.True)
         {
-            throw new Exception($"GlslShader: Error occurred whilst linking Program({program}), error({GL.GetProgramInfoLog(program)})");
+            GL.GetProgramInfoLog(program, out var glProgramErrorMessage);
+            throw new Exception($"GlslShader: Error occurred whilst linking Program({program}), error({glProgramErrorMessage})");
         }
     }
     

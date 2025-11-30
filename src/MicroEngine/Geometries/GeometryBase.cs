@@ -2,7 +2,7 @@
 
 namespace MicroEngine.Geometries;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 
 /// <summary>
@@ -111,8 +111,8 @@ public abstract class GeometryBase : IGeometry
             VertexData.Length * sizeof(float),
             VertexData,
             IsDynamic
-                ? BufferUsageHint.DynamicDraw
-                : BufferUsageHint.StaticDraw);
+                ? BufferUsage.DynamicDraw
+                : BufferUsage.StaticDraw);
     }
     
     /// <summary>
@@ -126,8 +126,8 @@ public abstract class GeometryBase : IGeometry
         //GL.InvalidateBufferData(geometry.VertexBufferObject);  
         
         var bufferUsageHint = IsDynamic
-            ? BufferUsageHint.DynamicDraw
-            : BufferUsageHint.StaticDraw;
+            ? BufferUsage.DynamicDraw
+            : BufferUsage.StaticDraw;
         
         // Clear the buffer.
         GL.BufferData(BufferTarget.ArrayBuffer, 0, (float[])null!, bufferUsageHint);
@@ -148,8 +148,8 @@ public abstract class GeometryBase : IGeometry
             Indices.Length * sizeof(uint),
             Indices,
             IsDynamic
-                ? BufferUsageHint.DynamicDraw
-                : BufferUsageHint.StaticDraw);
+                ? BufferUsage.DynamicDraw
+                : BufferUsage.StaticDraw);
     }
     
     /// <summary>
@@ -160,10 +160,10 @@ public abstract class GeometryBase : IGeometry
         GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
 
         var bufferUsageHint = IsDynamic
-            ? BufferUsageHint.DynamicDraw
-            : BufferUsageHint.StaticDraw;
+            ? BufferUsage.DynamicDraw
+            : BufferUsage.StaticDraw;
         
-        GL.BufferData(BufferTarget.ElementArrayBuffer, 0, (uint[])null!, bufferUsageHint);
+        GL.BufferData<uint>(BufferTarget.ElementArrayBuffer, 0, null!, bufferUsageHint);
         GL.BufferData(BufferTarget.ElementArrayBuffer, Indices.Length * sizeof(uint), Indices, bufferUsageHint);
     }
     
@@ -175,7 +175,7 @@ public abstract class GeometryBase : IGeometry
     /// <param name="offset">How many values to skip to reach the first value defining the vertex position.</param>
     protected void GenerateVertexAttribPointerFor3DPosition(IShader forShader, int stride, int offset = 0)
     {
-        var positionLocation = forShader.GetAttributeLocation("aPos");
+        var positionLocation = (uint)forShader.GetAttributeLocation("aPos");
         GL.EnableVertexAttribArray(positionLocation);
         GL.VertexAttribPointer(positionLocation, 3, VertexAttribPointerType.Float, false, stride * sizeof(float), offset);
     }
@@ -188,7 +188,7 @@ public abstract class GeometryBase : IGeometry
     /// <param name="offset">How many values to skip to reach the first value defining the vertex position.</param>
     protected void GenerateVertexAttribPointerFor2DPosition(IShader forShader, int stride, int offset = 0)
     {
-        var positionLocation = forShader.GetAttributeLocation("aPos");
+        var positionLocation = (uint)forShader.GetAttributeLocation("aPos");
         GL.EnableVertexAttribArray(positionLocation);
         GL.VertexAttribPointer(positionLocation, 2, VertexAttribPointerType.Float, false, stride * sizeof(float), offset);
     }
@@ -201,7 +201,7 @@ public abstract class GeometryBase : IGeometry
     /// <param name="offset">How many values to skip to reach the first value defining the vertex normal.</param>
     protected void GenerateVertexAttribPointerForNormals(IShader forShader, int stride, int offset = 0)
     {
-        var normalLocation = forShader.GetAttributeLocation("aNormal");
+        var normalLocation = (uint)forShader.GetAttributeLocation("aNormal");
         GL.EnableVertexAttribArray(normalLocation);
         GL.VertexAttribPointer(normalLocation, 3, VertexAttribPointerType.Float, false, stride * sizeof(float), offset * sizeof(float));
     }
@@ -214,7 +214,7 @@ public abstract class GeometryBase : IGeometry
     /// <param name="offset">How many values to skip to reach the first value defining the vertex texture position.</param>
     protected void GenerateVertexAttribPointerForTextureId(IShader forShader, int stride, int offset = 0)
     {
-        var texId = forShader.GetAttributeLocation("aTexId");
+        var texId = (uint)forShader.GetAttributeLocation("aTexId");
         GL.EnableVertexAttribArray(texId);
         GL.VertexAttribPointer(texId, 1, VertexAttribPointerType.Float, false, stride * sizeof(float), offset * sizeof(float));
     }
@@ -227,7 +227,7 @@ public abstract class GeometryBase : IGeometry
     /// <param name="offset">How many values to skip to reach the first value defining the vertex texture position.</param>
     protected void GenerateVertexAttribPointerForTextureCoords(IShader forShader, int stride, int offset = 0)
     {
-        var texCoordLocation = forShader.GetAttributeLocation("aTexCoords");
+        var texCoordLocation = (uint)forShader.GetAttributeLocation("aTexCoords");
         GL.EnableVertexAttribArray(texCoordLocation);
         GL.VertexAttribPointer(texCoordLocation, 2, VertexAttribPointerType.Float, false, stride * sizeof(float), offset * sizeof(float));
     }
@@ -235,7 +235,7 @@ public abstract class GeometryBase : IGeometry
     /// <summary>
     /// Gets the bounding box of a geometry in world space.
     /// </summary>
-    /// <param name="worldMatrix">A matrix, that transforms geometry vertices to the world space.</param>
+    /// <param name="worldMatrix">A matrix that transforms geometry vertices to the world space.</param>
     /// <returns>A tuple containing minimal and maximal X, Y, Z.</returns>
     protected (Vector3 Min, Vector3 Max) GetBoundingBox(Matrix4 worldMatrix)
     {

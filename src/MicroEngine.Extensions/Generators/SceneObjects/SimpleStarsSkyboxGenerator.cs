@@ -2,7 +2,7 @@
 
 namespace MicroEngine.Extensions.Generators.SceneObjects;
 
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 using MicroEngine.Materials;
 using MicroEngine.OGL;

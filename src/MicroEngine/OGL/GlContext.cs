@@ -4,7 +4,7 @@ namespace MicroEngine.OGL;
 
 // We are using OpenTK.Graphics.OpenGL4 for OpenGL strings and capabilities,
 // but, at least for those used, they are compatible with OpenGL ES 3.0+.
-using OpenTK.Graphics.OpenGL4;
+using OpenTK.Graphics.OpenGL;
 
 /// <summary>
 /// Gets information about the current OpenGL context.
