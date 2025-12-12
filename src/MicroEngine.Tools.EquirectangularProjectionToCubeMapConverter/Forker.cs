@@ -41,7 +41,7 @@ public sealed class Forker
 
 
     private readonly object _joinLock = new();
-    private readonly object _eventLock = new();
+    private readonly Lock _eventLock = new();
 
     private int _running;
     private readonly int _maxAllowed;
@@ -172,7 +172,7 @@ public sealed class Forker
     {
         Interlocked.Increment(ref _running);
 
-        ThreadPool.QueueUserWorkItem(o =>
+        ThreadPool.QueueUserWorkItem(_ =>
         {
             Exception? exception = null;
             try
