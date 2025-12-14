@@ -41,9 +41,9 @@ public sealed class Sound
     
     
     /// <summary>
-    /// Create a sound based on 16 bit mono sound samples and the specified parameters.
+    /// Create a sound based on 16-bit mono sound samples and the specified parameters.
     /// </summary>
-    /// <param name="samplesCount">How many sound samples will the created sound contain.</param>
+    /// <param name="samplesCount">How many sound samples will the created sound contain?</param>
     /// <param name="samplesPerSecond">How many samples per second.</param>
     /// <returns>A Sound containing sound samples.</returns>
     public static Sound Create16BitMonoSound(int samplesCount, int samplesPerSecond)
@@ -65,9 +65,9 @@ public sealed class Sound
     }
     
     /// <summary>
-    /// Create a sound based on 16 bit stereo sound samples and the specified parameters.
+    /// Create a sound based on 16-bit stereo sound samples and the specified parameters.
     /// </summary>
-    /// <param name="samplesCount">How many sound samples will the created sound contain.</param>
+    /// <param name="samplesCount">How many sound samples will the created sound contain?</param>
     /// <param name="samplesPerSecond">How many samples per second.</param>
     /// <returns>A Sound containing sound samples.</returns>
     public static Sound Create16BitStereoSound(int samplesCount, int samplesPerSecond)

@@ -101,7 +101,7 @@ internal static class Program
             reader.BaseStream.Seek(54, SeekOrigin.Begin); // Move to pixel data
 
             var rowSize = width * 3; // Size of one row in bytes (RGB = 3 bytes per pixel)
-            var paddingSize = (4 - (rowSize % 4)) % 4; // Padding to make row size divisible by 4
+            var paddingSize = (4 - (rowSize % 4)) % 4; // Padding to make the row size divisible by 4
 
             var imageData = new byte[width * height * 4]; // RGBA format (4 bytes per pixel)
 
