@@ -71,7 +71,7 @@ internal static class Program
             
             Title = Defaults.AppVersionInfo,
             
-            // This is needed to run on macos
+            // This is needed to run on macOS
             Flags = ContextFlags.ForwardCompatible | ContextFlags.Debug,
             Vsync = Settings.EnableVSync ? VSyncMode.Adaptive : VSyncMode.Off,
             WindowState = Settings.EnableFullscreen
@@ -110,7 +110,7 @@ internal static class Program
     {
         const string configFileName = Defaults.ConfigFileName;
         
-        // We are reading and writing config file in the user's home directory.
+        // We are reading and writing a config file in the user's home directory.
         var configFileRootPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         
         // If a config file does not exist, create it with default values.
@@ -133,10 +133,10 @@ internal static class Program
             .AddJsonFile(
                 new PhysicalFileProvider(      // This provider allows us to load config from an absolute path.
                     configFileRootPath,
-                    ExclusionFilters.System),  // We are reading from an hidden file.
+                    ExclusionFilters.System),  // We are reading from a hidden file.
                 configFileName,
                 optional: true,
-                reloadOnChange: false);  // This slows down app startup. Also - not sure, how to react to config reloads.
+                reloadOnChange: false);  // This slows down app startup. Also - not sure how to react to config reloads.
 
         var config = builder.Build();
 

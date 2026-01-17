@@ -143,7 +143,7 @@ public class Game : IGame
         
         if (Directory.Exists(Path.Combine(_resourcesManager.RootPath, skyboxPath)))
         {
-            // If the path is a directory we expect the 6 textures format.
+            // If the path is a directory, we expect the 6-texture format.
             material = Material.Create(
                 [
                     _resourcesManager.LoadTexture("pz", Path.Combine(skyboxPath, "pz.bmp"), TextureWrapMode.ClampToEdge),
@@ -157,7 +157,7 @@ public class Game : IGame
         }
         else if (File.Exists(Path.Combine(_resourcesManager.RootPath, skyboxPath)))
         {
-            // If the path is a image, we expect a single-file texture format.
+            // If the path is an image, we expect a single-file texture format.
             throw new NotImplementedException("The single file skybox is not yet implemented.");
         }
         else
