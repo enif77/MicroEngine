@@ -19,7 +19,7 @@ public class ResourcesManager : IResourcesManager
     #region singleton
     
     /// <summary>
-    /// Gets instance of the default resources manager.
+    /// Gets an instance of the default resources manager.
     /// </summary>
     public static ResourcesManager Instance { get; } = new ResourcesManager();
     
@@ -41,36 +41,35 @@ public class ResourcesManager : IResourcesManager
     
     public bool FileExists(string path)
     {
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            throw new ArgumentException("A path to a file expected.");
-        }
-
-        return File.Exists(GetFullPath(path));
+        return string.IsNullOrWhiteSpace(path)
+            ? throw new ArgumentException("A path to a file expected.")
+            : File.Exists(GetFullPath(path));
     }
     
     
     public string LoadTextFile(string path)
     {
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            throw new ArgumentException("A path to a text file expected.");
-        }
-
-        return File.ReadAllText(GetFullPath(path));
+        return string.IsNullOrWhiteSpace(path)
+            ? throw new ArgumentException("A path to a text file expected.")
+            : File.ReadAllText(GetFullPath(path));
     }
     
     
     public byte[] LoadBinaryFile(string path)
     {
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            throw new ArgumentException("A path to a text file expected.");
-        }
-
-        return File.ReadAllBytes(GetFullPath(path));
+        return string.IsNullOrWhiteSpace(path)
+            ? throw new ArgumentException("A path to a text file expected.")
+            : File.ReadAllBytes(GetFullPath(path));
     }
-    
+
+
+    public Image LoadBmpImage(string path)
+    {
+        return string.IsNullOrWhiteSpace(path)
+            ? throw new ArgumentException("A path to a BMP file expected.")
+            : LoadImageFromBmp(GetFullPath(path));
+    }
+
     #endregion
     
     
