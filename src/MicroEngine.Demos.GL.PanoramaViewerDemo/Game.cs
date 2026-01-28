@@ -42,8 +42,9 @@ public class Game : IGame
             Yaw = -90.0f,
         });
         
-        scene.AddSkybox(LoadSkybox("Textures/Skyboxes/TestSkybox"));
-       
+        //scene.AddSkybox(LoadSkybox("Textures/Skyboxes/TestSkybox"));
+        scene.AddSkybox(LoadSkybox("Textures/Skyboxes/Tecnam"));
+        
         _scene = scene;
         
         GlRenderer.EnableFaceCulling();
@@ -141,28 +142,29 @@ public class Game : IGame
         
         IMaterial material;
         
-        if (Directory.Exists(Path.Combine(_resourcesManager.RootPath, skyboxPath)))
+        var fullSkyboxPath = Path.Combine(_resourcesManager.RootPath, skyboxPath);
+        if (Directory.Exists(fullSkyboxPath))
         {
             // If the path is a directory, we expect the 6-texture format.
             material = Material.Create(
                 [
-                    _resourcesManager.LoadTexture("pz", Path.Combine(skyboxPath, "pz.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("px", Path.Combine(skyboxPath, "px.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("nz", Path.Combine(skyboxPath, "nz.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("nx", Path.Combine(skyboxPath, "nx.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("py", Path.Combine(skyboxPath, "py.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("ny", Path.Combine(skyboxPath, "ny.bmp"), TextureWrapMode.ClampToEdge)
+                    _resourcesManager.LoadTexture("pz", Path.Combine(fullSkyboxPath, "pz.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("px", Path.Combine(fullSkyboxPath, "px.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("nz", Path.Combine(fullSkyboxPath, "nz.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("nx", Path.Combine(fullSkyboxPath, "nx.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("py", Path.Combine(fullSkyboxPath, "py.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture("ny", Path.Combine(fullSkyboxPath, "ny.bmp"), TextureWrapMode.ClampToEdge)
                 ],
                 skyboxShader);
         }
-        else if (File.Exists(Path.Combine(_resourcesManager.RootPath, skyboxPath)))
+        else if (File.Exists(fullSkyboxPath))
         {
             // If the path is an image, we expect a single-file texture format.
             throw new NotImplementedException("The single file skybox is not yet implemented.");
         }
         else
         {
-            throw new FileNotFoundException($"Skybox path '{skyboxPath}' not found.");    
+            throw new FileNotFoundException($"Skybox path '{fullSkyboxPath}' not found.");    
         }
         
         var skybox = MultiTextureSkybox.Create(material);
