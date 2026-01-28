@@ -324,80 +324,120 @@ public class ResourcesManager : IResourcesManager
         {
             using (var reader = new BinaryReader(fs))
             {
-                // BMP Header
-                if (reader.ReadUInt16() != 0x4D42) // 'BM' signature
+                // BMP file header (BITMAPFILEHEADER)
+                if (reader.ReadUInt16() != 0x4D42) // 'BM'
                 {
-                    throw new InvalidOperationException("Invalid file format.");
+                    throw new InvalidOperationException("Invalid BMP signature.");
                 }
 
-                reader.BaseStream.Seek(18, SeekOrigin.Begin); // Move to width/height in the header
-                var width = reader.ReadInt32(); // Image width
-                var height = reader.ReadInt32(); // Image height
+                reader.ReadUInt32();                // bfSize (unused)
+                reader.ReadUInt16();                // bfReserved1
+                reader.ReadUInt16();                // bfReserved2
+                var pixelDataOffset = reader.ReadUInt32(); // bfOffBits
 
-                reader.BaseStream.Seek(28, SeekOrigin.Begin); // Move to bits per pixel
-
-                var bitsPerPixel = (int)reader.ReadUInt16();
-                
-                // BGR
-                if (bitsPerPixel == 24) 
+                // DIB header (assume at least BITMAPINFOHEADER layout)
+                var dibHeaderSize = reader.ReadUInt32();
+                if (dibHeaderSize < 40)
                 {
-                    reader.BaseStream.Seek(54, SeekOrigin.Begin); // Move to pixel data
+                    throw new InvalidOperationException($"Unsupported BMP DIB header size: {dibHeaderSize}.");
+                }
 
-                    var rowSize = width * 3; // Size of one row in bytes (RGB = 3 bytes per pixel)
-                    var paddingSize = (4 - (rowSize % 4)) % 4; // Padding to make row size divisible by 4
+                var width = reader.ReadInt32();
+                var heightSigned = reader.ReadInt32();
+                var planes = reader.ReadUInt16();
+                var bitsPerPixel = reader.ReadUInt16();
+                var compression = reader.ReadUInt32();
 
-                    var imageData = new byte[width * height * 4]; // RGBA format (4 bytes per pixel)
+                if (planes != 1)
+                {
+                    throw new InvalidOperationException($"Unsupported BMP planes value: {planes} (expected 1).");
+                }
 
-                    // BMP stores pixel data bottom-to-top
-                    var ty = 0;
-                    for (var y = height - 1; y >= 0; y--)
+                // We only support uncompressed BI_RGB for 24/32bpp.
+                const uint BI_RGB = 0;
+                const uint BI_RGBA = 3;
+                if (compression != BI_RGB && compression != BI_RGBA)
+                {
+                    throw new InvalidOperationException($"Unsupported BMP compression: {compression} (only BI_RGB and BI_RGBA supported).");
+                }
+
+                if (width <= 0 || heightSigned == 0)
+                {
+                    throw new InvalidOperationException($"Invalid BMP dimensions: {width}x{heightSigned}.");
+                }
+
+                var topDown = heightSigned < 0;
+                var height = Math.Abs(heightSigned);
+
+                if (bitsPerPixel != 24 && bitsPerPixel != 32)
+                {
+                    throw new InvalidOperationException("Only 24-bit or 32-bit BMP files are supported.");
+                }
+
+                var bytesPerPixelSrc = bitsPerPixel / 8;
+
+                int stride;
+                int dstSize;
+                checked
+                {
+                    var rowBytes = width * bytesPerPixelSrc;
+                    stride = ((rowBytes + 3) / 4) * 4;     // BMP rows are aligned to 4 bytes
+                    dstSize = width * height * 4;          // RGBA
+                }
+
+                if (pixelDataOffset >= (ulong)reader.BaseStream.Length)
+                {
+                    throw new InvalidOperationException("BMP pixel data offset is outside of the file.");
+                }
+
+                long requiredBytes;
+                checked
+                {
+                    requiredBytes = (long)pixelDataOffset + (long)stride * height;
+                }
+
+                if (requiredBytes > reader.BaseStream.Length)
+                {
+                    throw new InvalidOperationException("BMP file is truncated: not enough data for declared dimensions.");
+                }
+
+                reader.BaseStream.Seek((long)pixelDataOffset, SeekOrigin.Begin);
+
+                var imageData = new byte[dstSize];
+                var row = new byte[stride];
+
+                for (var rowIndex = 0; rowIndex < height; rowIndex++)
+                {
+                    // Source row order depends on the sign of height.
+                    var dstY = !topDown ? rowIndex : (height - 1 - rowIndex);
+
+                    var read = reader.Read(row, 0, stride);
+                    if (read != stride)
                     {
-                        for (var x = 0; x < width; x++)
-                        {
-                            var pixelIndex = (ty * width + x) * 4;
-
-                            imageData[pixelIndex + 2] = reader.ReadByte(); // Blue component
-                            imageData[pixelIndex + 1] = reader.ReadByte(); // Green component
-                            imageData[pixelIndex + 0] = reader.ReadByte(); // Red component
-                            imageData[pixelIndex + 3] = 255;               // Alpha component
-                        }
-
-                        ty++;
-                        
-                        // Skip padding bytes
-                        reader.BaseStream.Seek(paddingSize, SeekOrigin.Current);
+                        throw new EndOfStreamException("Unexpected end of BMP while reading pixel data.");
                     }
 
-                    return new Image(width, height, imageData);
-                }
-                
-                // BGRA
-                if (bitsPerPixel == 32)
-                {
-                    reader.BaseStream.Seek(54, SeekOrigin.Begin);
-                    
-                    var imageData = new byte[width * height * 4]; 
-                    
-                    var ty = 0;
-                    for (var y = height - 1; y >= 0; y--)
+                    var src = 0;
+                    for (var x = 0; x < width; x++)
                     {
-                        for (var x = 0; x < width; x++)
-                        {
-                            var pixelIndex = (ty * width + x) * 4;
+                        var dstIndex = (dstY * width + x) * 4;
 
-                            imageData[pixelIndex + 2] = reader.ReadByte(); // Blue component
-                            imageData[pixelIndex + 1] = reader.ReadByte(); // Green component
-                            imageData[pixelIndex + 0] = reader.ReadByte(); // Red component
-                            imageData[pixelIndex + 3] = reader.ReadByte(); // Alpha component
-                        }
-                        
-                        ty++;
+                        // BMP stores BGR(A)
+                        var b = row[src + 0];
+                        var g = row[src + 1];
+                        var r = row[src + 2];
+                        var a = (bytesPerPixelSrc == 4) ? row[src + 3] : (byte)255;
+
+                        imageData[dstIndex + 0] = r;
+                        imageData[dstIndex + 1] = g;
+                        imageData[dstIndex + 2] = b;
+                        imageData[dstIndex + 3] = a;
+
+                        src += bytesPerPixelSrc;
                     }
-
-                    return new Image(width, height, imageData);
                 }
-                
-                throw new InvalidOperationException("Only 24-bit or 32-bit BMP files are supported.");
+
+                return new Image(width, height, imageData);
             }
         }
     }
