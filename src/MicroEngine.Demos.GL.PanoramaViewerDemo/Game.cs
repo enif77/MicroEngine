@@ -18,6 +18,13 @@ using MicroEngine.Shaders;
 
 public class Game : IGame
 {
+    private const string FrontFaceName = "pz";
+    private const string BackFaceName = "nz";
+    private const string RightFaceName = "px";
+    private const string LeftFaceName = "nx";
+    private const string TopFaceName = "py";
+    private const string BottomFaceName = "ny";
+    
     private readonly ResourcesManager _resourcesManager;
     private Scene? _scene;
     
@@ -43,7 +50,8 @@ public class Game : IGame
         });
         
         //scene.AddSkybox(LoadSkybox("Textures/Skyboxes/TestSkybox"));
-        scene.AddSkybox(LoadSkybox("Textures/Skyboxes/Tecnam"));
+        //scene.AddSkybox(LoadSkybox("Textures/Skyboxes/Tecnam"));
+        scene.AddSkybox(LoadSkybox("Textures/Skyboxes/Tecnam/pano.bmp"));
         
         _scene = scene;
         
@@ -148,19 +156,35 @@ public class Game : IGame
             // If the path is a directory, we expect the 6-texture format.
             material = Material.Create(
                 [
-                    _resourcesManager.LoadTexture("pz", Path.Combine(fullSkyboxPath, "pz.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("px", Path.Combine(fullSkyboxPath, "px.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("nz", Path.Combine(fullSkyboxPath, "nz.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("nx", Path.Combine(fullSkyboxPath, "nx.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("py", Path.Combine(fullSkyboxPath, "py.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture("ny", Path.Combine(fullSkyboxPath, "ny.bmp"), TextureWrapMode.ClampToEdge)
+                    _resourcesManager.LoadTexture(FrontFaceName, Path.Combine(fullSkyboxPath, "pz.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(RightFaceName, Path.Combine(fullSkyboxPath, "px.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(BackFaceName, Path.Combine(fullSkyboxPath, "nz.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(LeftFaceName, Path.Combine(fullSkyboxPath, "nx.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(TopFaceName, Path.Combine(fullSkyboxPath, "py.bmp"), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(BottomFaceName, Path.Combine(fullSkyboxPath, "ny.bmp"), TextureWrapMode.ClampToEdge)
                 ],
                 skyboxShader);
         }
         else if (File.Exists(fullSkyboxPath))
         {
             // If the path is an image, we expect a single-file texture format.
-            throw new NotImplementedException("The single file skybox is not yet implemented.");
+            var panoImage = _resourcesManager.LoadBmpImage(fullSkyboxPath);
+            
+            var convertor = new EquirectangularProjectionToCubeMapConverter();
+           
+            const int maxWidth = 1024;
+            const double rotation = 0;
+            
+            material = Material.Create(
+                [
+                    _resourcesManager.LoadTexture(FrontFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.PositiveZ, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(RightFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.PositiveX, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(BackFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.NegativeZ, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(LeftFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.NegativeX, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(TopFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.NegativeY, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                    _resourcesManager.LoadTexture(BottomFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.PositiveY, rotation, maxWidth), TextureWrapMode.ClampToEdge)
+                ],
+                skyboxShader);
         }
         else
         {
