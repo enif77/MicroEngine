@@ -28,10 +28,8 @@ public class Game : IGame
     private readonly ResourcesManager _resourcesManager;
     private Scene? _scene;
     
-    public string Name => "panorama-viewer-demo";
-    
-    public ICamera Camera => _scene?.Camera ?? throw new InvalidOperationException("The scene is not initialized.");
-    
+    public string Name => "panorama-viewer";
+   
     
     public Game(ResourcesManager resourcesManager)
     {
@@ -50,8 +48,8 @@ public class Game : IGame
         });
         
         //scene.AddSkybox(LoadSkybox("Textures/Skyboxes/TestSkybox"));
-        //scene.AddSkybox(LoadSkybox("Textures/Skyboxes/Tecnam"));
-        scene.AddSkybox(LoadSkybox("Textures/Skyboxes/Tecnam/pano.bmp"));
+        scene.AddSkybox(LoadSkybox("Textures/Skyboxes/Tecnam"));
+        //scene.AddSkybox(LoadSkybox("Textures/Skyboxes/Tecnam/pano.bmp"));
         
         _scene = scene;
         
@@ -79,29 +77,34 @@ public class Game : IGame
             return false;
         }
         
-        
         const float cameraRotationSpeed = 90f;
         const float sensitivity = 0.2f;
         
         var camera = ((FpsCamera)_scene.Camera);
         
-        if (keyboardState.IsKeyDown(Keys.Left))
+        if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
         {
-            camera.Yaw -= cameraRotationSpeed * deltaTime;      // Turn left
-        }
-        if (keyboardState.IsKeyDown(Keys.Right))
-        {
-            camera.Yaw += cameraRotationSpeed * deltaTime;      // Turn right
-        }
-        if (keyboardState.IsKeyDown(Keys.Up))
-        {
-            camera.Pitch -= cameraRotationSpeed * deltaTime;    // Turn down
-        }
-        if (keyboardState.IsKeyDown(Keys.Down))
-        {
-            camera.Pitch += cameraRotationSpeed * deltaTime;    // Turn up
+            // Turn left
+            camera.Yaw -= cameraRotationSpeed * deltaTime;
         }
         
+        if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+        {
+            // Turn right
+            camera.Yaw += cameraRotationSpeed * deltaTime;
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+        {
+            // Turn down
+            camera.Pitch -= cameraRotationSpeed * deltaTime;
+        }
+        
+        if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+        {
+            // Turn up
+            camera.Pitch += cameraRotationSpeed * deltaTime;
+        }
         
         if (_firstMove)
         {
@@ -153,48 +156,136 @@ public class Game : IGame
         var fullSkyboxPath = Path.Combine(_resourcesManager.RootPath, skyboxPath);
         if (Directory.Exists(fullSkyboxPath))
         {
-            // If the path is a directory, we expect the 6-texture format.
-            material = Material.Create(
-                [
-                    _resourcesManager.LoadTexture(FrontFaceName, Path.Combine(fullSkyboxPath, "pz.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(RightFaceName, Path.Combine(fullSkyboxPath, "px.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(BackFaceName, Path.Combine(fullSkyboxPath, "nz.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(LeftFaceName, Path.Combine(fullSkyboxPath, "nx.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(TopFaceName, Path.Combine(fullSkyboxPath, "py.bmp"), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(BottomFaceName, Path.Combine(fullSkyboxPath, "ny.bmp"), TextureWrapMode.ClampToEdge)
-                ],
-                skyboxShader);
+            material = LoadSkyboxMaterialFromCubeTextures(fullSkyboxPath);
         }
         else if (File.Exists(fullSkyboxPath))
         {
-            // If the path is an image, we expect a single-file texture format.
-            var panoImage = _resourcesManager.LoadBmpImage(fullSkyboxPath);
-            
-            var convertor = new EquirectangularProjectionToCubeMapConverter();
-           
-            const int maxWidth = 1024;
-            const double rotation = 0;
-            
-            material = Material.Create(
-                [
-                    _resourcesManager.LoadTexture(FrontFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.PositiveZ, rotation, maxWidth), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(RightFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.PositiveX, rotation, maxWidth), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(BackFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.NegativeZ, rotation, maxWidth), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(LeftFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.NegativeX, rotation, maxWidth), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(TopFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.NegativeY, rotation, maxWidth), TextureWrapMode.ClampToEdge),
-                    _resourcesManager.LoadTexture(BottomFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.PositiveY, rotation, maxWidth), TextureWrapMode.ClampToEdge)
-                ],
-                skyboxShader);
+            material = LoadSkyboxMaterialFromEquirectangularProjectionImage(fullSkyboxPath);
         }
         else
         {
-            throw new FileNotFoundException($"Skybox path '{fullSkyboxPath}' not found.");    
+            Console.Error.WriteLine($"Skybox path '{fullSkyboxPath}' not found.");
+            
+            material = LoadDefaultSkyboxMaterial();
         }
         
         var skybox = MultiTextureSkybox.Create(material);
         skybox.BuildGeometry();
         
         return skybox;
+    }
+
+
+    private IMaterial LoadDefaultSkyboxMaterial()
+    {
+        var skyboxShader = new MultiTextureSkyboxShader();
+        skyboxShader.Build();
+        
+        var skyboxTexture = GenerateCheckerboardTexture();
+        
+        return Material.Create(
+            [
+                skyboxTexture,
+                skyboxTexture,
+                skyboxTexture,
+                skyboxTexture,
+                skyboxTexture,
+                skyboxTexture
+            ],
+            skyboxShader);
+    }
+
+
+    private IMaterial LoadSkyboxMaterialFromCubeTextures(string skyboxPath)
+    {
+        var skyboxShader = new MultiTextureSkyboxShader();
+        skyboxShader.Build();
+        
+        // If the path is a directory, we expect the 6-texture format.
+        return Material.Create(
+            [
+                LoadTexture(FrontFaceName, skyboxPath),
+                LoadTexture(RightFaceName, skyboxPath),
+                LoadTexture(BackFaceName, skyboxPath),
+                LoadTexture(LeftFaceName, skyboxPath),
+                LoadTexture(TopFaceName, skyboxPath),
+                LoadTexture(BottomFaceName, skyboxPath)
+            ],
+            skyboxShader);
+    }
+
+
+    private ITexture LoadTexture(string textureName, string path)
+    {
+        var textureFullPath = Path.Combine(path, $"{textureName}.bmp");
+        
+        return File.Exists(textureFullPath)
+            ? _resourcesManager.LoadTexture(textureName, textureFullPath, TextureWrapMode.ClampToEdge)
+            : GenerateCheckerboardTexture();
+    }
+
+    
+    private IMaterial LoadSkyboxMaterialFromEquirectangularProjectionImage(string skyboxImagePath)
+    {
+        var skyboxShader = new MultiTextureSkyboxShader();
+        skyboxShader.Build();
+        
+        // If the path is an image, we expect a single-file texture format.
+        var panoImage = _resourcesManager.LoadBmpImage(skyboxImagePath);
+            
+        var convertor = new EquirectangularProjectionToCubeMapConverter();
+           
+        const int maxWidth = 1024;
+        const double rotation = 0;
+            
+        return Material.Create(
+            [
+                _resourcesManager.LoadTexture(FrontFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.PositiveZ, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture(RightFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.PositiveX, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture(BackFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.NegativeZ, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture(LeftFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.NegativeX, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture(TopFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.NegativeY, rotation, maxWidth), TextureWrapMode.ClampToEdge),
+                _resourcesManager.LoadTexture(BottomFaceName, convertor.RenderFace(panoImage, CubeMapFaceOrientation.PositiveY, rotation, maxWidth), TextureWrapMode.ClampToEdge)
+            ],
+            skyboxShader);
+    }
+
+
+    /// <summary>
+    /// Generates an 8x8 checkerboard texture.
+    /// </summary>
+    /// <returns>An 8x8 checkerboard texture.</returns>
+    private ITexture GenerateCheckerboardTexture()
+    {
+        if (_resourcesManager.HasTexture("Checkerboard"))
+        {
+            return _resourcesManager.GetTexture("Checkerboard");
+        }
+
+        const int textureSize = 256;
+        const int tileSize = textureSize / 8;
+        
+        var image = new Graphics.Image(textureSize, textureSize);
+        
+        var pixelIndex = 0;
+        for (var y = 0; y < image.Height; y++)
+        {
+            var tileY = y / tileSize;
+            
+            for (var x = 0; x < image.Width; x++)
+            {
+                var tileX = x / tileSize;
+                
+                var c = (byte)(((tileX + tileY) & 1) == 0 ? 200 : 100);
+                
+                image.Pixels[pixelIndex++] = c;
+                image.Pixels[pixelIndex++] = c;
+                image.Pixels[pixelIndex++] = c;
+                image.Pixels[pixelIndex++] = 255;
+            }
+        }
+
+        return _resourcesManager.LoadTexture("Checkerboard", image, TextureWrapMode.ClampToEdge);
     }
 
     #endregion
