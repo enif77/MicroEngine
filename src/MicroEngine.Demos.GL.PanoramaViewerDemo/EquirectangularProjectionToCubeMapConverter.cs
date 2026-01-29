@@ -1,8 +1,8 @@
 /* Copyright (C) Premysl Fara and Contributors */
 
-using MicroEngine.Graphics;
-
 namespace MicroEngine.Demos.GL.PanoramaViewerDemo;
+
+using MicroEngine.Graphics;
 
 /// <summary>
 /// Defines cube map face orientations.
