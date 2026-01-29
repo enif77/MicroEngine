@@ -19,37 +19,27 @@ public class PixelInterpolator
     /// <param name="to">To index in the output image data array.</param>
     public void CopyPixel(Image inputImage, Image outputImage, double xFrom, double yFrom, int to)
     {
-        var xl = Clamp(Math.Floor(xFrom), 0, inputImage.Width - 1);
-        var xr = Clamp(Math.Ceiling(xFrom), 0, inputImage.Width - 1);
-        var xf = xFrom - xl;
+        var xl = (int)Math.Floor(xFrom);
+        xl = ((xl % inputImage.Width) + inputImage.Width) % inputImage.Width;
+        
+        var xr = (xl + 1) % inputImage.Width;
+        var xf = xFrom - Math.Floor(xFrom);
 
-        var yl = Clamp(Math.Floor(yFrom), 0, inputImage.Height - 1);
-        var yr = Clamp(Math.Ceiling(yFrom), 0, inputImage.Height - 1);
-        var yf = yFrom - yl;
+        var yl = Math.Clamp((int)Math.Floor(yFrom), 0, inputImage.Height - 1);
+        var yr = Math.Clamp(yl + 1, 0, inputImage.Height - 1);
+        var yf = yFrom - Math.Floor(yFrom);
 
-        var p00 = GetReadIndex((int)xl, (int)yl, inputImage.Width);
-        var p10 = GetReadIndex((int)xr, (int)yl, inputImage.Width);
-        var p01 = GetReadIndex((int)xl, (int)yr, inputImage.Width);
-        var p11 = GetReadIndex((int)xr, (int)yr, inputImage.Width);
+        var p00 = GetReadIndex(xl, yl, inputImage.Width);
+        var p10 = GetReadIndex(xr, yl, inputImage.Width);
+        var p01 = GetReadIndex(xl, yr, inputImage.Width);
+        var p11 = GetReadIndex(xr, yr, inputImage.Width);
 
         for (var channel = 0; channel < 3; channel++)
         {
             var p0 = inputImage.Pixels[p00 + channel] * (1 - xf) + inputImage.Pixels[p10 + channel] * xf;
             var p1 = inputImage.Pixels[p01 + channel] * (1 - xf) + inputImage.Pixels[p11 + channel] * xf;
-            outputImage.Pixels[to + channel] = (byte)Clamp(Math.Ceiling(p0 * (1 - yf) + p1 * yf), 0.0, 255.0);
+            outputImage.Pixels[to + channel] = (byte)Math.Clamp(Math.Ceiling(p0 * (1 - yf) + p1 * yf), 0.0, 255.0);
         }
-    }
-    
-    /// <summary>
-    /// Clamp a value to the specified range.
-    /// </summary>
-    /// <param name="x">A value to clamp.</param>
-    /// <param name="min">The minimum allowed value.</param>
-    /// <param name="max">The maximum allowed value.</param>
-    /// <returns>>The clamped value.</returns>
-    private static double Clamp(double x, double min, double max)
-    {
-        return Math.Min(max, Math.Max(x, min));
     }
 
     /// <summary>
