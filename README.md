@@ -1,5 +1,7 @@
 # Micro Engine
 
+**NOTE: This project was moved to CodeBerg: https://codeberg.org/enif77/MicroEngine**
+
 ---
 
 ## Requirements for running ME on Manjaro, Ubuntu or Raspberry OS on Raspberry PI 5:
