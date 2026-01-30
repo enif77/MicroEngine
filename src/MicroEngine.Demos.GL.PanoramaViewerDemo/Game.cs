@@ -82,25 +82,25 @@ public class Game : IGame
         
         var camera = ((FpsCamera)_scene.Camera);
         
-        if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+        if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A) || keyboardState.IsKeyDown(Keys.H))
         {
             // Turn left
             camera.Yaw -= cameraRotationSpeed * deltaTime;
         }
         
-        if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
+        if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D) || keyboardState.IsKeyDown(Keys.L))
         {
             // Turn right
             camera.Yaw += cameraRotationSpeed * deltaTime;
         }
         
-        if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+        if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S) || keyboardState.IsKeyDown(Keys.K))
         {
             // Turn down
             camera.Pitch -= cameraRotationSpeed * deltaTime;
         }
         
-        if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+        if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W) || keyboardState.IsKeyDown(Keys.J))
         {
             // Turn up
             camera.Pitch += cameraRotationSpeed * deltaTime;
